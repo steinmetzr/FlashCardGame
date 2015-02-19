@@ -8,12 +8,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.flashcard.MainActivity" >
 
+<<<<<<< HEAD
     <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" >
+=======
+>>>>>>> 4a2de567b895fdba732132ce4c9670feefb2c530
 
         <Button
             android:id="@+id/addButton"
