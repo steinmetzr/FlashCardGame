@@ -1,9 +1,14 @@
 package com.example.flashcard;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -11,6 +16,43 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Button addFile = (Button) findViewById(R.id.addButton);
+		Button removeFile = (Button) findViewById(R.id.removeButton);
+		Button option = (Button) findViewById(R.id.optionButton);
+		
+		addFile.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Log.v("click", "add button is clicked");
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, FlashCardActivity.class);
+				startActivity(intent);
+			}
+			
+		});
+		
+		removeFile.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Log.v("click", "remove button is clicked");
+				//Intent intent = new Intent();
+				//intent.setClass(Activity1.this, Activity2.class);
+				//startActivity(intent);
+			}
+			
+		});
+		
+		option.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Log.v("click", "option button is clicked");
+				Intent intent = new Intent();
+				//intent.setClass(MainActivity.this, Option.class);
+				startActivity(intent);
+			}
+			
+		});
 	}
 
 	@Override
