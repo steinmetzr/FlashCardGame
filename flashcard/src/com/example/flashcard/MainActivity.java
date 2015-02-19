@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v){
 				Log.v("click", "option button is clicked");
 				Intent intent = new Intent();
-				//intent.setClass(MainActivity.this, Option.class);
+				intent.setClass(MainActivity.this, Options.class);
 				startActivity(intent);
 			}
 			

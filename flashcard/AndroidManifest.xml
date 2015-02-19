@@ -23,18 +23,17 @@
             </intent-filter>
         </activity>
         <activity
-<<<<<<< HEAD
             android:name=".FlashCardActivity"
-            android:label="@string/title_activity_flash_card_file" >
-=======
+            android:label="@string/title_activity_flash_card" >
+		</activity>
+		<activity
             android:name=".Options"
             android:label="@string/title_activity_options"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.flashcard.MainActivity" />
->>>>>>> 4a2de567b895fdba732132ce4c9670feefb2c530
-        </activity>
+		</activity>
     </application>
 
 </manifest>

@@ -4,14 +4,12 @@
     <string name="app_name">flashcard</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-<<<<<<< HEAD
     <string name="add">ADD</string>
     <string name="remove">REMOVE</string>
     <string name="option">OPTION</string>
-    <string name="title_activity_flash_card">FlashCardFileActivity</string>
-=======
-    
-    <string name="title_activity_options">Options</string>
+    <string name="title_activity_flash_card">FlashCardActivity</string>
+	
+	<string name="title_activity_options">Options</string>
     <string name="boardSettings">Board Size</string>
     
     <string name="timerSettings">Timer</string>
@@ -19,6 +17,5 @@
     <string name="hour">H</string>
     <string name="min">M</string>
     <string name="sec">S</string>
->>>>>>> 4a2de567b895fdba732132ce4c9670feefb2c530
 
 </resources>
