@@ -17,6 +17,10 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		if(this.getIntent().getExtras() != null){
+			Bundle bundle = this.getIntent().getExtras();
+		}
+		
 		Button addFile = (Button) findViewById(R.id.addButton);
 		Button removeFile = (Button) findViewById(R.id.removeButton);
 		Button option = (Button) findViewById(R.id.optionButton);
@@ -33,7 +37,6 @@ public class MainActivity extends ActionBarActivity {
 				
 				startActivity(intent);
 			}
-			
 		});
 		
 		removeFile.setOnClickListener(new OnClickListener(){
@@ -72,8 +75,21 @@ public class MainActivity extends ActionBarActivity {
 		// automatically handle clicks on the Home/Up button, so long
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
+		if (id == R.id.action_add) {
+			Log.v("click", "add button is clicked");
+			Intent intent = new Intent();
+			intent.setClass(MainActivity.this, FlashCardActivity.class);
+			startActivity(intent);
+		}
+		if (id == R.id.action_remove) {
+			//fill in eventually
+			
+		}
 		if (id == R.id.action_settings) {
-			return true;
+			Log.v("click", "option button is clicked");
+			Intent intent = new Intent();
+			intent.setClass(MainActivity.this, Options.class);
+			startActivity(intent);
 		}
 		return super.onOptionsItemSelected(item);
 	}
