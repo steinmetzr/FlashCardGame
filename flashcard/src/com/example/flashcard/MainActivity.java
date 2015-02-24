@@ -27,6 +27,10 @@ public class MainActivity extends ActionBarActivity {
 				Log.v("click", "add button is clicked");
 				Intent intent = new Intent();
 				intent.setClass(MainActivity.this, FlashCardActivity.class);
+				
+				Bundle fileName = new Bundle();
+				fileName.putString("filename", "flashcard.txt");
+				
 				startActivity(intent);
 			}
 			
