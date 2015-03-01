@@ -13,13 +13,18 @@
 	<string name="title_activity_options">Options</string>
 
 	<string name="boardSettings">Board Size</string>
-	<string name="timerSettings">Timer</string>
-	<string name="timeLimit">Time Limit</string>
+
 	<string name="hour">H</string>
 	<string name="min">M</string>
 	<string name="sec">S</string>
 
 
     <string name="boardSizeText">18</string>
-    
+
+    <string name="timerSettings">Timer</string>
+    <string name="timeLimit">Time Limit</string>
+    <string name="timer">Timer</string>
+
+    <string name="done">Done</string>
+
 </resources>
