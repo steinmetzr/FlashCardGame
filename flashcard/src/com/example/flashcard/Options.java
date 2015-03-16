@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.preference.PreferenceActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,7 +21,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Options extends ActionBarActivity {
+public class Options extends PreferenceActivity {
 	SeekBar boardSizeSeek;
 	TextView boardSizeText, hourText, minText, secText;
 	LinearLayout timeLimitText;
@@ -42,7 +42,7 @@ public class Options extends ActionBarActivity {
 		timeLimitText = (LinearLayout) findViewById(R.id.timeLimitText);
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
 		
-		BufferedReader reader = null;
+		/*BufferedReader reader = null;
 		
 		try{
 			reader = new BufferedReader(new FileReader(filename));
@@ -66,7 +66,7 @@ public class Options extends ActionBarActivity {
 				reader.close();
 			}
 			catch(IOException e){}
-		}
+		}*/
 
 		/**
 		 * Listener for Radio Buttons
@@ -124,12 +124,12 @@ public class Options extends ActionBarActivity {
 					bundle.putInt("boardSize", size);
 
 					//FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-					BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+					/*BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
 
 					writer.write(Tools.toString(hourText));
 					writer.write(Tools.toString(minText));
 					writer.write(Tools.toString(secText));
-					writer.write(Tools.toString(boardSizeText));
+					writer.write(Tools.toString(boardSizeText));*/
 
 					/*
 					outputStream.write(Tools.toString(hourText).getBytes());
@@ -139,18 +139,18 @@ public class Options extends ActionBarActivity {
 
 					outputStream.close();
 					 */
-					writer.close();
+					//writer.close();
 					Tools.startIntent(Options.this, MainActivity.class, bundle);
 				}
 				catch(NumberFormatException e){
 					Toast.makeText(Options.this, "Error: must enter value for timer", Toast.LENGTH_SHORT).show();
 				}
-				catch (FileNotFoundException e) {
+				/*catch (FileNotFoundException e) {
 					Toast.makeText(Options.this, "Error: FileNotFound", Toast.LENGTH_SHORT).show();
 				}
 				catch (IOException e) {
 					Toast.makeText(Options.this, "Error: IOException", Toast.LENGTH_SHORT).show();
-				}
+				}*/
 			}
 
 		});
