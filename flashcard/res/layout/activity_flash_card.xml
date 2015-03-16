@@ -8,29 +8,84 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.flashcard.FLashCardActivity" >
 
-        <LinearLayout
+    <TextView
+        android:id="@+id/fileTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:text="title"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+	<LinearLayout
+	    android:id="@+id/linear1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentStart="true"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+	    android:layout_below="@+id/fileTitle" >
+
+	    <Button
+	        android:id="@+id/frontButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.05"
+	        android:text="Front" />
+
+	    <Button
+	        android:id="@+id/backButton"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="0.05"
+	        android:text="Back" />
+	</LinearLayout>
+
+	<ListView
+	    android:id="@+id/listView1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/linear2"
+	    android:layout_below="@+id/linear1" >
+
+    </ListView>
+
+	    <LinearLayout
+        android:id="@+id/linear2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true" 
+        android:layout_alignParentEnd="true">
+
+        <Button
+            android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" >
+            android:layout_weight="0.03"
+            android:text="@string/add" />
 
-            <Button
-                android:id="@+id/addButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/add" />
+        <Button
+            android:id="@+id/removeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"
+            android:text="@string/remove" />
 
-            <Button
-                android:id="@+id/removeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/remove" />
+        <Button
+            android:id="@+id/playButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"
+            android:text="@string/play" />
+    </LinearLayout>
+	
 
-            <Button
-                android:id="@+id/playButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/play" />
-        </LinearLayout>
-    
 </RelativeLayout>
