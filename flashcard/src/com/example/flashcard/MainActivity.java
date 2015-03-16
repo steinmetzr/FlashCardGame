@@ -1,5 +1,16 @@
 package com.example.flashcard;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -7,7 +18,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 	
@@ -25,6 +40,14 @@ public class MainActivity extends ActionBarActivity {
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
 				Tools.startIntent(MainActivity.this, FlashCardActivity.class);
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, FlashCardActivity.class);
+				
+				Bundle bundle = new Bundle();
+				bundle.putString("filename", "flashcard");
+				
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 		
