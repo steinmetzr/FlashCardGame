@@ -1861,7 +1861,7 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020034;
     }
     public static final class id {
-        public static final int action_add=0x7f090069;
+        public static final int action_add=0x7f09006d;
         public static final int action_bar=0x7f090042;
         public static final int action_bar_activity_content=0x7f090003;
         public static final int action_bar_container=0x7f090041;
@@ -1875,13 +1875,14 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f09003f;
         public static final int action_mode_bar_stub=0x7f09003e;
         public static final int action_mode_close_button=0x7f090031;
-        public static final int action_remove=0x7f09006a;
-        public static final int action_settings=0x7f09006b;
+        public static final int action_remove=0x7f09006e;
+        public static final int action_settings=0x7f09006f;
         public static final int activity_chooser_view_content=0x7f090032;
         public static final int addButton=0x7f090056;
         public static final int alignBounds=0x7f09000b;
         public static final int alignMargins=0x7f09000c;
         public static final int always=0x7f090026;
+        public static final int back=0x7f09006c;
         public static final int backButton=0x7f090053;
         public static final int beginning=0x7f09002d;
         public static final int board=0x7f09005c;
@@ -1910,12 +1911,14 @@ containing a value of this type.
         public static final int fill=0x7f090014;
         public static final int fill_horizontal=0x7f090015;
         public static final int fill_vertical=0x7f090016;
+        public static final int front=0x7f09006b;
         public static final int frontButton=0x7f090052;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f090020;
         public static final int horizontal=0x7f090009;
         public static final int hour=0x7f090065;
         public static final int icon=0x7f090037;
+        public static final int id=0x7f09006a;
         public static final int ifRoom=0x7f090028;
         public static final int image=0x7f090034;
         public static final int left=0x7f090017;
@@ -1968,6 +1971,7 @@ containing a value of this type.
         public static final int useLogo=0x7f090025;
         public static final int vertical=0x7f09000a;
         public static final int withText=0x7f09002a;
+        public static final int word=0x7f090069;
         public static final int wrap_content=0x7f09001b;
     }
     public static final class integer {
@@ -2022,7 +2026,9 @@ containing a value of this type.
         public static final int activity_flash_card=0x7f030017;
         public static final int activity_main=0x7f030018;
         public static final int activity_options=0x7f030019;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001a;
+        public static final int grid_item=0x7f03001a;
+        public static final int list_card=0x7f03001b;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001c;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -2086,23 +2092,25 @@ containing a value of this type.
         public static final int abc_toolbar_collapse_description=0x7f0a0004;
         public static final int add=0x7f0a0012;
         public static final int app_name=0x7f0a0010;
-        public static final int boardSettings=0x7f0a001a;
-        public static final int boardSizeText=0x7f0a001e;
-        public static final int done=0x7f0a0022;
-        public static final int hour=0x7f0a001b;
-        public static final int min=0x7f0a001c;
+        public static final int back=0x7f0a001a;
+        public static final int boardSettings=0x7f0a001c;
+        public static final int boardSizeText=0x7f0a0020;
+        public static final int done=0x7f0a0024;
+        public static final int front=0x7f0a0019;
+        public static final int hour=0x7f0a001d;
+        public static final int min=0x7f0a001e;
         public static final int option=0x7f0a0014;
         public static final int pause=0x7f0a0017;
         public static final int play=0x7f0a0016;
         public static final int quit=0x7f0a0018;
         public static final int remove=0x7f0a0013;
-        public static final int sec=0x7f0a001d;
-        public static final int timeLimit=0x7f0a0020;
-        public static final int timer=0x7f0a0021;
-        public static final int timerSettings=0x7f0a001f;
+        public static final int sec=0x7f0a001f;
+        public static final int timeLimit=0x7f0a0022;
+        public static final int timer=0x7f0a0023;
+        public static final int timerSettings=0x7f0a0021;
         public static final int title_activity_flash_card=0x7f0a0015;
         public static final int title_activity_main=0x7f0a0011;
-        public static final int title_activity_options=0x7f0a0019;
+        public static final int title_activity_options=0x7f0a001b;
     }
     public static final class style {
         /** 

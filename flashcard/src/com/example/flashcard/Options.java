@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,13 +21,13 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Options extends PreferenceActivity {
-	SeekBar boardSizeSeek;
-	TextView boardSizeText, hourText, minText, secText;
-	LinearLayout timeLimitText;
-	RadioGroup timeRadioGroup;
-	String filename = "options";
-	File options;
+public class Options extends ActionBarActivity {
+	private SeekBar boardSizeSeek;
+	private TextView boardSizeText, hourText, minText, secText;
+	private LinearLayout timeLimitText;
+	private RadioGroup timeRadioGroup;
+	private String filename;
+	private File options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,21 +41,49 @@ public class Options extends PreferenceActivity {
 		secText = (TextView) findViewById(R.id.sec);
 		timeLimitText = (LinearLayout) findViewById(R.id.timeLimitText);
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
+		filename = (Options.this).getFilesDir().getPath().toString() + "/options";
+		//options = new File((Options.this).getFilesDir().getPath().toString() + "/" + filename);
 		
-		/*BufferedReader reader = null;
+		/*try {
+			byte[] buffer = new byte[10];
+			if(options.exists()){
+				FileInputStream inputStream = openFileInput(filename);
+				inputStream.read(buffer);
+				String[] options =  buffer.toString().split("\n");
+				for(String o : options){
+					Log.v("Debug", o);
+				}
+			}
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		BufferedReader reader = null;
 		
 		try{
 			reader = new BufferedReader(new FileReader(filename));
-			String[] file = null;
-			int i = 0;
-			while(reader.readLine() != null){
+			String[] file = new String[4];
+			
+			for(int i = 0; i < 4; i++){
 				file[i] = reader.readLine();
-				i++;
 			}
-			hourText.setText(file[0]);
-			minText.setText(file[1]);
-			secText.setText(file[2]);
-			boardSizeText.setText(file[3]);
+			boardSizeText.setText(file[0]);
+			boardSizeSeek.setProgress(Integer.parseInt(file[0]));
+			if(file.length > 1){
+				hourText.setText(file[1]);
+				minText.setText(file[2]);
+				secText.setText(file[3]);
+				timeRadioGroup.check(R.id.timeLimitRadio);
+			}
+			else{
+				timeRadioGroup.check(R.id.timerRadio);
+			}
+				
+			
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -66,7 +94,7 @@ public class Options extends PreferenceActivity {
 				reader.close();
 			}
 			catch(IOException e){}
-		}*/
+		}
 
 		/**
 		 * Listener for Radio Buttons
@@ -91,6 +119,7 @@ public class Options extends PreferenceActivity {
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				String size = String.valueOf(progress+4);
 				boardSizeText.setText(size);
+				
 			}
 
 			@Override
@@ -110,6 +139,8 @@ public class Options extends PreferenceActivity {
 				Bundle bundle = new Bundle();
 				
 				try{
+					BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+					
 					if(timeLimitText.getVisibility() == View.VISIBLE){
 						int hour = Integer.valueOf(Tools.toString(hourText));
 						int min = Integer.valueOf(Tools.toString(minText));
@@ -122,35 +153,33 @@ public class Options extends PreferenceActivity {
 					int size = Integer.valueOf(Tools.toString(boardSizeText));
 
 					bundle.putInt("boardSize", size);
-
-					//FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-					/*BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-
-					writer.write(Tools.toString(hourText));
-					writer.write(Tools.toString(minText));
+					
+					writer.write(Tools.toString(boardSizeText) + "\n");
+					writer.write(Tools.toString(hourText) + "\n");
+					writer.write(Tools.toString(minText) + "\n");
 					writer.write(Tools.toString(secText));
-					writer.write(Tools.toString(boardSizeText));*/
-
+					
+					writer.close();
 					/*
-					outputStream.write(Tools.toString(hourText).getBytes());
-					outputStream.write(Tools.toString(minText).getBytes());
-					outputStream.write(Tools.toString(secText).getBytes());
+					FileOutputStream outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+					outputStream.write((Tools.toString(hourText) + "\n").getBytes());
+					outputStream.write((Tools.toString(minText) + "\n").getBytes());
+					outputStream.write((Tools.toString(secText) + "\n").getBytes());
 					outputStream.write(Tools.toString(boardSizeText).getBytes());
 
 					outputStream.close();
-					 */
-					//writer.close();
+					*/
 					Tools.startIntent(Options.this, MainActivity.class, bundle);
 				}
 				catch(NumberFormatException e){
 					Toast.makeText(Options.this, "Error: must enter value for timer", Toast.LENGTH_SHORT).show();
 				}
-				/*catch (FileNotFoundException e) {
+				catch (FileNotFoundException e) {
 					Toast.makeText(Options.this, "Error: FileNotFound", Toast.LENGTH_SHORT).show();
 				}
 				catch (IOException e) {
 					Toast.makeText(Options.this, "Error: IOException", Toast.LENGTH_SHORT).show();
-				}*/
+				}
 			}
 
 		});
