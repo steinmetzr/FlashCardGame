@@ -36,14 +36,14 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="0.05"
-	        android:text="Front" />
+	        android:text="@string/front" />
 
 	    <Button
 	        android:id="@+id/backButton"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="0.05"
-	        android:text="Back" />
+	        android:text="@string/back" />
 	</LinearLayout>
 
 	<ListView

@@ -1,6 +1,12 @@
 package com.example.flashcard;
 
-import android.content.Intent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -12,20 +18,22 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class Options extends ActionBarActivity {
-	SeekBar boardSizeSeek;
-	TextView boardSizeText, hourText, minText, secText;
-	LinearLayout timeLimitText;
-	RadioGroup timeRadioGroup;
+	private SeekBar boardSizeSeek;
+	private TextView boardSizeText, hourText, minText, secText;
+	private LinearLayout timeLimitText;
+	private RadioGroup timeRadioGroup;
+	private Button done;
+	private String filename;
+	private final int defaultBS = 18;
+	private final int offset = 4;
 
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_options);
-		
+
 		boardSizeSeek = (SeekBar) findViewById(R.id.boardSizeSeek);
 		boardSizeText = (TextView) findViewById(R.id.boardSizeText);
 		hourText = (TextView) findViewById(R.id.hour);
@@ -33,7 +41,14 @@ public class Options extends ActionBarActivity {
 		secText = (TextView) findViewById(R.id.sec);
 		timeLimitText = (LinearLayout) findViewById(R.id.timeLimitText);
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
+		done = (Button)findViewById(R.id.done);
 		
+		filename = (Options.this).getFilesDir().getPath().toString() + "/options";
+		BufferedReader reader = null;
+		
+		/**
+		 * Listener for Radio Buttons
+		 */
 		timeRadioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -42,59 +57,103 @@ public class Options extends ActionBarActivity {
 				else
 					timeLimitText.setVisibility(View.GONE);
 			}
-			
 		});
-		
-		
+
+
+		/**
+		 * Listener for Seek Bar
+		 */
 		boardSizeSeek.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				String size = String.valueOf(progress+4);
+				String size = String.valueOf(progress + offset);
 				boardSizeText.setText(size);
+				
 			}
-			
+
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {}
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {}
 		});
-		
-		
-		
-		
-		
-		Button done = (Button)findViewById(R.id.done);
-		done.setOnClickListener(new OnClickListener(){
 
+
+		/**
+		 * Listener for done button
+		 */
+		done.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Intent main = new Intent().setClass(Options.this, MainActivity.class);
 				Bundle bundle = new Bundle();
+				BufferedWriter writer = null;
 				
 				try{
-					if(timeLimitText.getVisibility() == View.VISIBLE){
-						int hour = Integer.valueOf(toString(hourText));
-						int min = Integer.valueOf(toString(minText));
-						int sec = Integer.valueOf(toString(secText));
-						
+					writer = new BufferedWriter(new FileWriter(filename));
+					
+					int size = Integer.valueOf(Tools.toString(boardSizeText));
+
+					bundle.putInt("boardSize", size);
+					
+					writer.write(Tools.toString(boardSizeText) + "\n");
+					
+					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
+						int hour = Integer.valueOf(Tools.toString(hourText));
+						int min = Integer.valueOf(Tools.toString(minText));
+						int sec = Integer.valueOf(Tools.toString(secText));
+
 						bundle.putInt("timerHour", hour);
 						bundle.putInt("timerMin", min);
 						bundle.putInt("timerSec", sec);
-					}
-						int size = Integer.valueOf(toString(boardSizeText));
 						
-						bundle.putInt("boardSize", size);
-						main.putExtras(bundle);
-						startActivity(main);
+						writer.write(Tools.toString(hourText) + "\n");
+						writer.write(Tools.toString(minText) + "\n");
+						writer.write(Tools.toString(secText));
+					}
+					
+					Tools.startIntent(Options.this, MainActivity.class, bundle);
 				}
 				catch(NumberFormatException e){
-					Toast.makeText(Options.this, "Error: must enter value for timer", Toast.LENGTH_SHORT).show();
+					Tools.Toast(Options.this, "Error: must enter value for timer");
+				}
+				catch (FileNotFoundException e) {
+					Tools.Toast(Options.this, e.getMessage());
+				}
+				catch (IOException e) {
+					Tools.Toast(Options.this, e.getMessage());
+				}
+				finally{
+					try {
+						if(writer != null)
+							writer.close();
+					} catch (IOException e) {}
 				}
 			}
-			
-			public String toString(TextView textView){
-				return textView.getText().toString();
-			}
+
 		});
+		
+		try{
+			reader = new BufferedReader(new FileReader(filename));
+			String line = reader.readLine();
+			
+			boardSizeSeek.setProgress(Integer.parseInt(line) - offset);
+			boardSizeText.setText(line);
+			if((line = reader.readLine()) != null){
+				hourText.setText(line);
+				minText.setText(reader.readLine());
+				secText.setText(reader.readLine());
+				timeRadioGroup.check(R.id.timeLimitRadio);
+			}
+			else{
+				timeRadioGroup.check(R.id.timerRadio);
+			}
+		}
+		catch (IOException e) {}
+		catch (NumberFormatException e){}
+		finally{
+			try {
+				if(reader != null)
+					reader.close();
+			} catch (IOException e) {}
+		}
 	}
 }

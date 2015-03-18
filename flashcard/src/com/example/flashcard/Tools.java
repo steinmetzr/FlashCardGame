@@ -1,9 +1,13 @@
 package com.example.flashcard;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Tools{
 	/**
@@ -17,7 +21,7 @@ public class Tools{
 	}
 	
 	/**
-	 * Starts an intent and sends bundle with it
+	 * Starts an intent and sends a bundle with it
 	 * @param context
 	 * @param goTo
 	 * @param bundle
@@ -30,11 +34,15 @@ public class Tools{
 	}
 	
 	/**
-	 * returns the string in a TextView
+	 * returns the string inside of a TextView
 	 * @param textView
 	 * @return String
 	 */
 	public static String toString(TextView textView){
 		return textView.getText().toString();
+	}
+	
+	public static void Toast(Context context, CharSequence string){
+		Toast.makeText(context, string, Toast.LENGTH_SHORT).show();
 	}
 }

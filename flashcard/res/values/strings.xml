@@ -9,6 +9,8 @@
 	<string name="play">PLAY</string>
 	<string name="pause">PAUSE</string>
 	<string name="quit">QUIT</string>
+	<string name="front">FRONT</string>
+	<string name="back">BACK</string>
 
 	<string name="title_activity_options">Options</string>
 

@@ -1,30 +1,16 @@
 package com.example.flashcard;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import android.support.v7.app.ActionBarActivity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,14 +24,9 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, FlashCardActivity.class);
-				
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", "flashcard");
-				
-				intent.putExtras(bundle);
-				startActivity(intent);
+				Tools.startIntent(MainActivity.this, FlashCardActivity.class, bundle);
 			}
 		});
 		
@@ -53,9 +34,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
-				//Intent intent = new Intent();
-				//intent.setClass(Activity1.this, Activity2.class);
-				//startActivity(intent);
+				//TODO
 			}
 			
 		});
@@ -64,9 +43,7 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "option button is clicked");
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, Options.class);
-				startActivity(intent);
+				Tools.startIntent(MainActivity.this, Options.class);
 			}
 			
 		});
@@ -89,13 +66,11 @@ public class MainActivity extends ActionBarActivity {
 			Log.v("click", "add button is clicked");
 		}
 		if (id == R.id.action_remove) {
-			//fill in eventually
+			//TODO
 		}
 		if (id == R.id.action_settings) {
 			Log.v("click", "option button is clicked");
-			Intent intent = new Intent();
-			intent.setClass(MainActivity.this, Options.class);
-			startActivity(intent);
+			Tools.startIntent(MainActivity.this, Options.class);
 		}
 		return super.onOptionsItemSelected(item);
 	}
