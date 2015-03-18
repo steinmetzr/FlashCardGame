@@ -87,13 +87,9 @@ public class MainActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_add) {
 			Log.v("click", "add button is clicked");
-			Intent intent = new Intent();
-			intent.setClass(MainActivity.this, FlashCardActivity.class);
-			startActivity(intent);
 		}
 		if (id == R.id.action_remove) {
 			//fill in eventually
-			
 		}
 		if (id == R.id.action_settings) {
 			Log.v("click", "option button is clicked");
