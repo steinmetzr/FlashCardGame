@@ -36,7 +36,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:indeterminate="false"
-                    android:max="24" />
+                    android:max="24"
+                    android:progress="18" />
 
                 <TextView
                     android:id="@+id/boardSizeText"
@@ -74,7 +75,7 @@
                     android:id="@+id/timeRadioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@+id/timeLimitRadio" >
+                    android:checkedButton="@+id/timerRadio" >
 
                     <RadioButton
                         android:id="@+id/timeLimitRadio"
@@ -100,35 +101,54 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:padding="1dp" >
+                    android:padding="1dp"
+                    android:visibility="gone" >
 
                     <EditText
                         android:id="@+id/hour"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/gray"
-                        android:ems="2"
                         android:hint="@string/hour"
+                        android:ems="2"
                         android:inputType="number" />
+
+                    <TextView
+                        android:id="@+id/div1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray"
+                        android:text=": "
+                        android:textSize="17sp" />
 
                     <EditText
                         android:id="@+id/min"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/gray"
-                        android:ems="2"
                         android:hint="@string/min"
+                        android:ems="2"
                         android:inputType="number" />
+                    
+                    <TextView
+                        android:id="@+id/div2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/gray"
+                        android:text=": "
+                        android:textSize="17sp" />
 
                     <EditText
                         android:id="@+id/sec"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@color/gray"
-                        android:ems="2"
                         android:hint="@string/sec"
+                        android:ems="2"
                         android:inputType="number" />
+
                 </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
 
