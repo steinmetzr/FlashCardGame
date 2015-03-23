@@ -50,19 +50,19 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});
 		
-		ListCard temp = new ListCard();
+		ListFile temp = new ListFile();
 		temp.id = 0;
-		temp.front = "a";
+		temp.front = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 	    list.add(temp);
 	    
-	    ListCard temp1 = new ListCard();
+	    ListFile temp1 = new ListFile();
 	    temp1.id = 1;
-	    temp1.front = "b";
+	    temp1.front = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
 	    list.add(temp1);
 	    
-	    ListCard temp11 = new ListCard();
+	    ListFile temp11 = new ListFile();
 	    temp11.id = 2;
-	    temp11.front = "c";
+	    temp11.front = "cccccccccccccccccccccccccccccccccccccccc";
 	    list.add(temp11);
 
 	    ListCardAdapter adapter = new ListCardAdapter(this, 0, list);

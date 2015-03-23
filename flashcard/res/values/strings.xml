@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">flashcard</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="files">Files</string>
+    <string name="files"><u>Files</u></string>
     <string name="add">ADD</string>
     <string name="remove">REMOVE</string>
     <string name="option">OPTION</string>
@@ -10,8 +10,8 @@
 	<string name="play">PLAY</string>
 	<string name="pause">PAUSE</string>
 	<string name="quit">QUIT</string>
-	<string name="front">FRONT</string>
-	<string name="back">BACK</string>
+	<string name="front">Front:</string>
+    <string name="back">Back:</string>
 
 	<string name="title_activity_options">Options</string>
 
@@ -29,7 +29,5 @@
     <string name="timer">Timer</string>
 
     <string name="done">Done</string>
-    <string name="front">Front:</string>
-    <string name="back">Back:</string>
 
 </resources>
