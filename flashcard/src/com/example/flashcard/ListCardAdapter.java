@@ -15,7 +15,7 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 	private LayoutInflater mInflater;
 	private int layout;
 	
-	public ListCardAdapter(Context context, int rid, List<ListCard> list, int layout) {
+	public ListCardAdapter(Context context, int rid, List<ListCard> list) {
 		super(context, rid, list);
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		setLayout(layout);
@@ -27,7 +27,7 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		ListCard item = (ListCard) getItem(pos);
 		
 		//Use layout file to generate View
-		View view = mInflater.inflate(layout, null);
+		View view = mInflater.inflate(R.layout.list_card, null);
 		
 		if(layout == R.layout.remove_card) {
 			CheckBox cb = (CheckBox) view.findViewById(R.id.checkbox);

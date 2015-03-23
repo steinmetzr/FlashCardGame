@@ -1,13 +1,16 @@
 package com.example.flashcard;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
 	
@@ -19,6 +22,7 @@ public class MainActivity extends ActionBarActivity {
 		Button addFile = (Button) findViewById(R.id.addButton);
 		Button removeFile = (Button) findViewById(R.id.removeButton);
 		Button option = (Button) findViewById(R.id.optionButton);
+		List<ListCard> list = new ArrayList<ListCard>();
 		
 		addFile.setOnClickListener(new OnClickListener(){
 			@Override
@@ -36,7 +40,6 @@ public class MainActivity extends ActionBarActivity {
 				Log.v("click", "remove button is clicked");
 				//TODO
 			}
-			
 		});
 		
 		option.setOnClickListener(new OnClickListener(){
@@ -45,8 +48,29 @@ public class MainActivity extends ActionBarActivity {
 				Log.v("click", "option button is clicked");
 				Tools.startIntent(MainActivity.this, Options.class);
 			}
-			
 		});
+		
+		ListCard temp = new ListCard();
+		temp.id = 0;
+		temp.front = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		temp.back = "";
+	    list.add(temp);
+	    
+	    ListCard temp1 = new ListCard();
+	    temp1.id = 1;
+	    temp1.front = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+	    temp.back = "";
+	    list.add(temp1);
+	    
+	    ListCard temp11 = new ListCard();
+	    temp11.id = 2;
+	    temp11.front = "ccccccccccccccccccccccccccccc";
+	    temp.back = "";
+	    list.add(temp11);
+
+	    ListCardAdapter adapter = new ListCardAdapter(this, 0, list);
+		ListView listView = (ListView) findViewById(R.id.listView1);
+		listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -56,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Handle action bar item clicks here. The action bar will
 		// automatically handle clicks on the Home/Up button, so long
@@ -73,5 +97,5 @@ public class MainActivity extends ActionBarActivity {
 			Tools.startIntent(MainActivity.this, Options.class);
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 }

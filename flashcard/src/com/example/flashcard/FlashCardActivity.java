@@ -3,7 +3,6 @@ package com.example.flashcard;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +11,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -77,10 +75,9 @@ public class FlashCardActivity extends Activity {
 			}
 		} catch (IOException e) {}
 		
-		SpannableString underlinedFilename = new SpannableString(filename);
-		underlinedFilename.setSpan(new UnderlineSpan(), 0, underlinedFilename.length(), Spanned.SPAN_PARAGRAPH);
+
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
-		title.setText(underlinedFilename);
+		title.setText(Tools.underLine(filename));
 
 		Button addCards = (Button) findViewById(R.id.addButton);
 		Button removeCards = (Button) findViewById(R.id.removeButton);
@@ -88,7 +85,7 @@ public class FlashCardActivity extends Activity {
 		Button front = (Button) findViewById(R.id.frontButton);
 		Button back = (Button) findViewById(R.id.backButton);
 		
-		adapter = new ListCardAdapter(this, 0, list, R.layout.list_card);
+		adapter = new ListCardAdapter(this, 0, list);
 		listView = (ListView) findViewById(R.id.cardList);
 		listView.setAdapter(adapter);
 		
