@@ -1,24 +1,37 @@
 package com.example.flashcard;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class FlashCardActivity extends Activity {
+	File file;
+	final Context context = this;
+	ListCardAdapter adapter;
+	ListView listView;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -61,38 +74,18 @@ public class FlashCardActivity extends Activity {
 	    temp3.front = "c";
 		temp3.back = "c";
 	    list.add(temp3);
-	        
-	    ListCard temp4 = new ListCard();
-	    temp4.id = 3;
-	    temp4.front = "d";
-	    temp4.back = "b";
-	    list.add(temp4);
-	        
-	   	ListCard temp5 = new ListCard();
-	   	temp5.id = 4;
-		temp5.front = "e";
-		temp5.back = "a";
-	    list.add(temp5);
-	    Collections.sort(list, fSort);
-	        
-		/*
-		try{
-			int i=0;
-			InputStream read = getAssets().open("flashcard");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(read));
-			String line = reader.readLine();
-			while(line != null){
-				ListCard temp = new ListCard();
-				temp.id = i;
-				temp.front = line;
-				temp.back = reader.readLine();
-		        list.add(temp);
-		        i++;
+		try {
+		    BufferedReader bf = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
+		    String line = bf.readLine();
+
+		    while(line != null){
+		      Log.v("list", line);
+		      line = bf.readLine();
 		    }
-			read.close();
-		} catch(IOException e){ e.printStackTrace(); }
-		*/
-	    
+		} catch (IOException e) {}
+		
+		SpannableString underlinedFilename = new SpannableString(filename);
+		underlinedFilename.setSpan(new UnderlineSpan(), 0, underlinedFilename.length(), Spanned.SPAN_PARAGRAPH);
 		TextView title = (TextView) findViewById(R.id.fileTitle);
 		title.setText(Tools.underLine(filename));
 
@@ -102,8 +95,8 @@ public class FlashCardActivity extends Activity {
 		Button front = (Button) findViewById(R.id.frontButton);
 		Button back = (Button) findViewById(R.id.backButton);
 		
-		ListCardAdapter adapter = new ListCardAdapter(this, 0, list);
-		ListView listView = (ListView) findViewById(R.id.listView1);
+		adapter = new ListCardAdapter(this, 0, list);
+		listView = (ListView) findViewById(R.id.listView1);
 		listView.setAdapter(adapter);
 		
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -117,7 +110,48 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
+		        adapter.notifyDataSetChanged();
+				
+				// get prompts.xml view
+				LayoutInflater layoutInflater = LayoutInflater.from(context);
+				View promptView = layoutInflater.inflate(R.layout.addcard, null);
+				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+				// set prompts.xml to be the layout file of the alertdialog builder
+				alertDialogBuilder.setView(promptView);
+				alertDialogBuilder.setTitle("Add Card");
+
+				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
+				final EditText BInput = (EditText) promptView.findViewById(R.id.editBack);
+				// setup a dialog window
+				alertDialogBuilder
+						.setCancelable(false)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										// get user input and set it to result
+										ListCard temp = new ListCard();
+										temp.id = list.size();
+										temp.front = FInput.getText().toString();
+										temp.back = BInput.getText().toString();
+										list.add(temp);
+										adapter.notifyDataSetChanged();
+										Log.v("myTest", temp.front + "\t" + temp.back + "\n");
+									}
+								})
+						.setNegativeButton("Cancel",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,	int id) {
+										dialog.cancel();
+									}
+								});
+
+				// create an alert dialog
+				AlertDialog alertD = alertDialogBuilder.create();
+
+				alertD.show();
 			}
+	
+			    //write output add in strings to end of file
 		});
 		
 		removeCards.setOnClickListener(new OnClickListener(){
@@ -139,6 +173,7 @@ public class FlashCardActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "frontSort button is clicked");
 				Collections.sort(list, fSort);
+				adapter.notifyDataSetChanged();
 			}
 		});
 		
@@ -147,6 +182,7 @@ public class FlashCardActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "backSort button is clicked");
 				Collections.sort(list, bSort);
+				adapter.notifyDataSetChanged();
 			}
 		});
 	}

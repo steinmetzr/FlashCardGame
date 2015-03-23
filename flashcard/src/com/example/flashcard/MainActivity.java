@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 public class MainActivity extends ActionBarActivity {
 	
@@ -86,13 +85,9 @@ public class MainActivity extends ActionBarActivity {
 		int id = item.getItemId();
 		if (id == R.id.action_add) {
 			Log.v("click", "add button is clicked");
-			Bundle bundle = new Bundle();
-			bundle.putString("filename", "flashcard");
-			Tools.startIntent(MainActivity.this, FlashCardActivity.class);
 		}
 		if (id == R.id.action_remove) {
 			//TODO
-			
 		}
 		if (id == R.id.action_settings) {
 			Log.v("click", "option button is clicked");

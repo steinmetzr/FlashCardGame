@@ -1,0 +1,12 @@
+apple
+oranges
+red
+blue
+baby
+old guy
+1
+1000
+yes
+no
+read
+write
