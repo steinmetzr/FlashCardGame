@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">flashcard</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="files">Files</string>
     <string name="add">ADD</string>
     <string name="remove">REMOVE</string>
     <string name="option">OPTION</string>

@@ -26,7 +26,6 @@ public class Options extends ActionBarActivity {
 	private RadioGroup timeRadioGroup;
 	private Button done;
 	private String filename;
-	private final int defaultBS = 18;
 	private final int offset = 4;
 
 	@Override
@@ -113,13 +112,13 @@ public class Options extends ActionBarActivity {
 					Tools.startIntent(Options.this, MainActivity.class, bundle);
 				}
 				catch(NumberFormatException e){
-					Tools.Toast(Options.this, "Error: must enter value for timer");
+					Tools.toast(Options.this, "Must enter value for time limit");
 				}
 				catch (FileNotFoundException e) {
-					Tools.Toast(Options.this, e.getMessage());
+					Tools.toast(Options.this, e.getMessage());
 				}
 				catch (IOException e) {
-					Tools.Toast(Options.this, e.getMessage());
+					Tools.toast(Options.this, e.getMessage());
 				}
 				finally{
 					try {

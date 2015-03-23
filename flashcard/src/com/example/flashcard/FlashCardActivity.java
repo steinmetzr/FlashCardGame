@@ -92,10 +92,9 @@ public class FlashCardActivity extends Activity {
 			read.close();
 		} catch(IOException e){ e.printStackTrace(); }
 		*/
-		SpannableString underlinedFilename = new SpannableString(filename);
-		underlinedFilename.setSpan(new UnderlineSpan(), 0, underlinedFilename.length(), Spanned.SPAN_PARAGRAPH);
+	    
 		TextView title = (TextView) findViewById(R.id.fileTitle);
-		title.setText(underlinedFilename);
+		title.setText(Tools.underLine(filename));
 
 		Button addCards = (Button) findViewById(R.id.addButton);
 		Button removeCards = (Button) findViewById(R.id.removeButton);
