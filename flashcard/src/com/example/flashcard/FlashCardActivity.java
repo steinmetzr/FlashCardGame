@@ -14,9 +14,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,37 +53,26 @@ public class FlashCardActivity extends Activity {
 
 		Bundle data = this.getIntent().getExtras();
 		String filename = data.getString("filename");
-		
-		ListCard temp1 = new ListCard();
-		temp1.id = 0;
-		temp1.front = "a";
-		temp1.back = "e";
-	    list.add(temp1);
 	    
-	    ListCard temp2 = new ListCard();
-	    temp2.id = 1;
-		temp2.front = "b";
-		temp2.back = "d";
-	    list.add(temp2);
-	     
-	    ListCard temp3 = new ListCard();
-	    temp3.id = 2;
-	    temp3.front = "c";
-		temp3.back = "c";
-	    list.add(temp3);
 		try {
 		    BufferedReader bf = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
 		    String line = bf.readLine();
-
+		    int i=0;
 		    while(line != null){
-		      Log.v("list", line);
-		      line = bf.readLine();
-		    }
+		    	Log.v("list", line);
+			    line = bf.readLine();
+			    String card[] = line.split("\t\t");
+			    ListCard temp = new ListCard();
+			    temp.id = i;
+			    temp.front = card[0];
+			    temp.back = card[1];
+			    list.add(temp);
+			    i++;
+			}
 		} catch (IOException e) {}
 		
-		SpannableString underlinedFilename = new SpannableString(filename);
-		underlinedFilename.setSpan(new UnderlineSpan(), 0, underlinedFilename.length(), Spanned.SPAN_PARAGRAPH);
-		TextView title = (TextView) findViewById(R.id.fileTitle);
+
+		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
 
 		Button addCards = (Button) findViewById(R.id.addButton);
@@ -96,7 +82,7 @@ public class FlashCardActivity extends Activity {
 		Button back = (Button) findViewById(R.id.backButton);
 		
 		adapter = new ListCardAdapter(this, 0, list);
-		listView = (ListView) findViewById(R.id.listView1);
+		listView = (ListView) findViewById(R.id.cardList);
 		listView.setAdapter(adapter);
 		
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,58 +92,86 @@ public class FlashCardActivity extends Activity {
 			}
 		});
 		
+		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				Log.v("item", "item " + position + " is clicked");
+				return false;
+			}
+		});
+		
 		addCards.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
-		        adapter.notifyDataSetChanged();
 				
 				// get prompts.xml view
 				LayoutInflater layoutInflater = LayoutInflater.from(context);
-				View promptView = layoutInflater.inflate(R.layout.addcard, null);
-				AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+				View promptView = layoutInflater.inflate(R.layout.add_card, null);
+				View messageView = layoutInflater.inflate(R.layout.message, null);
+				AlertDialog.Builder addPrompt = new AlertDialog.Builder(context);
+				
+				final AlertDialog.Builder message = new AlertDialog.Builder(context);
+				message.setView(messageView);
+				TextView ms = (TextView) messageView.findViewById(R.id.message);
+				ms.setText("Cards cannot have a blank side!");
+				message.setTitle("Warning")
+				 	   .setCancelable(true)
+					   .setNeutralButton("OK",
+				        new DialogInterface.OnClickListener() {
+				    		public void onClick(DialogInterface dialog, int id) {
+				    			dialog.cancel();
+				    		}
+					   });
 
 				// set prompts.xml to be the layout file of the alertdialog builder
-				alertDialogBuilder.setView(promptView);
-				alertDialogBuilder.setTitle("Add Card");
-
+				addPrompt.setView(promptView);
+				addPrompt.setTitle("Add Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
 				final EditText BInput = (EditText) promptView.findViewById(R.id.editBack);
+				
 				// setup a dialog window
-				alertDialogBuilder
-						.setCancelable(false)
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										// get user input and set it to result
-										ListCard temp = new ListCard();
-										temp.id = list.size();
-										temp.front = FInput.getText().toString();
-										temp.back = BInput.getText().toString();
-										list.add(temp);
-										adapter.notifyDataSetChanged();
-										Log.v("myTest", temp.front + "\t" + temp.back + "\n");
-									}
-								})
-						.setNegativeButton("Cancel",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog,	int id) {
-										dialog.cancel();
-									}
-								});
+				addPrompt
+					.setCancelable(true)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// get user input and set it to result
+							
+							if((FInput.getText().toString().trim().length() == 0) || 
+							   (BInput.getText().toString().trim().length() == 0)) {
+								AlertDialog warning = message.create();
+								warning.show();
+							}
+							else {
+								ListCard temp = new ListCard();
+								temp.id = list.size();
+								temp.front = FInput.getText().toString();
+								temp.back = BInput.getText().toString();
+								list.add(temp);
+								adapter.notifyDataSetChanged();
+								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
+							}
+							
+						}
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int id) { 
+							dialog.cancel(); 
+						}
+					});
 
 				// create an alert dialog
-				AlertDialog alertD = alertDialogBuilder.create();
-
-				alertD.show();
+				AlertDialog alert = addPrompt.create();
+				alert.show();
 			}
-	
-			    //write output add in strings to end of file
 		});
 		
 		removeCards.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
+				Tools.startIntent(FlashCardActivity.this, RemoveCardActivity.class);
 			}
 		});
 		
@@ -186,5 +200,4 @@ public class FlashCardActivity extends Activity {
 			}
 		});
 	}
-	
 }

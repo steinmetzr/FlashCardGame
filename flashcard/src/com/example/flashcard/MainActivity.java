@@ -53,16 +53,19 @@ public class MainActivity extends ActionBarActivity {
 		ListFile temp = new ListFile();
 		temp.id = 0;
 		temp.front = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+		temp.back = "";
 	    list.add(temp);
 	    
 	    ListFile temp1 = new ListFile();
 	    temp1.id = 1;
-	    temp1.front = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+	    temp1.front = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+	    temp.back = "";
 	    list.add(temp1);
 	    
 	    ListFile temp11 = new ListFile();
 	    temp11.id = 2;
 	    temp11.front = "cccccccccccccccccccccccccccccccccccccccc";
+	    temp.back = "";
 	    list.add(temp11);
 
 	    ListCardAdapter adapter = new ListCardAdapter(this, 0, list);

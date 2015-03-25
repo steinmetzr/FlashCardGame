@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">flashcard</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="files"><u>Files</u></string>
@@ -21,13 +22,15 @@
 	<string name="min">M</string>
 	<string name="sec">S</string>
 
-
     <string name="boardSizeText">18</string>
-
     <string name="timerSettings">Timer</string>
     <string name="timeLimit">Time Limit</string>
     <string name="timer">Timer</string>
-
     <string name="done">Done</string>
+    <string name="addF">Front Side</string>
+    <string name="addB">Back Side</string>
+    <string name="title_activity_remove_card">RemoveCard</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="SelectAll">Select All</string>
 
 </resources>
