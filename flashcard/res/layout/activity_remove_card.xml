@@ -27,6 +27,12 @@
     </ListView>
 
     <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/remove" />
+
+    <Button
         android:id="@+id/doneButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

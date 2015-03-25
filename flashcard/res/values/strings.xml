@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">flashcard</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="files">Files</string>
@@ -28,5 +27,6 @@
     <string name="title_activity_remove_card">RemoveCard</string>
     <string name="hello_world">Hello world!</string>
     <string name="SelectAll">Select All</string>
+    <string name="empty_spaces"> </string>
 
 </resources>

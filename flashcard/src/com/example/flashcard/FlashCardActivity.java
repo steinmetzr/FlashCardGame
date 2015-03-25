@@ -42,6 +42,7 @@ public class FlashCardActivity extends Activity {
 	};
 	
 	Comparator<ListCard> bSort = new Comparator<ListCard>(){
+		
 		@Override
 		public int compare(ListCard left, ListCard right) {
 			return left.back.compareToIgnoreCase(right.back);
@@ -57,21 +58,27 @@ public class FlashCardActivity extends Activity {
 
 		Bundle data = this.getIntent().getExtras();
 		String filename = data.getString("filename");
+		
+		for(int i=0; i<10; i++) {
+			ListCard temp = new ListCard();
+			temp.id = list.size();
+			temp.front = "x";
+			temp.back = "y";
+		    list.add(temp);
+		}
 	    
 		try {
 		    BufferedReader bf = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
 		    String line = bf.readLine();
-		    int i=0;
 		    while(line != null){
 		    	Log.v("list", line);
 			    line = bf.readLine();
 			    String card[] = line.split("\t\t");
 			    ListCard temp = new ListCard();
-			    temp.id = i;
+			    temp.id = list.size();
 			    temp.front = card[0];
 			    temp.back = card[1];
 			    list.add(temp);
-			    i++;
 			}
 		} catch (IOException e) {}
 		
@@ -97,11 +104,67 @@ public class FlashCardActivity extends Activity {
 		});
 		
 		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				final int pos = position;
+				// get prompts.xml view
+				LayoutInflater layoutInflater = LayoutInflater.from(context);
+				View promptView = layoutInflater.inflate(R.layout.add_card, null);
+				View messageView = layoutInflater.inflate(R.layout.message, null);
+				AlertDialog.Builder editPrompt = new AlertDialog.Builder(context);
+				
+				final AlertDialog.Builder message = new AlertDialog.Builder(context);
+				message.setView(messageView);
+				TextView ms = (TextView) messageView.findViewById(R.id.message);
+				ms.setText("Cards cannot have a blank side!");
+				message.setTitle("Warning")
+				 	   .setCancelable(true)
+					   .setNeutralButton("OK",
+				        new DialogInterface.OnClickListener() {
+				    		public void onClick(DialogInterface dialog, int id) {
+				    			dialog.cancel();
+				    		}
+					   });
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.v("item", "item " + position + " is clicked");
-				return false;
+				// set prompts.xml to be the layout file of the alertdialog builder
+				editPrompt.setView(promptView);
+				editPrompt.setTitle("Edit Card");
+				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
+				FInput.setHint(list.get(pos).front);
+				final EditText BInput = (EditText) promptView.findViewById(R.id.editBack);
+				BInput.setHint(list.get(pos).back);
+				// setup a dialog window
+				editPrompt
+					.setCancelable(true)
+					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							// get user input and set it to result
+							
+							if((FInput.getText().toString().trim().length() == 0) || 
+							   (BInput.getText().toString().trim().length() == 0)) {
+								AlertDialog warning = message.create();
+								warning.show();
+							}
+							else {
+								list.get(pos).front = FInput.getText().toString();
+								list.get(pos).back = BInput.getText().toString();
+								adapter.notifyDataSetChanged();
+								Log.v("myTest", FInput.getText().toString() + "\t" + 
+												BInput.getText().toString() + "\n");
+							}
+							
+						}
+					})
+					.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int id) { 
+							dialog.cancel(); 
+						}
+					});
+
+				// create an alert dialog
+				AlertDialog alert = editPrompt.create();
+				alert.show();
+				return true;
 			}
 		});
 		
@@ -175,7 +238,7 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
-				Tools.startIntent(FlashCardActivity.this, RemoveCardActivity.class);
+				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class);
 			}
 		});
 		

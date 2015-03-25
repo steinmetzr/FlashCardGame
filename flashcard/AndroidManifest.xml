@@ -38,7 +38,7 @@
                 android:value="com.example.flashcard.MainActivity" />
         </activity>
         <activity
-            android:name=".RemoveCardActivity"
+            android:name=".RemoveItemActivity"
             android:label="@string/title_activity_remove_card" >
         </activity>
     </application>
