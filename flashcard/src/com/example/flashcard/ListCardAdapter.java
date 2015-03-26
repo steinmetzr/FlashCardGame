@@ -24,7 +24,6 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		//Use layout file to generate View
 		View view = mInflater.inflate(R.layout.list_card, null);
 		
-
 		TextView index = (TextView)view.findViewById(R.id.id);
 		index.setText(pos+1 + ". ");
 			

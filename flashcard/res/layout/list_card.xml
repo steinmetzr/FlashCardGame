@@ -16,6 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
+        android:ellipsize="marquee"
+        android:maxLength="10"
+        android:maxLines="1"
         android:text="front"
         android:textSize="30sp" />
 
@@ -24,6 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
+        android:ellipsize="marquee"
+        android:maxLength="10"
+        android:maxLines="1"
         android:text="back"
         android:textSize="30sp" />
 
