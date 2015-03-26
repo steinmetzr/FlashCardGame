@@ -12,48 +12,54 @@
         android:id="@+id/files"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:gravity="center"
         android:text="@string/files"
-        android:textSize="26sp"
+        android:textSize="40sp"
         android:textStyle="bold" />
-    
-    <TableRow
-        android:id="@+id/tableRow1"
-        android:layout_width="wrap_content"
+
+    <ListView
+        android:id="@+id/listView1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" >
-		<Button
+        android:layout_above="@+id/linear"
+        android:layout_below="@+id/files" >
+
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/listView1"
+        android:layout_alignParentBottom="true" >
+
+        <Button
             android:id="@+id/addButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add" />
+            android:layout_weight="0.03"
+            android:text="@string/add"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/removeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/remove" />
+            android:layout_weight="0.03"
+            android:text="@string/remove"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/optionButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/option" />
-
-    </TableRow>
-
-    <ListView
-        android:id="@+id/listView1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tableRow1"
-        android:layout_below="@+id/files" >
-
-    </ListView>
+            android:layout_weight="0.03"
+            android:text="@string/option"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </RelativeLayout>

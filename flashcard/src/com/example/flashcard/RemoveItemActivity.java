@@ -21,10 +21,12 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -69,10 +71,7 @@ public class RemoveItemActivity extends Activity {
 		}});	
 		
 		for(int i=0; i<10; i++) {
-			ListCard temp = new ListCard();
-			temp.id = list.size();
-			temp.front = "x " + i;
-			temp.back = "y " + i;
+			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
 		    list.add(temp);
 		}
 		
@@ -87,12 +86,10 @@ public class RemoveItemActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Log.v("item", "item " + position + " is clicked");
-
-				if(list.get(position).checked == true){
-					adapter.notifyDataSetChanged();
-				}
 			}
 		});
+		
+		//adapter.getView(pos, convertView, partent)
 		
 		Button delete =(Button)findViewById(R.id.deleteButton);
 		
@@ -107,11 +104,10 @@ public class RemoveItemActivity extends Activity {
 				TextView ms = (TextView) promptView.findViewById(R.id.message);
 				message.setView(promptView);
 				
-				int count=0;
+				int count = 0;
 				for(int i=0; i<list.size(); i++){
-					if(list.get(i).checked == true) {
-						count++;
-					}
+					if(list.get(i).checked == true) 
+					{ count++; }
 				}
 				
 				ms.setText("Are you sure you want to delete " + count +" card");
@@ -123,31 +119,26 @@ public class RemoveItemActivity extends Activity {
 							list.clear();
 						}
 						else {
-							for(int i=0; i<list.size(); i++){
-								if(list.get(i).checked == true) { 
-									list.remove(i); 
-									adapter.notifyDataSetChanged();
-									i--;
+							for(int i=0; i<list.size(); i++) {
+								if(list.get(i).checked == true) {
+									list.remove(i);
 								}
 							}
 						}
-						adapter.notifyDataSetChanged();
+						adapter.notifyDataSetChanged(); 
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog,	int id) { 
 						dialog.cancel(); 
 					}
-				});
-				AlertDialog alert = message.create();
-				alert.show();
+				});				
 				
-				/*
 				if(count > 0) {
 					AlertDialog alert = message.create();
 					alert.show();
 				}
-				*/
+				
 			}
 		});
 		

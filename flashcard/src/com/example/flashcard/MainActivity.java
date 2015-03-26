@@ -3,16 +3,17 @@ package com.example.flashcard;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,9 @@ public class MainActivity extends ActionBarActivity {
 		Button removeFile = (Button) findViewById(R.id.removeButton);
 		Button option = (Button) findViewById(R.id.optionButton);
 		List<ListCard> list = new ArrayList<ListCard>();
+		
+		TextView title = (TextView) findViewById(R.id.files);
+		title.setText(Tools.underLine(title.getText().toString()));
 		
 		addFile.setOnClickListener(new OnClickListener(){
 			@Override
@@ -52,21 +56,15 @@ public class MainActivity extends ActionBarActivity {
 		
 		ListCard temp = new ListCard();
 		temp.id = 0;
-		temp.front = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-		temp.back = "";
+		temp.front = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
+		temp.back = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
 	    list.add(temp);
 	    
 	    ListCard temp1 = new ListCard();
 	    temp1.id = 1;
-	    temp1.front = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
-	    temp.back = "";
+	    temp1.front = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
+	    temp.back = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
 	    list.add(temp1);
-	    
-	    ListCard temp11 = new ListCard();
-	    temp11.id = 2;
-	    temp11.front = "ccccccccccccccccccccccccccccc";
-	    temp.back = "";
-	    list.add(temp11);
 
 	    ListCardAdapter adapter = new ListCardAdapter(this, 0, list);
 		ListView listView = (ListView) findViewById(R.id.listView1);

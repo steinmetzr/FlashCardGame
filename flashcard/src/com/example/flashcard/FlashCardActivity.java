@@ -18,10 +18,12 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,10 +62,7 @@ public class FlashCardActivity extends Activity {
 		String filename = data.getString("filename");
 		
 		for(int i=0; i<10; i++) {
-			ListCard temp = new ListCard();
-			temp.id = list.size();
-			temp.front = "x";
-			temp.back = "y";
+			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
 		    list.add(temp);
 		}
 	    
@@ -72,13 +71,12 @@ public class FlashCardActivity extends Activity {
 		    String line = bf.readLine();
 		    while(line != null){
 		    	Log.v("list", line);
-			    line = bf.readLine();
-			    String card[] = line.split("\t\t");
-			    ListCard temp = new ListCard();
-			    temp.id = list.size();
-			    temp.front = card[0];
-			    temp.back = card[1];
-			    list.add(temp);
+			    //String card[] = line.split("\t\t");
+			    //ListCard temp = new ListCard();
+			    //temp.id = list.size();
+			    //temp.front = card[0];
+			    //temp.back = card[1];
+			    //list.add(temp);
 			}
 		} catch (IOException e) {}
 		
@@ -130,9 +128,9 @@ public class FlashCardActivity extends Activity {
 				editPrompt.setView(promptView);
 				editPrompt.setTitle("Edit Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
-				FInput.setHint(list.get(pos).front);
+				FInput.setText(list.get(pos).front);
 				final EditText BInput = (EditText) promptView.findViewById(R.id.editBack);
-				BInput.setHint(list.get(pos).back);
+				BInput.setText(list.get(pos).back);
 				// setup a dialog window
 				editPrompt
 					.setCancelable(true)

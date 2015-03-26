@@ -1935,10 +1935,11 @@ containing a value of this type.
         public static final int ifRoom=0x7f090028;
         public static final int image=0x7f090034;
         public static final int left=0x7f090017;
+        public static final int linear=0x7f09005b;
         public static final int linear1=0x7f090053;
         public static final int linear2=0x7f090052;
         public static final int listMode=0x7f09001c;
-        public static final int listView1=0x7f09005c;
+        public static final int listView1=0x7f09005a;
         public static final int list_item=0x7f090036;
         public static final int message=0x7f090078;
         public static final int middle=0x7f09002e;
@@ -1946,7 +1947,7 @@ containing a value of this type.
         public static final int never=0x7f090029;
         public static final int none=0x7f090021;
         public static final int normal=0x7f09001d;
-        public static final int optionButton=0x7f09005b;
+        public static final int optionButton=0x7f09005c;
         public static final int playButton=0x7f090056;
         public static final int progress_circular=0x7f090007;
         public static final int progress_horizontal=0x7f090008;
@@ -1973,7 +1974,6 @@ containing a value of this type.
         public static final int start=0x7f090019;
         public static final int submit_area=0x7f09004d;
         public static final int tabMode=0x7f09001e;
-        public static final int tableRow1=0x7f09005a;
         public static final int timeLimitRadio=0x7f090065;
         public static final int timeLimitText=0x7f090066;
         public static final int timeRadioGroup=0x7f090063;
@@ -2140,6 +2140,8 @@ containing a value of this type.
     }
     public static final class style {
         /** 
+    	<style name="AppBaseTheme" parent="Theme.AppCompat.Light">
+    
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     
@@ -2480,6 +2482,7 @@ containing a value of this type.
          */
         public static final int Widget_AppCompat_Toolbar=0x7f0b0034;
         public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f0b0035;
+        public static final int dark=0x7f0b00ed;
     }
     public static final class styleable {
         /**  ============================================ 

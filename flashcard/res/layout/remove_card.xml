@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
         android:text="front"
-        android:textSize="25sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/back2"
@@ -25,6 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.05"
         android:text="back"
-        android:textSize="25sp" />
+        android:textSize="30sp" />
 
 </LinearLayout>

@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="title"
-        android:textSize="30sp"
+        android:textSize="40sp"
         android:textStyle="bold" />
 
     <CheckBox
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/SelectAll"
-        android:textSize="25sp" />
+        android:textSize="30sp" />
 
     <ListView
         android:id="@+id/removeList"
@@ -30,12 +30,14 @@
         android:id="@+id/deleteButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:text="@string/remove" />
 
     <Button
         android:id="@+id/doneButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
         android:gravity="center"
         android:text="DONE" />
 
