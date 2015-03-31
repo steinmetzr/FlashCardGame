@@ -32,7 +32,6 @@ import android.widget.TextView;
 public class RemoveItemActivity extends Activity {
 	File file;
 	final Context context = this;
-	RemoveItemAdapter adapter;
 	ListView listView;
 	CheckBox checkItem;
 
@@ -43,8 +42,11 @@ public class RemoveItemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_remove_card);
 
-		//Bundle data = this.getIntent().getExtras();
-		//String filename = data.getString("filename");
+		Bundle data = this.getIntent().getExtras();
+		String filename = data.getString("filename");
+		Boolean fileType = data.getBoolean("fileType");
+
+		final RemoveItemAdapter adapter = new RemoveItemAdapter(this, 0, list, fileType);
 		
 		final CheckBox selectAll = (CheckBox) findViewById(R.id.checkAll);
 		selectAll.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -63,15 +65,22 @@ public class RemoveItemActivity extends Activity {
 				adapter.notifyDataSetChanged();
 		}});	
 		
-		for(int i=0; i<10; i++) {
-			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
-		    list.add(temp);
+		if(!fileType) { 
+			for(int i=0; i<10; i++) {
+				ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
+				list.add(temp);
+			}
+		}
+		else {
+			for(int i=0; i<10; i++) {
+				ListFile temp = new ListFile(list.size(), "x " + i);
+				list.add(temp);
+			}
 		}
 		
 		TextView title = (TextView) findViewById(R.id.fileTitle2);
 		title.setText(Tools.underLine("flashcard"));
-		
-		adapter = new RemoveItemAdapter(this, 0, list);
+
 		listView = (ListView) findViewById(R.id.removeList);
 		listView.setAdapter(adapter);
 		
@@ -81,8 +90,6 @@ public class RemoveItemActivity extends Activity {
 				Log.v("item", "item " + position + " is clicked");
 			}
 		});
-		
-		//adapter.getView(pos, convertView, partent)
 		
 		Button delete =(Button)findViewById(R.id.deleteButton);
 		

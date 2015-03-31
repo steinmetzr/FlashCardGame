@@ -1,9 +1,13 @@
 package com.example.flashcard;
 
 import java.util.List;
+
 import android.content.Context;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnDragListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -26,7 +30,13 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		
 		TextView index = (TextView)view.findViewById(R.id.id);
 		index.setText(pos+1 + ". ");
-			
+		
+		index.setOnDragListener(new OnDragListener(){
+			@Override
+			public boolean onDrag(View v, DragEvent event) {
+				return false;
+			}
+		});
 		TextView front = (TextView)view.findViewById(R.id.front);
 		front.setText(item.front);
 		

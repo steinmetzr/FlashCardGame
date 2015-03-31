@@ -3,15 +3,19 @@ package com.example.flashcard;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -28,7 +32,7 @@ import android.widget.TextView;
 
 public class FlashCardActivity extends Activity {
 	File file;
-	final Context context = this;
+	Context context = this;
 	ListCardAdapter adapter;
 	ListView listView;
 	
@@ -47,6 +51,7 @@ public class FlashCardActivity extends Activity {
 		}
 	};
 
+	
 	List<ListCard> list = new ArrayList<ListCard>();
 	
 	@Override
@@ -62,20 +67,17 @@ public class FlashCardActivity extends Activity {
 		    list.add(temp);
 		}
 	    
+		/*
 		try {
 		    BufferedReader bf = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
 		    String line = bf.readLine();
 		    while(line != null){
 		    	Log.v("list", line);
-			    //String card[] = line.split("\t\t");
-			    //ListCard temp = new ListCard();
-			    //temp.id = list.size();
-			    //temp.front = card[0];
-			    //temp.back = card[1];
-			    //list.add(temp);
+		    	AssetManager am = context.getAssets();
+		    	InputStream is = am.open("test.txt");
 			}
 		} catch (IOException e) {}
-		
+		*/
 
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
@@ -161,7 +163,7 @@ public class FlashCardActivity extends Activity {
 				return true;
 			}
 		});
-		
+	
 		addCards.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -232,7 +234,14 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
-				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class);
+				//Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("filename", "flashcard");
+				bundle.putBoolean("fileType", false);
+				Intent intent = new Intent(FlashCardActivity.this, RemoveItemActivity.class);
+				intent.putExtras(bundle);
+				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
 			}
 		});
 		
@@ -261,4 +270,29 @@ public class FlashCardActivity extends Activity {
 			}
 		});
 	}
+
+	@Override
+	protected void onRestart() {
+		// TODO Auto-generated method stub
+		super.onRestart();
+	}
+
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	
 }

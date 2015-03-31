@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">flashcard</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="files"><u>Files</u></string>
     <string name="add">ADD</string>
     <string name="remove">REMOVE</string>
     <string name="option">OPTION</string>
-	<string name="title_activity_flash_card">FlashCardActivity</string>
-	<string name="play">PLAY</string>
-	<string name="pause">PAUSE</string>
-	<string name="quit">QUIT</string>
-	<string name="front">Front:</string>
+    <string name="title_activity_flash_card">FlashCardActivity</string>
+    <string name="play">PLAY</string>
+    <string name="pause">PAUSE</string>
+    <string name="quit">QUIT</string>
+    <string name="reset">RESET</string>
+    <string name="front">Front:</string>
     <string name="back">Back:</string>
-
-	<string name="title_activity_options">Options</string>
-
-	<string name="boardSettings">Board Size</string>
-
-	<string name="hour">H</string>
-	<string name="min">M</string>
-	<string name="sec">S</string>
-
+    <string name="title_activity_options">Options</string>
+    <string name="boardSettings">Board Size</string>
+    <string name="hour">H</string>
+    <string name="min">M</string>
+    <string name="sec">S</string>
     <string name="boardSizeText">18</string>
     <string name="timerSettings">Timer</string>
     <string name="timeLimit">Time Limit</string>
@@ -31,6 +29,8 @@
     <string name="title_activity_remove_card">RemoveCard</string>
     <string name="hello_world">Hello world!</string>
     <string name="SelectAll">Select All</string>
-    <string name="empty_spaces"> </string>
+    <string name="empty_spaces"></string>
+    <string name="title_activity_game">GameActivity</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

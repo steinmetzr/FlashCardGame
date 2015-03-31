@@ -77,29 +77,4 @@ public class MainActivity extends Activity {
 		listView.setAdapter(adapter);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
-	/*@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_add) {
-			Log.v("click", "add button is clicked");
-		}
-		if (id == R.id.action_remove) {
-			//TODO
-		}
-		if (id == R.id.action_settings) {
-			Log.v("click", "option button is clicked");
-			Tools.startIntent(MainActivity.this, Options.class);
-		}
-		return super.onOptionsItemSelected(item);
-	}*/
 }
