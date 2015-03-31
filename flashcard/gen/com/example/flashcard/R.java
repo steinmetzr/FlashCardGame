@@ -1861,7 +1861,7 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020034;
     }
     public static final class id {
-        public static final int action_add=0x7f09007c;
+        public static final int action_add=0x7f09007d;
         public static final int action_bar=0x7f090042;
         public static final int action_bar_activity_content=0x7f090003;
         public static final int action_bar_container=0x7f090041;
@@ -1875,15 +1875,15 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f09003f;
         public static final int action_mode_bar_stub=0x7f09003e;
         public static final int action_mode_close_button=0x7f090031;
-        public static final int action_remove=0x7f09007d;
-        public static final int action_settings=0x7f09007e;
+        public static final int action_remove=0x7f09007e;
+        public static final int action_settings=0x7f09007f;
         public static final int activity_chooser_view_content=0x7f090032;
         public static final int addButton=0x7f090054;
         public static final int alignBounds=0x7f09000b;
         public static final int alignMargins=0x7f09000c;
         public static final int always=0x7f090026;
-        public static final int back=0x7f090077;
-        public static final int back2=0x7f09007b;
+        public static final int back=0x7f090078;
+        public static final int back2=0x7f09007c;
         public static final int backButton=0x7f090058;
         public static final int beginning=0x7f09002d;
         public static final int board=0x7f09005e;
@@ -1895,7 +1895,7 @@ containing a value of this type.
         public static final int center=0x7f09000e;
         public static final int center_horizontal=0x7f09000f;
         public static final int center_vertical=0x7f090010;
-        public static final int check=0x7f090079;
+        public static final int check=0x7f09007a;
         public static final int checkAll=0x7f09006e;
         public static final int checkbox=0x7f09003a;
         public static final int clip_horizontal=0x7f090011;
@@ -1912,6 +1912,7 @@ containing a value of this type.
         public static final int doneButton=0x7f090071;
         public static final int dropdown=0x7f09002c;
         public static final int editBack=0x7f090073;
+        public static final int editFileName=0x7f090074;
         public static final int editFront=0x7f090072;
         public static final int edit_query=0x7f090044;
         public static final int end=0x7f090013;
@@ -1923,15 +1924,15 @@ containing a value of this type.
         public static final int fill=0x7f090014;
         public static final int fill_horizontal=0x7f090015;
         public static final int fill_vertical=0x7f090016;
-        public static final int front=0x7f090076;
-        public static final int front2=0x7f09007a;
+        public static final int front=0x7f090077;
+        public static final int front2=0x7f09007b;
         public static final int frontButton=0x7f090057;
         public static final int home=0x7f090000;
         public static final int homeAsUp=0x7f090020;
         public static final int horizontal=0x7f090009;
         public static final int hour=0x7f090067;
         public static final int icon=0x7f090037;
-        public static final int id=0x7f090075;
+        public static final int id=0x7f090076;
         public static final int ifRoom=0x7f090028;
         public static final int image=0x7f090034;
         public static final int left=0x7f090017;
@@ -1941,7 +1942,7 @@ containing a value of this type.
         public static final int listMode=0x7f09001c;
         public static final int listView1=0x7f09005a;
         public static final int list_item=0x7f090036;
-        public static final int message=0x7f090078;
+        public static final int message=0x7f090079;
         public static final int middle=0x7f09002e;
         public static final int min=0x7f090069;
         public static final int never=0x7f090029;
@@ -1986,7 +1987,7 @@ containing a value of this type.
         public static final int useLogo=0x7f090025;
         public static final int vertical=0x7f09000a;
         public static final int withText=0x7f09002a;
-        public static final int word=0x7f090074;
+        public static final int word=0x7f090075;
         public static final int wrap_content=0x7f09001b;
     }
     public static final class integer {
@@ -2043,17 +2044,18 @@ containing a value of this type.
         public static final int activity_options=0x7f030019;
         public static final int activity_remove_card=0x7f03001a;
         public static final int add_card=0x7f03001b;
-        public static final int grid_item=0x7f03001c;
-        public static final int list_card=0x7f03001d;
-        public static final int message=0x7f03001e;
-        public static final int remove_card=0x7f03001f;
-        public static final int support_simple_spinner_dropdown_item=0x7f030020;
+        public static final int add_file=0x7f03001c;
+        public static final int grid_item=0x7f03001d;
+        public static final int list_card=0x7f03001e;
+        public static final int message=0x7f03001f;
+        public static final int remove_card=0x7f030020;
+        public static final int support_simple_spinner_dropdown_item=0x7f030021;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
     }
     public static final class string {
-        public static final int SelectAll=0x7f0a002a;
+        public static final int SelectAll=0x7f0a002b;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
@@ -2111,17 +2113,18 @@ containing a value of this type.
          */
         public static final int abc_toolbar_collapse_description=0x7f0a0004;
         public static final int add=0x7f0a0013;
-        public static final int addB=0x7f0a0027;
-        public static final int addF=0x7f0a0026;
+        public static final int addB=0x7f0a0028;
+        public static final int addF=0x7f0a0027;
+        public static final int addFile=0x7f0a0026;
         public static final int app_name=0x7f0a0010;
         public static final int back=0x7f0a001b;
         public static final int boardSettings=0x7f0a001d;
         public static final int boardSizeText=0x7f0a0021;
         public static final int done=0x7f0a0025;
-        public static final int empty_spaces=0x7f0a002b;
+        public static final int empty_spaces=0x7f0a002c;
         public static final int files=0x7f0a0012;
         public static final int front=0x7f0a001a;
-        public static final int hello_world=0x7f0a0029;
+        public static final int hello_world=0x7f0a002a;
         public static final int hour=0x7f0a001e;
         public static final int min=0x7f0a001f;
         public static final int option=0x7f0a0015;
@@ -2136,7 +2139,7 @@ containing a value of this type.
         public static final int title_activity_flash_card=0x7f0a0016;
         public static final int title_activity_main=0x7f0a0011;
         public static final int title_activity_options=0x7f0a001c;
-        public static final int title_activity_remove_card=0x7f0a0028;
+        public static final int title_activity_remove_card=0x7f0a0029;
     }
     public static final class style {
         /** 
