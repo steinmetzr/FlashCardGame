@@ -3,24 +3,19 @@ package com.example.flashcard;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
-import android.util.SparseBooleanArray;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -35,6 +30,7 @@ public class RemoveItemActivity extends Activity {
 	RemoveItemAdapter adapter;
 	ListView listView;
 	CheckBox checkItem;
+	Editor editor;
 
 	List<ListCard> list = new ArrayList<ListCard>();
 	
@@ -43,8 +39,8 @@ public class RemoveItemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_remove_card);
 
-		//Bundle data = this.getIntent().getExtras();
-		//String filename = data.getString("filename");
+		Bundle data = this.getIntent().getExtras();
+		String filename = data.getString("filename");
 		
 		final CheckBox selectAll = (CheckBox) findViewById(R.id.checkAll);
 		selectAll.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -61,10 +57,16 @@ public class RemoveItemActivity extends Activity {
 					}
 				}
 				adapter.notifyDataSetChanged();
-		}});	
+		}});
+		SharedPreferences flashCards = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
+		Map<String, ?> contents = flashCards.getAll();
 		
-		for(int i=0; i<10; i++) {
-			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
+		String front, back;
+		for(int i=0; i<contents.size(); i++) {
+			front = (String) contents.get("front" + i);
+			back = (String) contents.get("back" + i);
+			
+			ListCard temp = new ListCard(i, front, back);
 		    list.add(temp);
 		}
 		
