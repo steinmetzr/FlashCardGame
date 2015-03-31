@@ -20,7 +20,7 @@
     </style>
     
     <style name="dark" parent="@android:Theme.Black.NoTitleBar.Fullscreen"> 
-    	<item name="android:textColor">#ffffff</item>   
+    	<item name="android:textColor">#ffffff</item>
     </style>
     
     <color name="gray">#AAAAAA</color>

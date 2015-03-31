@@ -13,8 +13,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,7 +30,6 @@ public class FlashCardActivity extends Activity {
 	ListCardAdapter adapter;
 	ListView listView;
 	String filename;
-	Editor editor;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -58,8 +55,6 @@ public class FlashCardActivity extends Activity {
 
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
-		SharedPreferences flashCards = context.getSharedPreferences(filename, Context.MODE_PRIVATE);
-		editor = flashCards.edit();
 		
 		for(int i=0; i<10; i++) {
 			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
@@ -147,10 +142,6 @@ public class FlashCardActivity extends Activity {
 								list.get(pos).front = FInput.getText().toString();
 								list.get(pos).back = BInput.getText().toString();
 								adapter.notifyDataSetChanged();
-								
-								editor.putString("front" + list.get(pos).id, list.get(pos).front);
-								editor.putString("back" + list.get(pos).id, list.get(pos).back);
-								
 								Log.v("myTest", FInput.getText().toString() + "\t" + 
 												BInput.getText().toString() + "\n");
 							}
@@ -219,10 +210,6 @@ public class FlashCardActivity extends Activity {
 								temp.back = BInput.getText().toString();
 								list.add(temp);
 								adapter.notifyDataSetChanged();
-								
-								editor.putString("front" + temp.id, temp.front);
-								editor.putString("back" + temp.id, temp.back);
-								
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
 							}
 							
@@ -244,9 +231,6 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
-				editor.commit();
-				Bundle bundle = new Bundle();
-				bundle.putString("filename", filename);
 				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class);
 			}
 		});
@@ -254,7 +238,6 @@ public class FlashCardActivity extends Activity {
 		play.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				editor.commit();
 				Log.v("click", "play button is clicked");
 			}
 		});

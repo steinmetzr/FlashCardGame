@@ -43,22 +43,6 @@ public class MainActivity extends Activity {
 		TextView title = (TextView) findViewById(R.id.files);
 		title.setText(Tools.underLine(title.getText().toString()));
 
-		addFile.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-				//TODO
-
-			}
-		});
-
-		removeFile.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-				Log.v("click", "remove button is clicked");
-				//TODO
-			}
-		});
-
 		option.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -76,7 +60,6 @@ public class MainActivity extends Activity {
 				bundle.putString("filename", temp.front);
 				Tools.startIntent(MainActivity.this, FlashCardActivity.class, bundle);
 			}
-
 		});
 
 		addFile.setOnClickListener(new OnClickListener(){
@@ -145,57 +128,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("fileType", true);
+				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
 			}
 		});
 	}
-		/*addFile.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-				Log.v("click", "add button is clicked");
-				Bundle bundle = new Bundle();
-				bundle.putString("filename", "flashcard");
-				Tools.startIntent(MainActivity.this, FlashCardActivity.class, bundle);
-			}
-		});
-		
-		removeFile.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-				Log.v("click", "remove button is clicked");
-				//TODO
-			}
-		});
-		
-		option.setOnClickListener(new OnClickListener(){
-			@Override
-			public void onClick(View v){
-				Log.v("click", "option button is clicked");
-				Tools.startIntent(MainActivity.this, Options.class);
-			}
-		});
-		
-		ListFile temp = new ListFile();
-		temp.id = 0;
-		temp.front = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-		temp.back = "";
-		list.add(temp);
-	    
-	    ListFile temp1 = new ListFile();
-	    temp1.id = 1;
-	    temp1.front = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
-	    temp.back = "abcdefghijklmnopqrstuvwxyz abcdefghijklmnopqrstuvwxyz";
-	    list.add(temp1);
-	    
-	    ListFile temp11 = new ListFile();
-	    temp11.id = 2;
-	    temp11.front = "cccccccccccccccccccccccccccccccccccccccc";
-	    temp.back = "";
-	    list.add(temp11);
-	    
-	    ListCardAdapter adapter = new ListCardAdapter(this, 0, list);
-		ListView listView = (ListView) findViewById(R.id.listView1);
-		listView.setAdapter(adapter);
-	}*/
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
