@@ -24,6 +24,8 @@
     <string name="timeLimit">Time Limit</string>
     <string name="timer">Timer</string>
     <string name="done">Done</string>
+    
+    <string name="addFile">File Name</string>
     <string name="addF">Front Side</string>
     <string name="addB">Back Side</string>
     <string name="title_activity_remove_card">RemoveCard</string>

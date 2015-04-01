@@ -18,12 +18,9 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnDragListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +32,7 @@ public class FlashCardActivity extends Activity {
 	Context context = this;
 	ListCardAdapter adapter;
 	ListView listView;
+	String filename;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -60,7 +58,7 @@ public class FlashCardActivity extends Activity {
 		setContentView(R.layout.activity_flash_card);
 
 		Bundle data = this.getIntent().getExtras();
-		String filename = data.getString("filename");
+		filename = data.getString("filename");
 		
 		for(int i=0; i<10; i++) {
 			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
