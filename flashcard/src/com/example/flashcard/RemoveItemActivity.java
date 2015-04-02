@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,8 @@ public class RemoveItemActivity extends Activity {
 	final Context context = this;
 	ListView listView;
 	CheckBox checkItem;
+	Boolean fileType;
+	File fileDir;
 
 	List<ListCard> list = new ArrayList<ListCard>();
 	
@@ -35,8 +38,7 @@ public class RemoveItemActivity extends Activity {
 		setContentView(R.layout.activity_remove_card);
 
 		Bundle data = this.getIntent().getExtras();
-		String filename = data.getString("filename");
-		Boolean fileType = data.getBoolean("fileType");
+		fileType = data.getBoolean("fileType");
 
 		final RemoveItemAdapter adapter = new RemoveItemAdapter(this, 0, list, fileType);
 		
@@ -57,16 +59,21 @@ public class RemoveItemActivity extends Activity {
 				adapter.notifyDataSetChanged();
 		}});	
 		
-		if(!fileType) { 
+		if(!fileType) {
+			String filename = data.getString("filename");
 			for(int i=0; i<10; i++) {
 				ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
 				list.add(temp);
 			}
 		}
 		else {
-			for(int i=0; i<10; i++) {
-				ListFile temp = new ListFile(list.size(), "x " + i);
-				list.add(temp);
+			fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
+			if(fileDir.exists() && fileDir.isDirectory()){
+		        String[] fileList = fileDir.list();
+		        for(int i=0; i<fileList.length; i++) {
+					ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
+					list.add(temp);
+				}
 			}
 		}
 		
@@ -109,15 +116,37 @@ public class RemoveItemActivity extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						if(selectAll.isChecked()) {
 							list.clear();
+							if(!fileType){
+								
+							}
+							else{
+								File[] files = fileDir.listFiles();
+								for(File file : files){
+									file.delete();
+								}
+							}
 						}
 						else {
 							for(int i=0; i<list.size(); i++) {
 								if(list.get(i).checked == true) {
+									if(!fileType){
+										
+									}
+									else{
+										File[] files = fileDir.listFiles();
+										for(File file : files){
+											String fileName = file.getName();
+											fileName = fileName.substring(0, (int)fileName.length()-4);
+											if(list.get(i).front.equals(fileName)){
+												file.delete();
+											}
+										}
+									}
 									list.remove(i);
 								}
 							}
 						}
-						adapter.notifyDataSetChanged(); 
+						adapter.notifyDataSetChanged();
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -141,7 +170,10 @@ public class RemoveItemActivity extends Activity {
 				Log.v("click", "done button is clicked");
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", "flashcard");
-				Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle);
+				if(!fileType)
+					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				else
+					Tools.startIntent(RemoveItemActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
 	}

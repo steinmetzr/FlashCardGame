@@ -1,9 +1,8 @@
 package com.example.flashcard;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -11,7 +10,7 @@ import android.text.style.UnderlineSpan;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Tools{
+public class Tools extends Activity{
 	/**
 	 * Starts an intent to go from here to there.
 	 * @param here
@@ -32,6 +31,22 @@ public class Tools{
 		Intent intent = new Intent().setClass(here, there);
 		
 		intent.putExtras(bundle);
+		here.startActivity(intent);
+	}
+	
+	public static void startIntent(Context here, Class<?> there, int Flag){
+		Intent intent = new Intent().setClass(here, there);
+		
+		intent.addFlags(Flag);
+		here.startActivity(intent);
+	}
+	
+	public static void startIntent(Context here, Class<?> there, Bundle bundle, int Flag){
+		Intent intent = new Intent().setClass(here, there);
+		
+		intent.putExtras(bundle);
+		intent.addFlags(Flag);
+		
 		here.startActivity(intent);
 	}
 	

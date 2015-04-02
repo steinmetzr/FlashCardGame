@@ -31,7 +31,7 @@ public class RemoveItemAdapter extends ArrayAdapter<ListCard>{
 		View view;
 		
 		if (!fileType) {
-			view = mInflater.inflate(R.layout.remove_file, null);
+			view = mInflater.inflate(R.layout.remove_card, null);
 			
 			CheckBox cb = (CheckBox) view.findViewById(R.id.check);
 			cb.setChecked(item.checked);
@@ -57,6 +57,18 @@ public class RemoveItemAdapter extends ArrayAdapter<ListCard>{
 			view = mInflater.inflate(R.layout.remove_file, null);
 			CheckBox cb = (CheckBox) view.findViewById(R.id.check);
 			cb.setChecked(item.checked);
+			
+			cb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+		        @Override
+		        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		            if(isChecked) {
+		                item.checked = true;
+		            }
+		            else {
+		                item.checked = false;
+		            }
+		        }
+		    });
 				
 			TextView fileItem = (TextView)view.findViewById(R.id.fileItem);
 			fileItem.setText(item.front);

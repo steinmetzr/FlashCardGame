@@ -1,5 +1,6 @@
 package com.example.flashcard;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity {
 	ListView listView;
 	List<ListCard> list;
 	Context context = this;
+	File fileDir;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,24 @@ public class MainActivity extends Activity {
 		list = new ArrayList<ListCard>();
 		adapter = new ListCardAdapter(this, 0, list);
 		listView = (ListView) findViewById(R.id.listView1);
+		
 		listView.setAdapter(adapter);
+		
+		/*for(int i=0; i<10; i++){
+			SharedPreferences file = getSharedPreferences("file" + i, Context.MODE_PRIVATE);
+			Editor editor = file.edit();
+			editor.commit();
+		}*/
+		
+		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
+		
+		if(fileDir.exists() && fileDir.isDirectory()){
+	        String[] fileList = fileDir.list();
+	        for(int i=0; i<fileList.length; i++) {
+				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
+			    list.add(temp);
+			}
+		}
 		
 		TextView title = (TextView) findViewById(R.id.files);
 		title.setText(Tools.underLine(title.getText().toString()));
@@ -47,7 +66,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "option button is clicked");
-				Tools.startIntent(MainActivity.this, Options.class);
+				Tools.startIntent(MainActivity.this, Options.class, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
 			
@@ -76,7 +95,7 @@ public class MainActivity extends Activity {
 				final AlertDialog.Builder message = new AlertDialog.Builder(context);
 				message.setView(messageView);
 				TextView ms = (TextView) messageView.findViewById(R.id.message);
-				ms.setText("File names cannont be empty!");
+				ms.setText("File names can't be empty!");
 				message.setTitle("Warning")
 				.setCancelable(true)
 				.setNeutralButton("OK",
@@ -97,8 +116,7 @@ public class MainActivity extends Activity {
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// get user input and set it to result
-
-						if(FInput.getText().toString().trim().length() == 0) {
+						if(FInput.getText().toString().trim().length() == 0 ) {
 							AlertDialog warning = message.create();
 							warning.show();
 						}
@@ -107,6 +125,7 @@ public class MainActivity extends Activity {
 							temp.id = list.size();
 							temp.front = FInput.getText().toString();
 							list.add(temp);
+							getSharedPreferences(temp.front, Context.MODE_PRIVATE).edit().commit();
 							adapter.notifyDataSetChanged();
 						}
 
@@ -130,9 +149,8 @@ public class MainActivity extends Activity {
 				Log.v("click", "remove button is clicked");
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("fileType", true);
-				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
+				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
 	}
-
 }

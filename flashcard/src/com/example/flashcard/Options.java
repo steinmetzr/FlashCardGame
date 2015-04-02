@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -109,7 +110,7 @@ public class Options extends Activity {
 						writer.write(Tools.toString(secText));
 					}
 					
-					Tools.startIntent(Options.this, MainActivity.class, bundle);
+					Tools.startIntent(Options.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				}
 				catch(NumberFormatException e){
 					Tools.toast(Options.this, "Must enter value for time limit");

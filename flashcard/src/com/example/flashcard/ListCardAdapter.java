@@ -1,7 +1,7 @@
 package com.example.flashcard;
 
 import java.util.List;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -21,6 +21,7 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
+	@SuppressLint("NewApi")
 	public View getView(int pos, View convertView, ViewGroup partent){
 		//Retrieve data
 		ListCard item = (ListCard) getItem(pos);

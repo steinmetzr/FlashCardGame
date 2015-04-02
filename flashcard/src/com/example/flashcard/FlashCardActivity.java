@@ -1,10 +1,6 @@
 package com.example.flashcard;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +11,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +28,7 @@ public class FlashCardActivity extends Activity {
 	ListCardAdapter adapter;
 	ListView listView;
 	String filename;
+	List<ListCard> list = new ArrayList<ListCard>();
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -48,9 +44,6 @@ public class FlashCardActivity extends Activity {
 			return left.back.compareToIgnoreCase(right.back);
 		}
 	};
-
-	
-	List<ListCard> list = new ArrayList<ListCard>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -232,14 +225,10 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
-				//Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class);
 				Bundle bundle = new Bundle();
-				bundle.putString("filename", "flashcard");
+				bundle.putString("filename", filename);
 				bundle.putBoolean("fileType", false);
-				Intent intent = new Intent(FlashCardActivity.this, RemoveItemActivity.class);
-				intent.putExtras(bundle);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
+				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
 		
@@ -268,29 +257,10 @@ public class FlashCardActivity extends Activity {
 			}
 		});
 	}
-
-	@Override
-	protected void onRestart() {
-		// TODO Auto-generated method stub
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		// TODO Auto-generated method stub
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
 	
+	@Override
+	public void onBackPressed() {
+		Tools.startIntent(this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		super.onBackPressed();
+	}
 }
