@@ -1862,7 +1862,7 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020034;
     }
     public static final class id {
-        public static final int action_add=0x7f090088;
+        public static final int action_add=0x7f09008a;
         public static final int action_bar=0x7f090042;
         public static final int action_bar_activity_content=0x7f090003;
         public static final int action_bar_container=0x7f090041;
@@ -1876,15 +1876,15 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f09003f;
         public static final int action_mode_bar_stub=0x7f09003e;
         public static final int action_mode_close_button=0x7f090031;
-        public static final int action_remove=0x7f090089;
-        public static final int action_settings=0x7f090087;
+        public static final int action_remove=0x7f09008b;
+        public static final int action_settings=0x7f090089;
         public static final int activity_chooser_view_content=0x7f090032;
         public static final int addButton=0x7f090054;
         public static final int alignBounds=0x7f09000b;
         public static final int alignMargins=0x7f09000c;
         public static final int always=0x7f090026;
         public static final int back=0x7f090081;
-        public static final int back2=0x7f090085;
+        public static final int back2=0x7f090087;
         public static final int backButton=0x7f090058;
         public static final int beginning=0x7f09002d;
         public static final int board=0x7f090065;
@@ -1896,7 +1896,7 @@ containing a value of this type.
         public static final int center=0x7f09000e;
         public static final int center_horizontal=0x7f09000f;
         public static final int center_vertical=0x7f090010;
-        public static final int check=0x7f090083;
+        public static final int check=0x7f090085;
         public static final int checkAll=0x7f090077;
         public static final int checkbox=0x7f09003a;
         public static final int clip_horizontal=0x7f090011;
@@ -1919,7 +1919,7 @@ containing a value of this type.
         public static final int end=0x7f090013;
         public static final int expand_activities_button=0x7f090033;
         public static final int expanded_menu=0x7f090039;
-        public static final int fileItem=0x7f090086;
+        public static final int fileItem=0x7f090088;
         public static final int fileTitle1=0x7f090050;
         public static final int fileTitle2=0x7f090076;
         public static final int files=0x7f09005f;
@@ -1927,7 +1927,7 @@ containing a value of this type.
         public static final int fill_horizontal=0x7f090015;
         public static final int fill_vertical=0x7f090016;
         public static final int front=0x7f090080;
-        public static final int front2=0x7f090084;
+        public static final int front2=0x7f090086;
         public static final int frontButton=0x7f090057;
         public static final int gameGrid=0x7f09005e;
         public static final int home=0x7f090000;
@@ -1946,7 +1946,9 @@ containing a value of this type.
         public static final int listMode=0x7f09001c;
         public static final int listView1=0x7f090060;
         public static final int list_item=0x7f090036;
-        public static final int message=0x7f090082;
+        public static final int matchCard1=0x7f090082;
+        public static final int matchCard2=0x7f090083;
+        public static final int message=0x7f090084;
         public static final int middle=0x7f09002e;
         public static final int min=0x7f090072;
         public static final int never=0x7f090029;
@@ -2059,10 +2061,11 @@ containing a value of this type.
         public static final int add_file=0x7f03001d;
         public static final int grid_item=0x7f03001e;
         public static final int list_card=0x7f03001f;
-        public static final int message=0x7f030020;
-        public static final int remove_card=0x7f030021;
-        public static final int remove_file=0x7f030022;
-        public static final int support_simple_spinner_dropdown_item=0x7f030023;
+        public static final int match_message=0x7f030020;
+        public static final int message=0x7f030021;
+        public static final int remove_card=0x7f030022;
+        public static final int remove_file=0x7f030023;
+        public static final int support_simple_spinner_dropdown_item=0x7f030024;
     }
     public static final class menu {
         public static final int game=0x7f0c0000;

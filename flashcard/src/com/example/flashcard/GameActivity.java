@@ -1,38 +1,56 @@
 package com.example.flashcard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.GridView;
 
 public class GameActivity extends Activity {
-
+	Context context = this;
+	List<GridItem> list = new ArrayList<GridItem>();
+	GridItemAdapter adapter;
+	GridView GridView;
+	String filename;
+	int counter = 0;
+	int card1;
+	int card2;
+	String[] frontSide = {"a","b","c","d","e","f","g","h","i","j","k","l","m"
+			 ,"n","o","p","r","s","t","u","v","w","x","y","z"};
+	String[] backSide = {"a","b","c","d","e","f","g","h","i","j","k","l","m"
+	 		,"n","o","p","r","s","t","u","v","w","x","y","z"};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_game);
 		
-		List<GridItem> list = new ArrayList<GridItem>();
-		String[] front = {"a","b","c","d","e","f","g","h","i","j","k","l","m"
-						 ,"n","o","p","r","s","t","u","v","w","x","y","z"};
-		String[] back = {"a","b","c","d","e","f","g","h","i","j","k","l","m"
-				 ,"n","o","p","r","s","t","u","v","w","x","y","z"};
+		GridItemAdapter adapter = new GridItemAdapter(this, 0, list);
+		GridView = (GridView) findViewById(R.id.gameGrid);
+		GridView.setAdapter(adapter);
 		
-		for(int i = 0; i < 50 ; i++){
+		for(int i = 0; i < 26 ; i++){
 			GridItem temp = new GridItem();
 			temp.id = i;
-			temp.word = front[i];
+			temp.word = frontSide[i];
+			list.add(temp);
+			
+			temp = new GridItem();
+			temp.id = i;
+			temp.word = backSide[i];
 			list.add(temp);
 		}
 		
-		GridItemAdapter adapter;
-		adapter = new GridItemAdapter(this, 0, list);
+		Collections.shuffle(list);
+		adapter.notifyDataSetChanged();
 		
 		Button pause = (Button) findViewById(R.id.pauseButton);
 		Button quit = (Button) findViewById(R.id.quitButton);
@@ -41,44 +59,27 @@ public class GameActivity extends Activity {
 		pause.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
 		quit.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 		
 		reset.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				
 			}
 		});
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.game, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+	
+	void matcher(int pos1, int pos2){
+		int card1 = adapter.getItem(pos1).id;
+		int card2 = adapter.getItem(pos2).id;
+		
+		if(card1 == card2) {
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }

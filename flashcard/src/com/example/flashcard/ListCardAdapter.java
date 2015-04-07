@@ -21,7 +21,6 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 
-	@SuppressLint("NewApi")
 	public View getView(int pos, View convertView, ViewGroup partent){
 		//Retrieve data
 		ListCard item = (ListCard) getItem(pos);
@@ -32,12 +31,6 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		TextView index = (TextView)view.findViewById(R.id.id);
 		index.setText(pos+1 + ". ");
 		
-		index.setOnDragListener(new OnDragListener(){
-			@Override
-			public boolean onDrag(View v, DragEvent event) {
-				return false;
-			}
-		});
 		TextView front = (TextView)view.findViewById(R.id.front);
 		front.setText(item.front);
 		
