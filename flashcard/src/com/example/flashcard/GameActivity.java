@@ -37,7 +37,7 @@ public class GameActivity extends Activity {
 		GridView = (GridView) findViewById(R.id.gameGrid);
 		GridView.setAdapter(adapter);
 		
-		for(int i = 0; i < 26 ; i++){
+		for(int i = 0; i < 25 ; i++){
 			GridItem temp = new GridItem();
 			temp.id = i;
 			temp.word = frontSide[i];

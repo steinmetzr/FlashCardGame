@@ -28,7 +28,7 @@ public class GridItemAdapter extends ArrayAdapter<GridItem> {
 		
 		// Set the index word (front or back)
 		TextView word = (TextView) view.findViewById(R.id.word);
-		word.setText(position+1);
+		word.setText("a");
 		
 		return view;
 		
