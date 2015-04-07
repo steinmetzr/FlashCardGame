@@ -29,6 +29,7 @@ public class FlashCardActivity extends Activity {
 	ListView listView;
 	String filename;
 	List<ListCard> list = new ArrayList<ListCard>();
+	boolean fileType = false;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -79,7 +80,7 @@ public class FlashCardActivity extends Activity {
 		Button front = (Button) findViewById(R.id.frontButton);
 		Button back = (Button) findViewById(R.id.backButton);
 		
-		adapter = new ListCardAdapter(this, 0, list);
+		adapter = new ListCardAdapter(this, 0, list, fileType);
 		listView = (ListView) findViewById(R.id.cardList);
 		listView.setAdapter(adapter);
 		
@@ -227,7 +228,7 @@ public class FlashCardActivity extends Activity {
 				Log.v("click", "remove button is clicked");
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", filename);
-				bundle.putBoolean("fileType", false);
+				bundle.putBoolean("fileType", fileType);
 				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});

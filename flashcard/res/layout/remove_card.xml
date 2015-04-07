@@ -13,17 +13,21 @@
 
     <TextView
         android:id="@+id/front2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05"
+        android:layout_weight="5"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="front"
         android:textSize="30sp" />
 
     <TextView
         android:id="@+id/back2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.05"
+        android:layout_weight="5"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:text="back"
         android:textSize="30sp" />
 

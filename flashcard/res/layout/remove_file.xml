@@ -15,8 +15,8 @@
         android:id="@+id/fileItem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="0.9"
-        android:text="file"
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textSize="30sp" />
 
 </LinearLayout>

@@ -150,10 +150,10 @@ public class RemoveItemActivity extends Activity {
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,	int id) { 
-						dialog.cancel(); 
+					public void onClick(DialogInterface dialog,	int id) {
+						dialog.cancel();
 					}
-				});				
+				});
 				
 				if(count > 0) {
 					AlertDialog alert = message.create();

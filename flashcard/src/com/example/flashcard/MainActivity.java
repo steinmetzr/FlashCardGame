@@ -28,6 +28,7 @@ public class MainActivity extends Activity {
 	List<ListCard> list;
 	Context context = this;
 	File fileDir;
+	boolean fileType = true;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +39,10 @@ public class MainActivity extends Activity {
 		removeFile = (Button) findViewById(R.id.removeButton);
 		option = (Button) findViewById(R.id.optionButton);
 		list = new ArrayList<ListCard>();
-		adapter = new ListCardAdapter(this, 0, list);
+		adapter = new ListCardAdapter(this, 0, list, fileType);
 		listView = (ListView) findViewById(R.id.listView1);
 		
 		listView.setAdapter(adapter);
-		
-		/*for(int i=0; i<10; i++){
-			SharedPreferences file = getSharedPreferences("file" + i, Context.MODE_PRIVATE);
-			Editor editor = file.edit();
-			editor.commit();
-		}*/
 		
 		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
 		
@@ -148,7 +143,7 @@ public class MainActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "remove button is clicked");
 				Bundle bundle = new Bundle();
-				bundle.putBoolean("fileType", true);
+				bundle.putBoolean("fileType", fileType);
 				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
