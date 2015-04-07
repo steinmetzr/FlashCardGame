@@ -2,13 +2,12 @@ package com.example.flashcard;
 
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnDragListener;
-import android.view.ViewGroup;
+import android.view.ViewGroup;	
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -23,7 +22,6 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 		fileType = type;
 	}
 
-	@SuppressLint("NewApi")
 	public View getView(int pos, View convertView, ViewGroup partent){
 		//Retrieve data
 		ListCard item = (ListCard) getItem(pos);
@@ -64,7 +62,6 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 			TextView file = (TextView)view.findViewById(R.id.file);
 			file.setText(item.front);
 		}
-
 		return view;
 	}
 }

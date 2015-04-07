@@ -21,15 +21,14 @@ public class GridItemAdapter extends ArrayAdapter<GridItem> {
 	public View getView(int position, View convertView, ViewGroup partent){
 		
 		// Retrieve data
-		GridItem item = (GridItem)getItem(position);
+		GridItem item = (GridItem) getItem (position);
 		
 		// Use layout file to generate View
 		View view = mInflater.inflate(R.layout.grid_item, null);
 		
 		// Set the index word (front or back)
-		TextView word;
-		word = (TextView) view.findViewById(R.id.word);
-		word.setText(item.word);
+		TextView word = (TextView) view.findViewById(R.id.word);
+		word.setText(position+1);
 		
 		return view;
 		

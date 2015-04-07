@@ -23,11 +23,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class FlashCardActivity extends Activity {
-	File file;
 	Context context = this;
 	ListCardAdapter adapter;
 	ListView listView;
 	String filename;
+	File fileDir;
 	List<ListCard> list = new ArrayList<ListCard>();
 	boolean fileType = false;
 	
@@ -54,23 +54,17 @@ public class FlashCardActivity extends Activity {
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 		
-		for(int i=0; i<10; i++) {
-			ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
-		    list.add(temp);
-		}
-	    
 		/*
-		try {
-		    BufferedReader bf = new BufferedReader(new InputStreamReader(getAssets().open(filename)));
-		    String line = bf.readLine();
-		    while(line != null){
-		    	Log.v("list", line);
-		    	AssetManager am = context.getAssets();
-		    	InputStream is = am.open("test.txt");
+		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
+		
+		if(fileDir.exists() && fileDir.isDirectory()){
+	        String[] fileList = fileDir.list();
+	        for(int i=0; i<fileList.length; i++) {
+				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
+			    list.add(temp);
 			}
-		} catch (IOException e) {}
+		}
 		*/
-
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
 
@@ -237,6 +231,8 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
+				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
+				startActivity(intent);
 			}
 		});
 		
