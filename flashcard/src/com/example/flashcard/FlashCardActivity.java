@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +33,8 @@ public class FlashCardActivity extends Activity {
 	File fileDir;
 	List<ListCard> list = new ArrayList<ListCard>();
 	boolean fileType = false;
+	SharedPreferences cardsPrefs;
+	Editor editor;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -54,17 +59,15 @@ public class FlashCardActivity extends Activity {
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 		
-		/*
-		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
-		
-		if(fileDir.exists() && fileDir.isDirectory()){
-	        String[] fileList = fileDir.list();
-	        for(int i=0; i<fileList.length; i++) {
-				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
-			    list.add(temp);
+		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
+		if(cardsPrefs.getAll() != null){
+			Map<String, ?> cards = cardsPrefs.getAll();
+			for(String key : cards.keySet()){
+				ListCard temp = new ListCard(list.size(), key, (String)cards.get(key));
+				list.add(temp);
 			}
 		}
-		*/
+		
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
 
@@ -77,6 +80,7 @@ public class FlashCardActivity extends Activity {
 		adapter = new ListCardAdapter(this, 0, list, fileType);
 		listView = (ListView) findViewById(R.id.cardList);
 		listView.setAdapter(adapter);
+		editor = cardsPrefs.edit();
 		
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -197,6 +201,9 @@ public class FlashCardActivity extends Activity {
 								temp.id = list.size();
 								temp.front = FInput.getText().toString();
 								temp.back = BInput.getText().toString();
+								
+								editor.putString(temp.front, temp.back);
+								
 								list.add(temp);
 								adapter.notifyDataSetChanged();
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
@@ -231,6 +238,9 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
+				if(editor != null)
+					editor.commit();
+				
 				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
 				startActivity(intent);
 			}
@@ -257,6 +267,8 @@ public class FlashCardActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
+		editor.commit();
+		
 		Tools.startIntent(this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		super.onBackPressed();
 	}
