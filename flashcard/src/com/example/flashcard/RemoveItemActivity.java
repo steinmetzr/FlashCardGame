@@ -2,13 +2,17 @@ package com.example.flashcard;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +34,8 @@ public class RemoveItemActivity extends Activity {
 	Boolean fileType;
 	String filename;
 	File fileDir;
+	SharedPreferences cardsPrefs;
+	Editor editor;
 
 	List<ListCard> list = new ArrayList<ListCard>();
 	
@@ -62,10 +68,15 @@ public class RemoveItemActivity extends Activity {
 		}});	
 		
 		if(!fileType) {
-			String filename = data.getString("filename");
-			for(int i=0; i<10; i++) {
-				ListCard temp = new ListCard(list.size(), "x " + i, "y " + i);
-				list.add(temp);
+			cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
+			if(cardsPrefs.getAll() != null){
+				while(cardsPrefs.contains(String.valueOf(list.size()))){
+					Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
+					Iterator<String> it = cards.iterator();
+					ListCard temp = new ListCard(list.size(), it.next(), it.next());
+					list.add(temp);
+				}
+				editor = cardsPrefs.edit();
 			}
 		}
 		else {
@@ -119,7 +130,7 @@ public class RemoveItemActivity extends Activity {
 						if(selectAll.isChecked()) {
 							list.clear();
 							if(!fileType){
-								
+								editor.clear();
 							}
 							else{
 								File[] files = fileDir.listFiles();
@@ -172,8 +183,10 @@ public class RemoveItemActivity extends Activity {
 				Log.v("click", "done button is clicked");
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", filename);
-				if(!fileType)
+				if(!fileType){
+					editor.commit();
 					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				}
 				else
 					Tools.startIntent(RemoveItemActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
