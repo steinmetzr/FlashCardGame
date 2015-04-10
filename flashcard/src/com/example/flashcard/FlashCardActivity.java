@@ -4,8 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -61,9 +64,10 @@ public class FlashCardActivity extends Activity {
 		
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
 		if(cardsPrefs.getAll() != null){
-			Map<String, ?> cards = cardsPrefs.getAll();
-			for(String key : cards.keySet()){
-				ListCard temp = new ListCard(list.size(), key, (String)cards.get(key));
+			while(cardsPrefs.contains(String.valueOf(list.size()))){
+				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
+				Iterator<String> it = cards.iterator();
+				ListCard temp = new ListCard(list.size(), it.next(), it.next());
 				list.add(temp);
 			}
 		}
@@ -135,6 +139,12 @@ public class FlashCardActivity extends Activity {
 								list.get(pos).front = FInput.getText().toString();
 								list.get(pos).back = BInput.getText().toString();
 								adapter.notifyDataSetChanged();
+								
+								Set<String> card = new LinkedHashSet<String>();
+								card.add(list.get(pos).front);
+								card.add(list.get(pos).back);
+								editor.putStringSet(String.valueOf(list.get(pos).id), card);
+								
 								Log.v("myTest", FInput.getText().toString() + "\t" + 
 												BInput.getText().toString() + "\n");
 							}
@@ -200,12 +210,15 @@ public class FlashCardActivity extends Activity {
 								ListCard temp = new ListCard();
 								temp.id = list.size();
 								temp.front = FInput.getText().toString();
-								temp.back = BInput.getText().toString();
-								
-								editor.putString(temp.front, temp.back);
-								
+								temp.back = BInput.getText().toString();															
 								list.add(temp);
 								adapter.notifyDataSetChanged();
+								
+								Set<String> card = new LinkedHashSet<String>();
+								card.add(temp.front);
+								card.add(temp.back);
+								editor.putStringSet(String.valueOf(temp.id), card);
+								
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
 							}
 							
@@ -238,8 +251,7 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
-				if(editor != null)
-					editor.commit();
+				editor.commit();
 				
 				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
 				startActivity(intent);
