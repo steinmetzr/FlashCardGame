@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,10 @@ public class FlashCardActivity extends Activity {
 	File fileDir;
 	List<ListCard> list = new ArrayList<ListCard>();
 	boolean fileType = false;
+	LayoutInflater layoutInflater;
+	TextView ms;
+	AlertDialog alert;
+	AlertDialog.Builder editPrompt, addPrompt, message;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -50,21 +55,27 @@ public class FlashCardActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_flash_card);
+		layoutInflater = LayoutInflater.from(context);
+		View messageView = layoutInflater.inflate(R.layout.message, null);
+		message = new AlertDialog.Builder(context);
+		message.setView(messageView);
+		ms = (TextView) messageView.findViewById(R.id.message);
+		ms.setText("Cards cannot have a blank side!");
+		message.setTitle("Warning")
+		 	   .setCancelable(true)
+			   .setNeutralButton("OK",
+		        new DialogInterface.OnClickListener() {
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			dialog.cancel();
+		    		}
+			   });
+		editPrompt = new AlertDialog.Builder(context);
+		addPrompt = new AlertDialog.Builder(context);
+
 
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 		
-		/*
-		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
-		
-		if(fileDir.exists() && fileDir.isDirectory()){
-	        String[] fileList = fileDir.list();
-	        for(int i=0; i<fileList.length; i++) {
-				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
-			    list.add(temp);
-			}
-		}
-		*/
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
 
@@ -89,33 +100,13 @@ public class FlashCardActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				final int pos = position;
-				// get prompts.xml view
-				LayoutInflater layoutInflater = LayoutInflater.from(context);
 				View promptView = layoutInflater.inflate(R.layout.add_card, null);
-				View messageView = layoutInflater.inflate(R.layout.message, null);
-				AlertDialog.Builder editPrompt = new AlertDialog.Builder(context);
-				
-				final AlertDialog.Builder message = new AlertDialog.Builder(context);
-				message.setView(messageView);
-				TextView ms = (TextView) messageView.findViewById(R.id.message);
-				ms.setText("Cards cannot have a blank side!");
-				message.setTitle("Warning")
-				 	   .setCancelable(true)
-					   .setNeutralButton("OK",
-				        new DialogInterface.OnClickListener() {
-				    		public void onClick(DialogInterface dialog, int id) {
-				    			dialog.cancel();
-				    		}
-					   });
-
-				// set prompts.xml to be the layout file of the alertdialog builder
 				editPrompt.setView(promptView);
 				editPrompt.setTitle("Edit Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
 				FInput.setText(list.get(pos).front);
 				final EditText BInput = (EditText) promptView.findViewById(R.id.editBack);
 				BInput.setText(list.get(pos).back);
-				// setup a dialog window
 				editPrompt
 					.setCancelable(true)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -124,8 +115,8 @@ public class FlashCardActivity extends Activity {
 							
 							if((FInput.getText().toString().trim().length() == 0) || 
 							   (BInput.getText().toString().trim().length() == 0)) {
-								AlertDialog warning = message.create();
-								warning.show();
+								alert = message.create();
+								alert.show();
 							}
 							else {
 								list.get(pos).front = FInput.getText().toString();
@@ -143,8 +134,7 @@ public class FlashCardActivity extends Activity {
 						}
 					});
 
-				// create an alert dialog
-				AlertDialog alert = editPrompt.create();
+				alert = editPrompt.create();
 				alert.show();
 				return true;
 			}
@@ -154,27 +144,7 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
-				
-				// get prompts.xml view
-				LayoutInflater layoutInflater = LayoutInflater.from(context);
 				View promptView = layoutInflater.inflate(R.layout.add_card, null);
-				View messageView = layoutInflater.inflate(R.layout.message, null);
-				AlertDialog.Builder addPrompt = new AlertDialog.Builder(context);
-				
-				final AlertDialog.Builder message = new AlertDialog.Builder(context);
-				message.setView(messageView);
-				TextView ms = (TextView) messageView.findViewById(R.id.message);
-				ms.setText("Cards cannot have a blank side!");
-				message.setTitle("Warning")
-				 	   .setCancelable(true)
-					   .setNeutralButton("OK",
-				        new DialogInterface.OnClickListener() {
-				    		public void onClick(DialogInterface dialog, int id) {
-				    			dialog.cancel();
-				    		}
-					   });
-
-				// set prompts.xml to be the layout file of the alertdialog builder
 				addPrompt.setView(promptView);
 				addPrompt.setTitle("Add Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);

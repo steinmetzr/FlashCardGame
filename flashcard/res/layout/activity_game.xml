@@ -20,14 +20,6 @@
 	    android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/pauseButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_weight="0.03"
-            android:text="@string/pause" />
-
-        <Button
             android:id="@+id/quitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,8 +42,8 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentTop="true"
 	    android:layout_centerHorizontal="true"
-	    android:textSize="40sp"
-	    android:text="timer" />
+	    android:textSize="30sp"
+	    android:text="" />
 
 	<GridView
 	    android:id="@+id/gameGrid"
@@ -59,7 +51,11 @@
 	    android:layout_height="wrap_content"
 	    android:layout_above="@+id/linear3"
 	    android:layout_below="@+id/timerText"
-	    android:numColumns="4" >
+	    android:horizontalSpacing="1dp"
+	     android:verticalSpacing="1dp"
+	    android:numColumns="4"
+	    android:gravity="center">
+
 	</GridView>
     
 </RelativeLayout>

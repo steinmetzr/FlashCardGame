@@ -8,9 +8,11 @@
     android:gravity="center">
    
     <TextView
-        android:id="@+id/word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/gridPos"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/border2"
+        android:gravity="center"
         android:text="@string/hello_world"
         android:textStyle="bold"
         android:textSize="18sp"/>
