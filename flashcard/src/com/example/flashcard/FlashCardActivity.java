@@ -4,7 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -12,6 +16,8 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +41,8 @@ public class FlashCardActivity extends Activity {
 	TextView ms;
 	AlertDialog alert;
 	AlertDialog.Builder editPrompt, addPrompt, message;
+	SharedPreferences cardsPrefs;
+	Editor editor;
 	
 	Comparator<ListCard> fSort = new Comparator<ListCard>(){
 		@Override
@@ -75,6 +83,16 @@ public class FlashCardActivity extends Activity {
 
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
+
+		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
+		if(cardsPrefs.getAll() != null){
+			while(cardsPrefs.contains(String.valueOf(list.size()))){
+				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
+				Iterator<String> it = cards.iterator();
+				ListCard temp = new ListCard(list.size(), it.next(), it.next());
+				list.add(temp);
+			}
+		}
 		
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
 		title.setText(Tools.underLine(filename));
@@ -88,6 +106,7 @@ public class FlashCardActivity extends Activity {
 		adapter = new ListCardAdapter(this, 0, list, fileType);
 		listView = (ListView) findViewById(R.id.cardList);
 		listView.setAdapter(adapter);
+		editor = cardsPrefs.edit();
 		
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -122,6 +141,12 @@ public class FlashCardActivity extends Activity {
 								list.get(pos).front = FInput.getText().toString();
 								list.get(pos).back = BInput.getText().toString();
 								adapter.notifyDataSetChanged();
+								
+								Set<String> card = new LinkedHashSet<String>();
+								card.add(list.get(pos).front);
+								card.add(list.get(pos).back);
+								editor.putStringSet(String.valueOf(list.get(pos).id), card);
+								
 								Log.v("myTest", FInput.getText().toString() + "\t" + 
 												BInput.getText().toString() + "\n");
 							}
@@ -166,9 +191,15 @@ public class FlashCardActivity extends Activity {
 								ListCard temp = new ListCard();
 								temp.id = list.size();
 								temp.front = FInput.getText().toString();
-								temp.back = BInput.getText().toString();
+								temp.back = BInput.getText().toString();															
 								list.add(temp);
 								adapter.notifyDataSetChanged();
+								
+								Set<String> card = new LinkedHashSet<String>();
+								card.add(temp.front);
+								card.add(temp.back);
+								editor.putStringSet(String.valueOf(temp.id), card);
+								
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
 							}
 							
@@ -201,6 +232,8 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
+				editor.commit();
+				
 				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
 				startActivity(intent);
 			}
@@ -227,6 +260,8 @@ public class FlashCardActivity extends Activity {
 	
 	@Override
 	public void onBackPressed() {
+		editor.commit();
+		
 		Tools.startIntent(this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		super.onBackPressed();
 	}

@@ -28,6 +28,7 @@ public class RemoveItemActivity extends Activity {
 	ListView listView;
 	CheckBox checkItem;
 	Boolean fileType;
+	String filename;
 	File fileDir;
 
 	List<ListCard> list = new ArrayList<ListCard>();
@@ -39,6 +40,7 @@ public class RemoveItemActivity extends Activity {
 
 		Bundle data = this.getIntent().getExtras();
 		fileType = data.getBoolean("fileType");
+		filename = data.getString("filename");
 
 		final RemoveItemAdapter adapter = new RemoveItemAdapter(this, 0, list, fileType);
 		
@@ -78,7 +80,7 @@ public class RemoveItemActivity extends Activity {
 		}
 		
 		TextView title = (TextView) findViewById(R.id.fileTitle2);
-		title.setText(Tools.underLine("flashcard"));
+		title.setText(Tools.underLine(filename));
 
 		listView = (ListView) findViewById(R.id.removeList);
 		listView.setAdapter(adapter);
@@ -177,7 +179,7 @@ public class RemoveItemActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "done button is clicked");
 				Bundle bundle = new Bundle();
-				bundle.putString("filename", "flashcard");
+				bundle.putString("filename", filename);
 				if(!fileType)
 					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 				else

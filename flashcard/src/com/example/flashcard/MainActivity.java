@@ -48,14 +48,11 @@ public class MainActivity extends Activity {
 		
 		if(fileDir.exists() && fileDir.isDirectory()){
 	        String[] fileList = fileDir.list();
-	        for(int i=0; i<fileList.length; i++) {
+	        for(int i=fileList.length-1; i>=0; i--) {
 				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
 			    list.add(temp);
 			}
 		}
-		
-		TextView title = (TextView) findViewById(R.id.files);
-		title.setText(Tools.underLine(title.getText().toString()));
 
 		option.setOnClickListener(new OnClickListener(){
 			@Override
@@ -144,6 +141,7 @@ public class MainActivity extends Activity {
 				Log.v("click", "remove button is clicked");
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("fileType", fileType);
+				bundle.putString("filename", ((TextView)findViewById(R.id.files)).getText().toString());
 				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
