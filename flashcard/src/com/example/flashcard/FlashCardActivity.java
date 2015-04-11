@@ -39,6 +39,7 @@ public class FlashCardActivity extends Activity {
 	boolean fileType = false;
 	LayoutInflater layoutInflater;
 	TextView ms;
+	View promptView, messageView;
 	AlertDialog alert;
 	AlertDialog.Builder editPrompt, addPrompt, message;
 	SharedPreferences cardsPrefs;
@@ -64,23 +65,6 @@ public class FlashCardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_flash_card);
 		layoutInflater = LayoutInflater.from(context);
-		View messageView = layoutInflater.inflate(R.layout.message, null);
-		message = new AlertDialog.Builder(context);
-		message.setView(messageView);
-		ms = (TextView) messageView.findViewById(R.id.message);
-		ms.setText("Cards cannot have a blank side!");
-		message.setTitle("Warning")
-		 	   .setCancelable(true)
-			   .setNeutralButton("OK",
-		        new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			dialog.cancel();
-		    		}
-			   });
-		editPrompt = new AlertDialog.Builder(context);
-		addPrompt = new AlertDialog.Builder(context);
-
-
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 
@@ -119,7 +103,21 @@ public class FlashCardActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				final int pos = position;
-				View promptView = layoutInflater.inflate(R.layout.add_card, null);
+				messageView = layoutInflater.inflate(R.layout.message, null);
+				message = new AlertDialog.Builder(context);
+				message.setView(messageView);
+				ms = (TextView) messageView.findViewById(R.id.message);
+				ms.setText("Cards cannot have a blank side!");
+				message.setTitle("Warning")
+				 	   .setCancelable(true)
+					   .setNeutralButton("OK",
+				        new DialogInterface.OnClickListener() {
+				    		public void onClick(DialogInterface dialog, int id) {
+				    			dialog.cancel();
+				    		}
+					   });
+				editPrompt = new AlertDialog.Builder(context);
+				promptView = layoutInflater.inflate(R.layout.add_card, null);
 				editPrompt.setView(promptView);
 				editPrompt.setTitle("Edit Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
@@ -169,7 +167,21 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "add button is clicked");
-				View promptView = layoutInflater.inflate(R.layout.add_card, null);
+				messageView = layoutInflater.inflate(R.layout.message, null);
+				message = new AlertDialog.Builder(context);
+				message.setView(messageView);
+				ms = (TextView) messageView.findViewById(R.id.message);
+				ms.setText("Cards cannot have a blank side!");
+				message.setTitle("Warning")
+				 	   .setCancelable(true)
+					   .setNeutralButton("OK",
+				        new DialogInterface.OnClickListener() {
+				    		public void onClick(DialogInterface dialog, int id) {
+				    			dialog.cancel();
+				    		}
+					   });
+				addPrompt = new AlertDialog.Builder(context);
+				promptView = layoutInflater.inflate(R.layout.add_card, null);
 				addPrompt.setView(promptView);
 				addPrompt.setTitle("Add Card");
 				final EditText FInput = (EditText) promptView.findViewById(R.id.editFront);
@@ -233,9 +245,9 @@ public class FlashCardActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
 				editor.commit();
-				
-				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
-				startActivity(intent);
+				Bundle bundle = new Bundle();
+				bundle.putString("filename", filename);
+				Tools.startIntent(FlashCardActivity.this, GameActivity.class, bundle);
 			}
 		});
 		
