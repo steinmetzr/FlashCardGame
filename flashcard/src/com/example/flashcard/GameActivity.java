@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
@@ -34,8 +35,8 @@ public class GameActivity extends Activity {
 	GridView GridView;
 	String filename;
 	
-	int counter = 0, pos_1 = -1, pos_2 = -1, sec, min, hr, listSize;
-	Long totalMSec, maxTotalMSec;
+	int counter = 0, pos1 = -1, pos2 = -1, sec, min, hr, listSize;
+	Long totalMSec, maxTotalMSec, timerMSec;
 	TextView timeText, ms, ts;
 	CountDownTimer countdown;
 	Timer timer;
@@ -43,8 +44,8 @@ public class GameActivity extends Activity {
 	AlertDialog alert;
 	LayoutInflater layoutInflater;
 	AlertDialog.Builder message, timeMessage;
-	String[] frontSide = {"aaaaaaaaaaaaaaaa","b","c","d","e","f","gggggggggggg","h","i","j","k","l","mmmmmmmmmmmmmmmmm"};
-	String[] backSide =  {"aaaaaaaaaaaaaaaa","b","c","d","e","f","gggggggggggg","h","i","j","k","l","mmmmmmmmmmmmmmmmm"};
+	String[] frontSide = {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
+	String[] backSide =  {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +54,21 @@ public class GameActivity extends Activity {
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 		//totalMSec = data.getLong("timeValue");
+		listSize = frontSide.length;
 		timeText = (TextView) findViewById(R.id.timerText);
 		timeText.setText(filename);
-		
 		layoutInflater = LayoutInflater.from(context);
 		totalMSec = (long) 7200000;
+		timerMSec = (long) 0;
+		counter = 0;
+		pos1 = -1;
+		pos2 = -1;
 		maxTotalMSec = totalMSec;
-		timeText.setText(filename);
 		message = new AlertDialog.Builder(context);
 		message.setView(promptView);
 		adapter = new GridCardAdapter(this, 0, list);
 		GridView = (GridView) findViewById(R.id.gameGrid);
 		GridView.setAdapter(adapter);
-		
-		listSize = 13;
 	
 		for(int i=0; i<listSize ; i++){
 			GridCard temp = new GridCard();
@@ -86,61 +88,20 @@ public class GameActivity extends Activity {
 		GridView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {	
-
-				if(pos_1 == -1 && list.get(position).color != Color.WHITE) {
+				if(pos1 == -1 && list.get(position).color != Color.WHITE) {
 					list.get(position).color = Color.GRAY;
 					adapter.notifyDataSetChanged();
-					pos_1 = position;
-				}
-				else if(pos_2 == -1 && list.get(position).color != Color.WHITE && pos_2 != pos_1) {
+					pos1 = position;
+				}		
+				else if(pos2 != pos1) {
 					stopTime(totalMSec);
 					list.get(position).color = Color.GRAY;
 					adapter.notifyDataSetChanged();
-					pos_2 = position;
-					if(matcher(pos_1, pos_2)) {
-						counter++;
-						list.get(pos_1).color = Color.WHITE;
-						list.get(pos_2).color = Color.WHITE;
-						adapter.notifyDataSetChanged();
-					}
-					else {
-						list.get(pos_1).color = Color.BLACK;
-						list.get(pos_2).color = Color.BLACK;
-						adapter.notifyDataSetChanged();
-					}
-					pos_1 = -1;
-					pos_2 = -1;
+					pos2 = position;
+					matcher(pos1, pos2);
+					pos1 = -1;
+					pos2 = -1;
 				}
-				
-				if(counter == listSize){
-					stopTime(totalMSec);
-					timeText.setText("Game Over!");
-					GridView.setOnItemClickListener(new OnItemClickListener(){
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view,
-								int position, long id) {
-						}});
-					layoutInflater = LayoutInflater.from(context);
-					promptView = layoutInflater.inflate(R.layout.message, null);
-					//message = new AlertDialog.Builder(context);
-					message.setView(promptView);
-					ms = (TextView) promptView.findViewById(R.id.message);
-					ms.setText("Congradulation! Good Effort!");
-					message.setCancelable(false)
-					 	   .setNeutralButton("confirm", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									dialog.cancel();    
-									GridView.setOnItemClickListener(new OnItemClickListener(){
-												@Override
-												public void onItemClick(AdapterView<?> parent, View view,
-														int position, long id) {
-												}});
-								}
-							});
-					alert = message.create();
-					alert.show();
-
-				};
 			}
 		});
 	
@@ -192,72 +153,30 @@ public class GameActivity extends Activity {
 							public void onClick(DialogInterface dialog, int id) {
 								counter = 0;
 								totalMSec = maxTotalMSec;
+								timerMSec = (long) 0;
 								for(int i=0; i<list.size();i++) {
 									list.get(i).color = Color.BLACK;
 								}
 								GridView.setOnItemClickListener(new OnItemClickListener(){
 									@Override
 									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {	
-
-										if(pos_1 == -1 && list.get(position).color != Color.WHITE) {
+										if(pos1 == -1 && list.get(position).color != Color.WHITE) {
 											list.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
-											pos_1 = position;
-										}
-										else if(pos_2 == -1 && list.get(position).color != Color.WHITE && pos_2 != pos_1) {
+											pos1 = position;
+										}		
+										else if(pos2 != pos1) {
 											stopTime(totalMSec);
 											list.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
-											pos_2 = position;
-											if(matcher(pos_1, pos_2)) {
-												counter++;
-												list.get(pos_1).color = Color.WHITE;
-												list.get(pos_2).color = Color.WHITE;
-												adapter.notifyDataSetChanged();
-											}
-											else {
-												list.get(pos_1).color = Color.BLACK;
-												list.get(pos_2).color = Color.BLACK;
-												adapter.notifyDataSetChanged();
-											}
-											pos_1 = -1;
-											pos_2 = -1;
+											pos2 = position;
+											matcher(pos1, pos2);
+											pos1 = -1;
+											pos2 = -1;
 										}
-										
-										if(counter == listSize){
-											stopTime(totalMSec);
-											timeText.setText("Game Over!");
-											GridView.setOnItemClickListener(new OnItemClickListener(){
-												@Override
-												public void onItemClick(AdapterView<?> parent, View view,
-														int position, long id) {
-												}});
-											layoutInflater = LayoutInflater.from(context);
-											promptView = layoutInflater.inflate(R.layout.message, null);
-											//message = new AlertDialog.Builder(context);
-											message.setView(promptView);
-											ms = (TextView) promptView.findViewById(R.id.message);
-											ms.setText("Congradulation! Good Effort!");
-											message.setCancelable(false)
-											 	   .setNeutralButton("confirm", new DialogInterface.OnClickListener() {
-														public void onClick(DialogInterface dialog, int id) {
-															dialog.cancel();    
-															GridView.setOnItemClickListener(new OnItemClickListener(){
-																		@Override
-																		public void onItemClick(AdapterView<?> parent, View view,
-																				int position, long id) {
-																		}});
-														}
-													});
-											alert = message.create();
-											alert.show();
-
-										};
 									}
 								});
-								adapter.notifyDataSetChanged();
 								startTimer(totalMSec);
-								
 							}
 						})
 						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -283,7 +202,6 @@ public class GameActivity extends Activity {
 			        		 hr = (int) ((MSec / (1000*60*60)) % 24);
 			     }
 			     public void onFinish() {
-			    	timeText.setText("Game Over");
 			    	timePrompt = layoutInflater.inflate(R.layout.message, null);
 			 		timeMessage = new AlertDialog.Builder(context);
 			 		timeMessage.setView(timePrompt); 	 
@@ -306,38 +224,59 @@ public class GameActivity extends Activity {
 			  };
 			countdown.start();
 		}
-		else if (value == 0) {
-			
-		}
+		else if (value == -1) {
+			timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask(){
+				@Override
+				public void run() {
+					timerMSec = timerMSec + 1000;
+	                runOnUiThread(new Runnable() { 
+	                	public void run() { 
+	                		timeText.setText("Timer: " + hr + ":" + min + ":" + sec);
+			        		sec = (int) (timerMSec / 1000) % 60 ;
+			        		min = (int) ((timerMSec / (1000*60)) % 60);
+			        		hr = (int) ((timerMSec / (1000*60*60)) % 24);
+	                	}
+	                });
+				}}, 1000, 1000);
+	    }
 	}
 	
 	void stopTime(long value){
 		if(value > 0) {
 			countdown.cancel();
 		}
-		else if (value == 0){
-			
+		else if (value ==  -1){
+			timer.cancel();
 		}
 	}
-	boolean matcher(int pos_1, int pos_2){
-		boolean isMatched = false;
+	
+	void matcher(int pos1, int pos2){
 		layoutInflater = LayoutInflater.from(context);
 		promptView = layoutInflater.inflate(R.layout.match_message, null);
 		message = new AlertDialog.Builder(context);
 		TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
 		TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
 		message.setView(promptView);
-		ms1.setText(list.get(pos_1).word);
-		ms2.setText(list.get(pos_2).word);
+		ms1.setText(list.get(pos1).word);
+		ms2.setText(list.get(pos2).word);
 		
-		String result = "No Match";
-		if(list.get(pos_1).id == list.get(pos_2).id ) { 
+		String result;
+		if(list.get(pos1).id == list.get(pos2).id ) { 
 			result = "Matched!"; 
-			isMatched = true;
-		};
+			list.get(pos1).color = Color.WHITE;
+			list.get(pos2).color = Color.WHITE;
+			adapter.notifyDataSetChanged();
+		}
+		else {
+			result = "No Match!";
+			list.get(pos1).color = Color.BLACK;
+			list.get(pos2).color = Color.BLACK;
+			adapter.notifyDataSetChanged();
+		}
 		
 		message.setTitle("Card Match?")
-			   .setCancelable(true)
+			   .setCancelable(false)
 			   .setNeutralButton(result,
 		        new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface dialog, int id) {
@@ -345,11 +284,31 @@ public class GameActivity extends Activity {
 		    			dialog.cancel();
 		    		}
 			    });
-		
 		alert = message.create();
 		alert.show();
-		return isMatched;
 		
+		if(counter == listSize){
+			stopTime(totalMSec);
+			layoutInflater = LayoutInflater.from(context);
+			promptView = layoutInflater.inflate(R.layout.message, null);
+			//message = new AlertDialog.Builder(context);
+			message.setView(promptView);
+			ms = (TextView) promptView.findViewById(R.id.message);
+			ms.setText("Congradulation! Good Effort!");
+			message.setCancelable(false)
+			 	   .setNeutralButton("confirm", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();    
+							GridView.setOnItemClickListener(new OnItemClickListener(){
+										@Override
+										public void onItemClick(AdapterView<?> parent, View view,
+												int position, long id) {
+										}});
+						}
+					});
+			alert = message.create();
+			alert.show();
+		};
 	}
 	
 	@Override
