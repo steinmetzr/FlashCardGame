@@ -134,36 +134,31 @@ public class RemoveItemActivity extends Activity {
 								if(!fileType){
 									editor.clear();
 								}
-								else {
-									for(int i=0; i<list.size(); i++) 
-									{ list.remove(i); }
-									adapter.notifyDataSetChanged();
-								}
-							}
-						}
-					});
-					message.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							if(selectAll.isChecked()) {
-								list.clear();
-								File[] files = fileDir.listFiles();
-								for(File file : files){
-									file.delete();
+								else{
+									File[] files = fileDir.listFiles();
+									for(File file : files){
+										file.delete();
+									}
 								}
 							}
 							else {
-								for(int i=0; i<list.size(); i++) {
-									if(list.get(i).checked == true) {
-										File[] files = fileDir.listFiles();
-										for(File file : files){
-											String fileName = file.getName();
-											fileName = fileName.substring(0, (int)fileName.length()-4);
-											if(list.get(i).front.equals(fileName)){
-												file.delete();
+								if(!fileType){
+									
+								}
+								else{
+									for(int i=0; i<list.size(); i++) {
+										if(list.get(i).checked == true) {
+											File[] files = fileDir.listFiles();
+											for(File file : files){
+												String fileName = file.getName();
+												fileName = fileName.substring(0, (int)fileName.length()-4);
+												if(list.get(i).front.equals(fileName)){
+													file.delete();
+												}
 											}
 										}
+										list.remove(i);
 									}
-									list.remove(i);
 								}
 							}
 							adapter.notifyDataSetChanged();
@@ -184,6 +179,7 @@ public class RemoveItemActivity extends Activity {
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", filename);
 				if(!fileType){
+					editor.commit();
 					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				}
 				else
