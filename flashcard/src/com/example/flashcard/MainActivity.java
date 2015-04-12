@@ -142,7 +142,7 @@ public class MainActivity extends Activity {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("fileType", fileType);
 				bundle.putString("filename", ((TextView)findViewById(R.id.files)).getText().toString());
-				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
 			}
 		});
 	}

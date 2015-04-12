@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -77,7 +76,7 @@ public class RemoveItemActivity extends Activity {
 					list.add(temp);
 				}
 				editor = cardsPrefs.edit();
-			}
+			}	
 		}
 		else {
 			fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
@@ -95,13 +94,6 @@ public class RemoveItemActivity extends Activity {
 
 		listView = (ListView) findViewById(R.id.removeList);
 		listView.setAdapter(adapter);
-		
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.v("item", "item " + position + " is clicked");
-			}
-		});
 		
 		Button delete =(Button)findViewById(R.id.deleteButton);
 		
@@ -122,30 +114,46 @@ public class RemoveItemActivity extends Activity {
 					{ count++; }
 				}
 				
-				ms.setText("Are you sure you want to delete " + count +" card");
+				String phrase = "Are you sure you want to delete " + count;
+				
+				if(!fileType) {
+					phrase +=" card(s)";
+				}
+				else{
+					phrase +=" file(s)"; 
+				}
+				
+				ms.setText(phrase);
+				
 				message.setTitle("Warning")
 					.setCancelable(true)
 					.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						if(selectAll.isChecked()) {
-							list.clear();
-							if(!fileType){
-								editor.clear();
+						public void onClick(DialogInterface dialog, int id) {
+							if(selectAll.isChecked()) {
+								list.clear();
+								if(!fileType){
+									editor.clear();
+								}
+								else {
+									for(int i=0; i<list.size(); i++) 
+									{ list.remove(i); }
+									adapter.notifyDataSetChanged();
+								}
 							}
-							else{
+						}
+					});
+					message.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							if(selectAll.isChecked()) {
+								list.clear();
 								File[] files = fileDir.listFiles();
 								for(File file : files){
 									file.delete();
 								}
 							}
-						}
-						else {
-							for(int i=0; i<list.size(); i++) {
-								if(list.get(i).checked == true) {
-									if(!fileType){
-										
-									}
-									else{
+							else {
+								for(int i=0; i<list.size(); i++) {
+									if(list.get(i).checked == true) {
 										File[] files = fileDir.listFiles();
 										for(File file : files){
 											String fileName = file.getName();
@@ -158,21 +166,13 @@ public class RemoveItemActivity extends Activity {
 									list.remove(i);
 								}
 							}
+							adapter.notifyDataSetChanged();
 						}
-						adapter.notifyDataSetChanged();
-					}
-				})
-				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,	int id) {
-						dialog.cancel();
-					}
-				});
-				
+					});
 				if(count > 0) {
 					AlertDialog alert = message.create();
 					alert.show();
 				}
-				
 			}
 		});
 		
@@ -184,11 +184,10 @@ public class RemoveItemActivity extends Activity {
 				Bundle bundle = new Bundle();
 				bundle.putString("filename", filename);
 				if(!fileType){
-					editor.commit();
-					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+					Tools.startIntent(RemoveItemActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				}
 				else
-					Tools.startIntent(RemoveItemActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+					Tools.startIntent(RemoveItemActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			}
 		});
 	}

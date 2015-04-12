@@ -51,7 +51,7 @@ public class ListCardAdapter extends ArrayAdapter<ListCard>{
 			view = mInflater.inflate(R.layout.list_file, null);
 
 			TextView index = (TextView)view.findViewById(R.id.id);
-			index.setText(pos+1 + ". ");
+			index.setText((pos+1) + ". ");
 
 			index.setOnDragListener(new OnDragListener(){
 				@Override

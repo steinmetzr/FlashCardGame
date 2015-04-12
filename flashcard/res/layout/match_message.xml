@@ -8,6 +8,7 @@
         android:id="@+id/matchCard1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/border2"
         android:gravity="center"
         android:textSize="30sp" />
     
@@ -15,6 +16,7 @@
         android:id="@+id/matchCard2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/border2"
         android:gravity="center"
         android:textSize="30sp" />
 
