@@ -30,7 +30,7 @@
             android:label="@string/title_activity_flash_card" >
         </activity>
         <activity
-            android:name=".Options"
+            android:name=".OptionsActivity"
             android:label="@string/title_activity_options"
             android:parentActivityName=".MainActivity" >
             <meta-data

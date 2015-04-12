@@ -2,7 +2,9 @@ package com.example.flashcard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -13,6 +15,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -46,6 +49,7 @@ public class GameActivity extends Activity {
 	AlertDialog.Builder message, timeMessage;
 	String[] frontSide = {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
 	String[] backSide =  {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
+	SharedPreferences cardsPrefs;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +60,9 @@ public class GameActivity extends Activity {
 		//totalMSec = data.getLong("timeValue");
 		listSize = frontSide.length;
 		timeText = (TextView) findViewById(R.id.timerText);
-		timeText.setText(filename);
+		timeText.setText("FlashCard Game");
 		layoutInflater = LayoutInflater.from(context);
-		totalMSec = (long) 7200000;
+		totalMSec = (long) -1;
 		timerMSec = (long) 0;
 		counter = 0;
 		pos1 = -1;
@@ -69,16 +73,24 @@ public class GameActivity extends Activity {
 		adapter = new GridCardAdapter(this, 0, list);
 		GridView = (GridView) findViewById(R.id.gameGrid);
 		GridView.setAdapter(adapter);
+		
+		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
+		if(cardsPrefs.getAll() != null){
+			while(cardsPrefs.contains(String.valueOf(list.size()))){
+				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
+				Iterator<String> it = cards.iterator();
+				GridCard temp = new GridCard(list.size(), it.next());
+				list.add(temp);
+				temp = new GridCard(list.size(), it.next());
+				list.add(temp);
+			}
+		}
 	
 		for(int i=0; i<listSize ; i++){
-			GridCard temp = new GridCard();
-			temp.id = i;
-			temp.word = frontSide[i];
+			GridCard temp = new GridCard(i, frontSide[i]);
 			list.add(temp);
 			
-			temp = new GridCard();
-			temp.id = i;
-			temp.word = backSide[i];
+			temp = new GridCard(i, backSide[i]);
 			list.add(temp);
 		}
 		
@@ -94,7 +106,6 @@ public class GameActivity extends Activity {
 					pos1 = position;
 				}		
 				else if(pos2 != pos1) {
-					stopTime(totalMSec);
 					list.get(position).color = Color.GRAY;
 					adapter.notifyDataSetChanged();
 					pos2 = position;
@@ -157,6 +168,7 @@ public class GameActivity extends Activity {
 								for(int i=0; i<list.size();i++) {
 									list.get(i).color = Color.BLACK;
 								}
+								adapter.notifyDataSetChanged();
 								GridView.setOnItemClickListener(new OnItemClickListener(){
 									@Override
 									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {	
@@ -191,9 +203,9 @@ public class GameActivity extends Activity {
 		});
 	}
 	
-	void startTimer(long value){
+	void startTimer(long value){	
 		if(value > 0) {
-			countdown = new CountDownTimer(totalMSec, 1000) {
+			CountDownTimer temp = new CountDownTimer(totalMSec, 1000) {
 			     public void onTick(long MSec) {
 			    	 totalMSec = MSec;
 			         timeText.setText("Countdown: " + hr + ":" + min + ":" + sec);
@@ -222,7 +234,8 @@ public class GameActivity extends Activity {
 					});
 			     }
 			  };
-			countdown.start();
+			temp.start();
+			countdown = temp;
 		}
 		else if (value == -1) {
 			timer = new Timer();
@@ -252,6 +265,7 @@ public class GameActivity extends Activity {
 	}
 	
 	void matcher(int pos1, int pos2){
+		stopTime(totalMSec);
 		layoutInflater = LayoutInflater.from(context);
 		promptView = layoutInflater.inflate(R.layout.match_message, null);
 		message = new AlertDialog.Builder(context);
@@ -264,6 +278,7 @@ public class GameActivity extends Activity {
 		String result;
 		if(list.get(pos1).id == list.get(pos2).id ) { 
 			result = "Matched!"; 
+			counter++;
 			list.get(pos1).color = Color.WHITE;
 			list.get(pos2).color = Color.WHITE;
 			adapter.notifyDataSetChanged();
@@ -274,18 +289,6 @@ public class GameActivity extends Activity {
 			list.get(pos2).color = Color.BLACK;
 			adapter.notifyDataSetChanged();
 		}
-		
-		message.setTitle("Card Match?")
-			   .setCancelable(false)
-			   .setNeutralButton(result,
-		        new DialogInterface.OnClickListener() {
-		    		public void onClick(DialogInterface dialog, int id) {
-		    			startTimer(totalMSec);
-		    			dialog.cancel();
-		    		}
-			    });
-		alert = message.create();
-		alert.show();
 		
 		if(counter == listSize){
 			stopTime(totalMSec);
@@ -308,7 +311,20 @@ public class GameActivity extends Activity {
 					});
 			alert = message.create();
 			alert.show();
-		};
+		}
+		else {
+			message.setTitle("Card Match?")
+			   .setCancelable(false)
+			   .setNeutralButton(result,
+		        new DialogInterface.OnClickListener() {
+		    		public void onClick(DialogInterface dialog, int id) {
+		    			startTimer(totalMSec);
+		    			dialog.cancel();
+		    		}
+			    });
+			alert = message.create();
+			alert.show();
+		}
 	}
 	
 	@Override

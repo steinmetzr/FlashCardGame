@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "option button is clicked");
-				Tools.startIntent(MainActivity.this, Options.class, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				Tools.startIntent(MainActivity.this, OptionsActivity.class, Intent.FLAG_ACTIVITY_NO_HISTORY);
 			}
 		});
 			
