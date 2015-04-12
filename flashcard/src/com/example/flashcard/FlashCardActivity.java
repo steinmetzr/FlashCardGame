@@ -7,12 +7,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -39,6 +37,7 @@ public class FlashCardActivity extends Activity {
 	boolean fileType = false;
 	LayoutInflater layoutInflater;
 	TextView ms;
+	View promptView, messageView;
 	AlertDialog alert;
 	AlertDialog.Builder editPrompt, addPrompt, message;
 	SharedPreferences cardsPrefs;
@@ -110,10 +109,7 @@ public class FlashCardActivity extends Activity {
 				Log.v("item", "item " + position + " is clicked");
 			}
 		});
-
-		/**
-		 * Edit cards
-		 */
+		
 		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -247,9 +243,9 @@ public class FlashCardActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
 				editor.commit();
-				
-				Intent intent = new Intent().setClass(FlashCardActivity.this, GameActivity.class);
-				startActivity(intent);
+				Bundle bundle = new Bundle();
+				bundle.putString("filename", filename);
+				Tools.startIntent(FlashCardActivity.this, GameActivity.class, bundle);
 			}
 		});
 		

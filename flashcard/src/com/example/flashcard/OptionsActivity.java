@@ -20,7 +20,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class Options extends Activity {
+public class OptionsActivity extends Activity {
 	private SeekBar boardSizeSeek;
 	private TextView boardSizeText, hourText, minText, secText;
 	private LinearLayout timeLimitText;
@@ -43,7 +43,7 @@ public class Options extends Activity {
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
 		done = (Button)findViewById(R.id.done);
 		
-		filename = (Options.this).getFilesDir().getPath().toString() + "/options";
+		filename = (OptionsActivity.this).getFilesDir().getPath().toString() + "/options";
 		BufferedReader reader = null;
 		
 		/**
@@ -110,16 +110,16 @@ public class Options extends Activity {
 						writer.write(Tools.toString(secText));
 					}
 					
-					Tools.startIntent(Options.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					Tools.startIntent(OptionsActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				}
 				catch(NumberFormatException e){
-					Tools.toast(Options.this, "Must enter value for time limit");
+					Tools.toast(OptionsActivity.this, "Must enter value for time limit");
 				}
 				catch (FileNotFoundException e) {
-					Tools.toast(Options.this, e.getMessage());
+					Tools.toast(OptionsActivity.this, e.getMessage());
 				}
 				catch (IOException e) {
-					Tools.toast(Options.this, e.getMessage());
+					Tools.toast(OptionsActivity.this, e.getMessage());
 				}
 				finally{
 					try {
