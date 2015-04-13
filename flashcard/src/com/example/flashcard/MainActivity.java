@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,19 +52,28 @@ public class MainActivity extends Activity {
 		
 		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
 		
-		/*if(fileDir.exists() && fileDir.isDirectory()){
-	        File[] fileList = fileDir.listFiles();
-	        for(File file : fileList) {
-	        	file.delete();
-			}
-		}*/
-		
 		if(fileDir.exists() && fileDir.isDirectory()){
-	        String[] fileList = fileDir.list();
-	        for(int i=fileList.length-1; i>=0; i--) {
-				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
+	        FilenameFilter filter = new FilenameFilter(){
+				@Override
+				public boolean accept(File dir, String filename) {
+					if(filename.substring(0, filename.length()-4).isEmpty()){
+						return false;
+					}
+					else
+						return true;
+				}
+	        	
+	        };
+	        String[] fileList = fileDir.list(filter);
+	        for(String file : fileList){
+				ListFile temp = new ListFile(list.size(), file.substring(0, file.length()-4));
 			    list.add(temp);
 			}
+	        /*for(int i=fileList.length-1; i>=0; i--) {
+	        
+				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
+			    list.add(temp);
+			}*/
 		}
 
 		option.setOnClickListener(new OnClickListener(){

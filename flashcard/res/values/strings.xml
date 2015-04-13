@@ -23,7 +23,8 @@
     <string name="timerSettings">Timer</string>
     <string name="timeLimit">Time Limit</string>
     <string name="timer">Timer</string>
-    <string name="done">Done</string>
+    <string name="none">None</string>
+    <string name="done">DONE</string>
     
     <string name="addFile">File Name</string>
     <string name="addF">Front Side</string>
