@@ -2,6 +2,8 @@ package com.example.flashcard;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-	Button addFile, removeFile, option;
+	Button sortFile, addFile, removeFile, option;
 	ListCardAdapter adapter;
 	ListView listView;
 	List<ListCard> list;
@@ -37,6 +39,13 @@ public class MainActivity extends Activity {
 	AlertDialog alert;
 	AlertDialog.Builder editPrompt, addPrompt, message;
 	
+	Comparator<ListCard> fSort = new Comparator<ListCard>(){
+		@Override
+		public int compare(ListCard left, ListCard right) {
+			return left.front.compareToIgnoreCase(right.front);
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,7 +57,6 @@ public class MainActivity extends Activity {
 		list = new ArrayList<ListCard>();
 		adapter = new ListCardAdapter(this, 0, list, fileType);
 		listView = (ListView) findViewById(R.id.listView1);
-		
 		listView.setAdapter(adapter);
 		
 		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
@@ -60,6 +68,9 @@ public class MainActivity extends Activity {
 			    list.add(temp);
 			}
 		}
+		
+		Collections.sort(list, fSort);
+		adapter.notifyDataSetChanged();
 
 		option.setOnClickListener(new OnClickListener(){
 			@Override
@@ -117,6 +128,7 @@ public class MainActivity extends Activity {
 								list.get(pos).front = FInput.getText().toString();
 								// to stein edit text on shared preference?
 								//
+								Collections.sort(list, fSort);
 								adapter.notifyDataSetChanged();
 							}
 							
@@ -133,7 +145,7 @@ public class MainActivity extends Activity {
 				return true;
 			}
 		});
-
+		
 		addFile.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -177,6 +189,7 @@ public class MainActivity extends Activity {
 							temp.front = FInput.getText().toString();
 							list.add(temp);
 							getSharedPreferences(temp.front, Context.MODE_PRIVATE).edit().commit();
+							Collections.sort(list, fSort);
 							adapter.notifyDataSetChanged();
 						}
 

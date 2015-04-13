@@ -1,5 +1,11 @@
 package com.example.flashcard;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -47,6 +53,7 @@ public class GameActivity extends Activity {
 	AlertDialog alert;
 	LayoutInflater layoutInflater;
 	AlertDialog.Builder message, timeMessage;
+	String optionValues;
 	String[] frontSide = {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
 	String[] backSide =  {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
 	SharedPreferences cardsPrefs;
@@ -57,12 +64,13 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.activity_game);
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
-		//totalMSec = data.getLong("timeValue");
+		optionValues = getApplication().getFilesDir().getPath().toString() + "/options";
+		
 		listSize = frontSide.length;
 		timeText = (TextView) findViewById(R.id.timerText);
-		timeText.setText("FlashCard Game");
+		timeText.setText(Tools.underLine("FlashCard Game"));
 		layoutInflater = LayoutInflater.from(context);
-		totalMSec = (long) -1;
+		totalMSec = (long) 300000;
 		timerMSec = (long) 0;
 		counter = 0;
 		pos1 = -1;
@@ -85,15 +93,17 @@ public class GameActivity extends Activity {
 				list.add(temp);
 			}
 		}
-	
+		
+		/*
+		GridCard temp;
 		for(int i=0; i<listSize ; i++){
-			GridCard temp = new GridCard(i, frontSide[i]);
+			temp = new GridCard(i, frontSide[i]);
 			list.add(temp);
 			
 			temp = new GridCard(i, backSide[i]);
 			list.add(temp);
 		}
-		
+		*/
 		Collections.shuffle(list);
 		adapter.notifyDataSetChanged();
 		
@@ -116,8 +126,6 @@ public class GameActivity extends Activity {
 			}
 		});
 	
-		startTimer(totalMSec);
-		
 		Button quit = (Button) findViewById(R.id.quitButton);
 		quit.setOnClickListener(new OnClickListener(){
 			@Override

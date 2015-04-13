@@ -64,7 +64,7 @@ public class FlashCardActivity extends Activity {
 		setContentView(R.layout.activity_flash_card);
 		layoutInflater = LayoutInflater.from(context);
 		message = new AlertDialog.Builder(context);
-		message.setTitle("Warning")
+		message.setTitle("Notice")
 	 	   .setCancelable(true)
 		   .setNeutralButton("OK",
 	        new DialogInterface.OnClickListener() {
@@ -242,10 +242,18 @@ public class FlashCardActivity extends Activity {
 			@Override
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
-				editor.commit();
-				Bundle bundle = new Bundle();
-				bundle.putString("filename", filename);
-				Tools.startIntent(FlashCardActivity.this, GameActivity.class, bundle);
+				
+				if(list.size() > 2) {
+					editor.commit();
+					Bundle bundle = new Bundle();
+					bundle.putString("filename", filename);
+					Tools.startIntent(FlashCardActivity.this, GameActivity.class, bundle);
+				}
+				else {
+					message.setMessage("In order to play you need at least 2 cards!");
+					alert = message.create();
+					alert.show();
+				}
 			}
 		});
 		
@@ -271,7 +279,6 @@ public class FlashCardActivity extends Activity {
 	@Override
 	public void onBackPressed() {
 		editor.commit();
-		
 		Tools.startIntent(this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		super.onBackPressed();
 	}

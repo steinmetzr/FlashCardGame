@@ -24,6 +24,7 @@
     <string name="timeLimit">Time Limit</string>
     <string name="timer">Timer</string>
     <string name="done">Done</string>
+    <string name="sort">SORT</string>
     
     <string name="addFile">File Name</string>
     <string name="addF">Front Side</string>
