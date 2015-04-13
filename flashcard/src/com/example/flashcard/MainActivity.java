@@ -2,9 +2,7 @@ package com.example.flashcard;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -53,6 +51,13 @@ public class MainActivity extends Activity {
 		
 		fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
 		
+		/*if(fileDir.exists() && fileDir.isDirectory()){
+	        File[] fileList = fileDir.listFiles();
+	        for(File file : fileList) {
+	        	file.delete();
+			}
+		}*/
+		
 		if(fileDir.exists() && fileDir.isDirectory()){
 	        String[] fileList = fileDir.list();
 	        for(int i=fileList.length-1; i>=0; i--) {
@@ -84,11 +89,10 @@ public class MainActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				final int pos = position;
+				layoutInflater = LayoutInflater.from(context);
 				messageView = layoutInflater.inflate(R.layout.message, null);
 				message = new AlertDialog.Builder(context);
 				message.setView(messageView);
-				ms = (TextView) messageView.findViewById(R.id.message);
-				ms.setText("Cards cannot have a blank side!");
 				message.setTitle("Warning")
 				 	   .setCancelable(true)
 					   .setNeutralButton("OK",
@@ -110,13 +114,20 @@ public class MainActivity extends Activity {
 							// get user input and set it to result
 							
 							if(FInput.getText().toString().trim().length() == 0){
+								message.setMessage("File names can't be empty!");
 								alert = message.create();
 								alert.show();
 							}
 							else {
+								if(fileDir.exists() && fileDir.isDirectory()){
+							        File[] fileList = fileDir.listFiles();
+							        for(File file : fileList) {
+							        	String filename = file.getName().substring(0, (int)file.getName().length()-4);
+										if(filename.equals(list.get(pos).front))
+											file.renameTo(new File(fileDir.getAbsolutePath(), FInput.getText().toString() + ".xml"));
+									}
+								}
 								list.get(pos).front = FInput.getText().toString();
-								// to stein edit text on shared preference?
-								//
 								adapter.notifyDataSetChanged();
 							}
 							
@@ -145,8 +156,6 @@ public class MainActivity extends Activity {
 
 				message = new AlertDialog.Builder(context);
 				message.setView(messageView);
-				TextView ms = (TextView) messageView.findViewById(R.id.message);
-				ms.setText("File names can't be empty!");
 				message.setTitle("Warning")
 				.setCancelable(true)
 				.setNeutralButton("OK",
@@ -168,15 +177,21 @@ public class MainActivity extends Activity {
 					public void onClick(DialogInterface dialog, int id) {
 						// get user input and set it to result
 						if(FInput.getText().toString().trim().length() == 0 ) {
-							AlertDialog warning = message.create();
-							warning.show();
+							message.setMessage("File names can't be empty!");
+							alert = message.create();
+							alert.show();
+						}
+						else if(checkFile(FInput.getText().toString().trim())){
+							message.setMessage("Files cannot be the same!");
+							alert = message.create();
+							alert.show();
 						}
 						else {
 							ListFile temp = new ListFile();
 							temp.id = list.size();
 							temp.front = FInput.getText().toString();
 							list.add(temp);
-							getSharedPreferences(temp.front, Context.MODE_PRIVATE).edit().commit();
+							getSharedPreferences(temp.front, Context.MODE_PRIVATE).edit().clear().commit();
 							adapter.notifyDataSetChanged();
 						}
 
@@ -204,5 +219,14 @@ public class MainActivity extends Activity {
 				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
 			}
 		});
+	}
+	
+	private boolean checkFile(String fileName){
+		for(int i=0; i<list.size(); i++) {
+			if(list.get(i).front.equals(fileName)){
+				return true;
+			}
+		}
+		return false;
 	}
 }
