@@ -72,7 +72,6 @@ public class GameActivity extends Activity {
 		counter = 0;
 		pos1 = -1;
 		pos2 = -1;
-		maxTotalMSec = totalMSec;
 		message = new AlertDialog.Builder(context);
 		message.setView(promptView);
 		adapter = new GridCardAdapter(this, 0, gridList);
@@ -84,9 +83,12 @@ public class GameActivity extends Activity {
 		
 		if(timerSetting == R.id.timeLimitRadio) {
 			totalMSec = options.getLong("millisecs", 60000);
+			maxTotalMSec = totalMSec;
+			
 		}
 		else {
 			totalMSec = (long) 0;
+			maxTotalMSec = totalMSec;
 		}
 		
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
@@ -103,9 +105,8 @@ public class GameActivity extends Activity {
 		Collections.shuffle(cardList);
 		adapter.notifyDataSetChanged();
 		int maxSize = options.getInt("boardSize", cardList.size());
-		
 		while(cardList.size() > maxSize) 
-		{ cardList.remove(cardList.size()); }
+		{ cardList.remove(cardList.size()-1); }
 		
 		GridCard gridTemp;
 		for(int i=0; i<cardList.size(); i++) {
@@ -141,6 +142,7 @@ public class GameActivity extends Activity {
 		quit.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
+				stopTimer(timerSetting);
 				layoutInflater = LayoutInflater.from(context);
 				promptView = layoutInflater.inflate(R.layout.message, null);
 				message = new AlertDialog.Builder(context);
@@ -151,13 +153,12 @@ public class GameActivity extends Activity {
 				 	   .setCancelable(false)
 				 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								Bundle bundle = new Bundle();
-								bundle.putString("filename", filename);
-								Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle);
+								finish();
 							}
 						})
 						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,	int id) { 
+								startTimer(timerSetting);
 								dialog.cancel(); 
 							}
 						});
@@ -170,7 +171,7 @@ public class GameActivity extends Activity {
 		reset.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				stopTime(totalMSec);
+				stopTimer(timerSetting);
 				layoutInflater = LayoutInflater.from(context);
 				promptView = layoutInflater.inflate(R.layout.message, null);
 				message = new AlertDialog.Builder(context);
@@ -197,7 +198,7 @@ public class GameActivity extends Activity {
 											pos1 = position;
 										}		
 										else if(pos2 != pos1) {
-											stopTime(totalMSec);
+											stopTimer(totalMSec);
 											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos2 = position;
@@ -274,7 +275,7 @@ public class GameActivity extends Activity {
 	    }
 	}
 	
-	void stopTime(long value){
+	void stopTimer(long value){
 		if(value > 0) {
 			countdown.cancel();
 		}
@@ -284,7 +285,7 @@ public class GameActivity extends Activity {
 	}
 	
 	void matcher(int pos1, int pos2){
-		stopTime(totalMSec);
+		stopTimer(totalMSec);
 		layoutInflater = LayoutInflater.from(context);
 		promptView = layoutInflater.inflate(R.layout.match_message, null);
 		message = new AlertDialog.Builder(context);
@@ -310,7 +311,7 @@ public class GameActivity extends Activity {
 		}
 		
 		if(counter == cardList.size()){
-			stopTime(totalMSec);
+			stopTimer(totalMSec);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
 			//message = new AlertDialog.Builder(context);
@@ -354,15 +355,34 @@ public class GameActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		stopTime(timerSetting);
+		stopTimer(timerSetting);
 		super.onPause();
 	}
 
 	@Override
 	public void onBackPressed() {
-		Bundle data = new Bundle();
-		data.putString("filename", filename);
-		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		layoutInflater = LayoutInflater.from(context);
+		promptView = layoutInflater.inflate(R.layout.message, null);
+		message = new AlertDialog.Builder(context);
+		message.setView(promptView);
+		ms = (TextView) promptView.findViewById(R.id.message);
+		ms.setText("Are you sure you want to quit! Game will reset!");
+		message.setTitle("Warning")
+		 	   .setCancelable(false)
+		 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						stopTimer(timerSetting);
+						finish();
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,	int id) { 
+						dialog.cancel(); 
+					}
+				});
+		alert = message.create();
+		alert.show();
+		
 		super.onBackPressed();
 	}
 }

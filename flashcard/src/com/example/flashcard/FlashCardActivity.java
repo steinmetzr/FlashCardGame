@@ -195,8 +195,8 @@ public class FlashCardActivity extends Activity {
 								adapter.notifyDataSetChanged();
 								
 								Set<String> card = new LinkedHashSet<String>();
-								card.add(temp.back);
 								card.add(temp.front);
+								card.add(temp.back);
 								editor.putStringSet(String.valueOf(temp.id), card);
 								
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
