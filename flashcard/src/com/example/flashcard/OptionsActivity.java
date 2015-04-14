@@ -85,14 +85,14 @@ public class OptionsActivity extends Activity {
 			public void onClick(View v) {
 				Editor edit = options.edit();
 				
-				edit.putInt("boardSize", boardSizeSeek.getProgress());
+				edit.putInt("boardSize", (boardSizeSeek.getProgress() + offset));
 				edit.putInt("checked", timeRadioGroup.getCheckedRadioButtonId());
 				try{
 					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
-						int hour = Integer.valueOf(Tools.toString(hourText)) * 3600000;
-						int min = Integer.valueOf(Tools.toString(minText)) * 60000;
-						int sec = Integer.valueOf(Tools.toString(secText)) * 1000;
-						int millisecs = hour + min + sec;
+						long hour = Long.valueOf(Tools.toString(hourText)) * 3600000;
+						long min = Long.valueOf(Tools.toString(minText)) * 60000;
+						long sec = Long.valueOf(Tools.toString(secText)) * 1000;
+						long millisecs = hour + min + sec;
 						
 						edit.putString("timerHour", Tools.toString(hourText));
 						edit.putString("timerMin", Tools.toString(minText));
@@ -161,10 +161,12 @@ public class OptionsActivity extends Activity {
 		});
 		
 		int size = options.getInt("boardSize", 18);
-		boardSizeSeek.setProgress(size);
-		boardSizeText.setText(String.valueOf(size + offset));
+		boardSizeSeek.setProgress(size - offset);
+		boardSizeText.setText(String.valueOf(size));
+		
 		int checked = options.getInt("checked", R.id.timerRadio);
 		timeRadioGroup.check(checked);
+		
 		if(checked == R.id.timeLimitRadio){
 			hourText.setText(options.getString("timerHour", ""));
 			minText.setText(options.getString("timerMin", ""));
