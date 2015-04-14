@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -93,7 +94,7 @@ public class GameActivity extends Activity {
 		int maxSize = options.getInt("boardSize", cardList.size());
 		
 		while(cardList.size() > maxSize)
-		{ cardList.remove(cardList.size()); }
+		{ cardList.remove(cardList.size()-1); }
 		
 		GridCard gridTemp;
 		for(int i=0; i<cardList.size(); i++) {
@@ -105,6 +106,22 @@ public class GameActivity extends Activity {
 		
 		Collections.shuffle(gridList);
 		adapter.notifyDataSetChanged();
+		
+		Display display = getWindowManager().getDefaultDisplay();
+		int height = display.getHeight();
+		
+		//if(maxSize/2 <= 4){
+			//GridView.setHorizontalSpacing(width/(maxSize/2));
+			GridView.setNumColumns((int) Math.ceil(maxSize/2.0));
+			int numRows = gridList.size()/(maxSize/2);
+			GridView.setVerticalSpacing(height/(numRows*2));
+		/*}
+		else{	
+			//GridView.setHorizontalSpacing(width/4);
+			GridView.setNumColumns(4);
+			int numRows = gridList.size()/4;
+			GridView.setVerticalSpacing(height/(numRows*2));
+		}*/
 		
 		GridView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
@@ -324,6 +341,12 @@ public class GameActivity extends Activity {
 		stopTime(timerSetting);
 		super.onPause();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		stopTime(timerSetting);
+		super.onDestroy();
+	}
 
 	@Override
 	public void onBackPressed() {
@@ -331,7 +354,6 @@ public class GameActivity extends Activity {
 		stopTime(timerSetting);
 		data.putString("filename", filename);
 		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
-		super.onBackPressed();
 		layoutInflater = LayoutInflater.from(context);
 		promptView = layoutInflater.inflate(R.layout.message, null);
 		message = new AlertDialog.Builder(context);
@@ -345,7 +367,7 @@ public class GameActivity extends Activity {
 						Bundle bundle = new Bundle();
 						stopTime(timerSetting);
 						bundle.putString("filename", filename);
-						Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+						Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					}
 				})
 				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

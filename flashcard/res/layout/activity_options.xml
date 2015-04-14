@@ -50,8 +50,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="24"
-                android:progress="18" />
+                android:max="8"
+                android:progress="8" />
 
             <android.support.v7.widget.Space
                 android:id="@+id/space1"
@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/border"
+                android:background="@color/white"
                 android:padding="1dp"
                 android:visibility="gone" >
 

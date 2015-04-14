@@ -79,14 +79,12 @@ public class FlashCardActivity extends Activity {
 		filename = data.getString("filename");
 
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
-		if(cardsPrefs.getAll() != null){
-			ListCard temp;
-			while(cardsPrefs.contains(String.valueOf(list.size()))){
-				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
-				Iterator<String> it = cards.iterator();
-				temp = new ListCard(list.size(), it.next(), it.next());
-				list.add(temp);
-			}
+		Set<String> keys = cardsPrefs.getAll().keySet();
+		for(String key : keys){
+			Set<String> cards = cardsPrefs.getStringSet(key, null);
+			Iterator<String> it = cards.iterator();
+			ListCard temp = new ListCard(list.size(), it.next(), it.next());
+			list.add(temp);
 		}
 		
 		TextView title = (TextView) findViewById(R.id.fileTitle1);
@@ -186,6 +184,11 @@ public class FlashCardActivity extends Activity {
 								alert = message.create();
 								alert.show();
 							}
+							else if(checkCard(FInput.getText().toString().trim(), BInput.getText().toString().trim())){
+								message.setMessage("Cards cannot be the same in any way!");
+								alert = message.create();
+								alert.show();
+							}
 							else {
 								ListCard temp = new ListCard();
 								temp.id = list.size();
@@ -271,6 +274,15 @@ public class FlashCardActivity extends Activity {
 				adapter.notifyDataSetChanged();
 			}
 		});
+	}
+	
+	private boolean checkCard(String front, String back){
+		for(int i=0; i<list.size(); i++) {
+			if(list.get(i).front.equals(front) || list.get(i).back.equals(back)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	@Override

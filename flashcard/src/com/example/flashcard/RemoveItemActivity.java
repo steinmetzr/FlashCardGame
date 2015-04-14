@@ -1,6 +1,7 @@
 package com.example.flashcard;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,24 +69,39 @@ public class RemoveItemActivity extends Activity {
 		
 		if(!fileType) {
 			cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
-			if(cardsPrefs.getAll() != null){
-				while(cardsPrefs.contains(String.valueOf(list.size()))){
-					Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
-					Iterator<String> it = cards.iterator();
-					ListCard temp = new ListCard(list.size(), it.next(), it.next());
-					list.add(temp);
-				}
-				editor = cardsPrefs.edit();
-			}	
+			Set<String> keys = cardsPrefs.getAll().keySet();
+			for(String key : keys){
+				Set<String> cards = cardsPrefs.getStringSet(key, null);
+				Iterator<String> it = cards.iterator();
+				ListCard temp = new ListCard(list.size(), it.next(), it.next());
+				list.add(temp);
+			}
+			editor = cardsPrefs.edit();
 		}
 		else {
 			fileDir = new File(getApplicationInfo().dataDir, "shared_prefs");
 			if(fileDir.exists() && fileDir.isDirectory()){
-		        String[] fileList = fileDir.list();
+				FilenameFilter filter = new FilenameFilter(){
+					@Override
+					public boolean accept(File dir, String filename) {
+						if(filename.substring(0, filename.length()-4).isEmpty()){
+							return false;
+						}
+						else
+							return true;
+					}
+		        	
+		        };
+		        String[] fileList = fileDir.list(filter);
+		        for(String file : fileList){
+					ListFile temp = new ListFile(list.size(), file.substring(0, file.length()-4));
+				    list.add(temp);
+				}
+		        /*String[] fileList = fileDir.list();
 		        for(int i=0; i<fileList.length; i++) {
 					ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
 					list.add(temp);
-				}
+				}*/
 			}
 		}
 		
@@ -149,7 +165,12 @@ public class RemoveItemActivity extends Activity {
 							}
 							else {
 								if(!fileType){
-
+									for(int i=0; i<list.size(); i++) {
+										if(list.get(i).checked == true) {
+											editor.remove(String.valueOf(list.get(i).id));
+											list.remove(i);
+										}
+									}
 								}
 								else{
 									for(int i=0; i<list.size(); i++) {
