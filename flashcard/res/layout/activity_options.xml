@@ -124,6 +124,16 @@
                     android:layout_weight="1"
                     android:text="@string/timer"
                     android:textColor="@color/black" />
+                
+                <RadioButton
+                    android:id="@+id/noneRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:text="@string/none"
+                    android:textColor="@color/black" />
             </RadioGroup>
 
             <LinearLayout
@@ -189,6 +199,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/done" />
+        android:text="@string/done"
+        android:textSize="20sp" />
 
 </RelativeLayout>

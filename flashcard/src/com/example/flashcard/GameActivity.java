@@ -349,7 +349,9 @@ public class GameActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		Tools.startIntent(this, FlashCardActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Bundle data = new Bundle();
+		data.putString("filename", filename);
+		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		super.onBackPressed();
 	}
 }

@@ -103,13 +103,6 @@ public class FlashCardActivity extends Activity {
 		listView.setAdapter(adapter);
 		editor = cardsPrefs.edit();
 		
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.v("item", "item " + position + " is clicked");
-			}
-		});
-		
 		listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -166,9 +159,6 @@ public class FlashCardActivity extends Activity {
 			}
 		});
 	
-		/**
-		 * Add Cards
-		 */
 		addCards.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){

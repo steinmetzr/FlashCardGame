@@ -27,6 +27,5 @@
 	        android:text=""
 	        android:ems="10" >
 	    	
-	    	<requestFocus />
 	    </EditText>
 </LinearLayout>

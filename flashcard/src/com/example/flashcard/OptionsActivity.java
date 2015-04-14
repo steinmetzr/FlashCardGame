@@ -1,14 +1,10 @@
 package com.example.flashcard;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,8 +22,9 @@ public class OptionsActivity extends Activity {
 	private LinearLayout timeLimitText;
 	private RadioGroup timeRadioGroup;
 	private Button done;
-	private String filename;
+	private String filename = "";
 	private final int offset = 4;
+	private SharedPreferences options;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +40,10 @@ public class OptionsActivity extends Activity {
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
 		done = (Button)findViewById(R.id.done);
 		
-		filename = (OptionsActivity.this).getFilesDir().getPath().toString() + "/options";
-		BufferedReader reader = null;
+		/*filename = getApplication().getFilesDir().getPath().toString() + "/options";
+		BufferedReader reader = null;*/
+		
+		options = getSharedPreferences(filename, Context.MODE_PRIVATE);
 		
 		/**
 		 * Listener for Radio Buttons
@@ -84,33 +83,64 @@ public class OptionsActivity extends Activity {
 		done.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Bundle bundle = new Bundle();
+				Editor edit = options.edit();
+				
+				edit.putInt("boardSize", boardSizeSeek.getProgress());
+				edit.putInt("checked", timeRadioGroup.getCheckedRadioButtonId());
+				try{
+					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
+						int hour = Integer.valueOf(Tools.toString(hourText)) * 3600000;
+						int min = Integer.valueOf(Tools.toString(minText)) * 6000;
+						int sec = Integer.valueOf(Tools.toString(secText)) * 1000;
+						int millisecs = hour + min + sec;
+						
+						edit.putString("timerHour", Tools.toString(hourText));
+						edit.putString("timerMin", Tools.toString(minText));
+						edit.putString("timerSec", Tools.toString(secText));
+						edit.putInt("millisecs", millisecs);
+					}
+					edit.commit();
+					Tools.startIntent(OptionsActivity.this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				}
+				catch(NumberFormatException e){
+					Tools.toast(OptionsActivity.this, "Must enter value for time limit");
+				}
+				
+				/*
+				//Bundle bundle = new Bundle();
 				BufferedWriter writer = null;
 				
 				try{
 					writer = new BufferedWriter(new FileWriter(filename));
+					FileWriter file = new FileWriter(filename);
 					
-					int size = Integer.valueOf(Tools.toString(boardSizeText));
+					//int size = Integer.valueOf(Tools.toString(boardSizeText));
 
-					bundle.putInt("boardSize", size);
+					//bundle.putInt("boardSize", size);
 					
 					writer.write(Tools.toString(boardSizeText) + "\n");
+					writer.write(timeRadioGroup.getCheckedRadioButtonId() + "\n");
 					
 					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
-						int hour = Integer.valueOf(Tools.toString(hourText));
+						//int hour = Integer.valueOf(Tools.toString(hourText));
 						int min = Integer.valueOf(Tools.toString(minText));
 						int sec = Integer.valueOf(Tools.toString(secText));
 
 						bundle.putInt("timerHour", hour);
 						bundle.putInt("timerMin", min);
-						bundle.putInt("timerSec", sec);
+						bundle.putInt("timerSec", sec);//
+						int hour = Integer.valueOf(Tools.toString(hourText)) * 3600000;
+						int min = Integer.valueOf(Tools.toString(minText)) * 6000;
+						int sec = Integer.valueOf(Tools.toString(secText)) * 1000;
+						int millisecs = hour + min + sec;
 						
 						writer.write(Tools.toString(hourText) + "\n");
 						writer.write(Tools.toString(minText) + "\n");
 						writer.write(Tools.toString(secText));
+						writer.write(String.valueOf(millisecs));
 					}
 					
-					Tools.startIntent(OptionsActivity.this, MainActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					Tools.startIntent(OptionsActivity.this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				}
 				catch(NumberFormatException e){
 					Tools.toast(OptionsActivity.this, "Must enter value for time limit");
@@ -126,25 +156,33 @@ public class OptionsActivity extends Activity {
 						if(writer != null)
 							writer.close();
 					} catch (IOException e) {}
-				}
+				}*/
 			}
-
 		});
 		
-		try{
+		int size = options.getInt("boardSize", 18);
+		boardSizeSeek.setProgress(size);
+		boardSizeText.setText(String.valueOf(size + offset));
+		int checked = options.getInt("checked", R.id.timerRadio);
+		timeRadioGroup.check(checked);
+		if(checked == R.id.timeLimitRadio){
+			hourText.setText(options.getString("timerHour", ""));
+			minText.setText(options.getString("timerMin", ""));
+			secText.setText(options.getString("timerSec", ""));
+		}
+		
+		/*try{
 			reader = new BufferedReader(new FileReader(filename));
-			String line = reader.readLine();
+			String size = reader.readLine();
 			
-			boardSizeSeek.setProgress(Integer.parseInt(line) - offset);
-			boardSizeText.setText(line);
-			if((line = reader.readLine()) != null){
-				hourText.setText(line);
+			boardSizeSeek.setProgress(Integer.parseInt(size) - offset);
+			boardSizeText.setText(size);
+			int checked = Integer.parseInt(reader.readLine());
+			timeRadioGroup.check(checked);
+			if(checked == R.id.timeLimitRadio){
+				hourText.setText(reader.readLine());
 				minText.setText(reader.readLine());
 				secText.setText(reader.readLine());
-				timeRadioGroup.check(R.id.timeLimitRadio);
-			}
-			else{
-				timeRadioGroup.check(R.id.timerRadio);
 			}
 		}
 		catch (IOException e) {}
@@ -154,6 +192,6 @@ public class OptionsActivity extends Activity {
 				if(reader != null)
 					reader.close();
 			} catch (IOException e) {}
-		}
+		}*/
 	}
 }
