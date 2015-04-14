@@ -1,34 +1,23 @@
 package com.example.flashcard;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -36,7 +25,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.graphics.Color;
 
 public class GameActivity extends Activity {
 	Context context = this;
@@ -104,7 +92,7 @@ public class GameActivity extends Activity {
 		adapter.notifyDataSetChanged();
 		int maxSize = options.getInt("boardSize", cardList.size());
 		
-		while(cardList.size() > maxSize) 
+		while(cardList.size() > maxSize)
 		{ cardList.remove(cardList.size()); }
 		
 		GridCard gridTemp;
@@ -141,28 +129,7 @@ public class GameActivity extends Activity {
 		quit.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				layoutInflater = LayoutInflater.from(context);
-				promptView = layoutInflater.inflate(R.layout.message, null);
-				message = new AlertDialog.Builder(context);
-				message.setView(promptView);
-				ms = (TextView) promptView.findViewById(R.id.message);
-				ms.setText("Are you sure you want to quit! Game will reset!");
-				message.setTitle("Warning")
-				 	   .setCancelable(false)
-				 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								Bundle bundle = new Bundle();
-								bundle.putString("filename", filename);
-								Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle);
-							}
-						})
-						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,	int id) { 
-								dialog.cancel(); 
-							}
-						});
-				alert = message.create();
-				alert.show();
+				onBackPressed();
 			}
 		});
 		
@@ -275,10 +242,10 @@ public class GameActivity extends Activity {
 	}
 	
 	void stopTime(long value){
-		if(value > 0) {
+		if(value == R.id.timeLimitRadio) {
 			countdown.cancel();
 		}
-		else if (value ==  -1){
+		else if (value == R.id.timerRadio){
 			timer.cancel();
 		}
 	}
@@ -360,9 +327,33 @@ public class GameActivity extends Activity {
 
 	@Override
 	public void onBackPressed() {
-		Bundle data = new Bundle();
+		/*Bundle data = new Bundle();
+		stopTime(timerSetting);
 		data.putString("filename", filename);
-		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
 		super.onBackPressed();
+		layoutInflater = LayoutInflater.from(context);
+		promptView = layoutInflater.inflate(R.layout.message, null);
+		message = new AlertDialog.Builder(context);
+		message.setView(promptView);
+		ms = (TextView) promptView.findViewById(R.id.message);
+		ms.setText("Are you sure you want to quit! Game will reset!");
+		message.setTitle("Warning")
+		 	   .setCancelable(false)
+		 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						Bundle bundle = new Bundle();
+						stopTime(timerSetting);
+						bundle.putString("filename", filename);
+						Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					}
+				})
+				.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,	int id) { 
+						dialog.cancel(); 
+					}
+				});
+		alert = message.create();
+		alert.show();
 	}
 }
