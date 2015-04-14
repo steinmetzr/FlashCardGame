@@ -90,14 +90,14 @@ public class OptionsActivity extends Activity {
 				try{
 					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
 						int hour = Integer.valueOf(Tools.toString(hourText)) * 3600000;
-						int min = Integer.valueOf(Tools.toString(minText)) * 6000;
+						int min = Integer.valueOf(Tools.toString(minText)) * 60000;
 						int sec = Integer.valueOf(Tools.toString(secText)) * 1000;
 						int millisecs = hour + min + sec;
 						
 						edit.putString("timerHour", Tools.toString(hourText));
 						edit.putString("timerMin", Tools.toString(minText));
 						edit.putString("timerSec", Tools.toString(secText));
-						edit.putInt("millisecs", millisecs);
+						edit.putLong("millisecs", millisecs);
 					}
 					edit.commit();
 					Tools.startIntent(OptionsActivity.this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);

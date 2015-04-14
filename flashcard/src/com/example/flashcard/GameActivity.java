@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,12 +40,13 @@ import android.graphics.Color;
 
 public class GameActivity extends Activity {
 	Context context = this;
-	List<GridCard> list = new ArrayList<GridCard>();
+	List<ListCard> cardList = new ArrayList<ListCard>();
+	List<GridCard> gridList = new ArrayList<GridCard>();
 	GridCardAdapter adapter;
 	GridView GridView;
 	String filename;
 	
-	int counter = 0, pos1 = -1, pos2 = -1, sec, min, hr, listSize;
+	int timerSetting, counter = 0, pos1 = -1, pos2 = -1, sec, min, hr;
 	Long totalMSec, maxTotalMSec, timerMSec;
 	TextView timeText, ms, ts;
 	CountDownTimer countdown;
@@ -54,9 +56,7 @@ public class GameActivity extends Activity {
 	LayoutInflater layoutInflater;
 	AlertDialog.Builder message, timeMessage;
 	String optionValues;
-	String[] frontSide = {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
-	String[] backSide =  {"aaaaaaaaaaaaaaaa","gggggggggggg","mmmmmmmmmmmmmmmmm"};
-	SharedPreferences cardsPrefs;
+	SharedPreferences cardsPrefs, options;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +64,6 @@ public class GameActivity extends Activity {
 		setContentView(R.layout.activity_game);
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
-		optionValues = getApplication().getFilesDir().getPath().toString() + "/options";
-		
-		listSize = frontSide.length;
 		timeText = (TextView) findViewById(R.id.timerText);
 		timeText.setText(Tools.underLine("FlashCard Game"));
 		layoutInflater = LayoutInflater.from(context);
@@ -78,45 +75,59 @@ public class GameActivity extends Activity {
 		maxTotalMSec = totalMSec;
 		message = new AlertDialog.Builder(context);
 		message.setView(promptView);
-		adapter = new GridCardAdapter(this, 0, list);
+		adapter = new GridCardAdapter(this, 0, gridList);
 		GridView = (GridView) findViewById(R.id.gameGrid);
 		GridView.setAdapter(adapter);
 		
+		options = getSharedPreferences("", Context.MODE_PRIVATE);
+		timerSetting = options.getInt("checked", R.id.noneRadio);	
+		
+		if(timerSetting == R.id.timeLimitRadio) {
+			totalMSec = options.getLong("millisecs", 60000);
+		}
+		else {
+			totalMSec = (long) 0;
+		}
+		
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
 		if(cardsPrefs.getAll() != null){
-			while(cardsPrefs.contains(String.valueOf(list.size()))){
-				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
+			ListCard temp;
+			while(cardsPrefs.contains(String.valueOf(cardList.size()))){
+				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(cardList.size()), null);
 				Iterator<String> it = cards.iterator();
-				GridCard temp = new GridCard(list.size(), it.next());
-				list.add(temp);
-				temp = new GridCard(list.size(), it.next());
-				list.add(temp);
+				temp = new ListCard(cardList.size(), it.next(), it.next());
+				cardList.add(temp);
 			}
 		}
 		
-		/*
-		GridCard temp;
-		for(int i=0; i<listSize ; i++){
-			temp = new GridCard(i, frontSide[i]);
-			list.add(temp);
-			
-			temp = new GridCard(i, backSide[i]);
-			list.add(temp);
+		Collections.shuffle(cardList);
+		adapter.notifyDataSetChanged();
+		int maxSize = options.getInt("boardSize", cardList.size());
+		
+		while(cardList.size() > maxSize) 
+		{ cardList.remove(cardList.size()); }
+		
+		GridCard gridTemp;
+		for(int i=0; i<cardList.size(); i++) {
+			gridTemp = new GridCard(i, cardList.get(i).front);
+			gridList.add(gridTemp);
+			gridTemp = new GridCard(i, cardList.get(i).back);
+			gridList.add(gridTemp);
 		}
-		*/
-		Collections.shuffle(list);
+		
+		Collections.shuffle(gridList);
 		adapter.notifyDataSetChanged();
 		
 		GridView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {	
-				if(pos1 == -1 && list.get(position).color != Color.WHITE) {
-					list.get(position).color = Color.GRAY;
+				if(pos1 == -1 && gridList.get(position).color != Color.WHITE) {
+					gridList.get(position).color = Color.GRAY;
 					adapter.notifyDataSetChanged();
 					pos1 = position;
 				}		
 				else if(pos2 != pos1) {
-					list.get(position).color = Color.GRAY;
+					gridList.get(position).color = Color.GRAY;
 					adapter.notifyDataSetChanged();
 					pos2 = position;
 					matcher(pos1, pos2);
@@ -173,21 +184,21 @@ public class GameActivity extends Activity {
 								counter = 0;
 								totalMSec = maxTotalMSec;
 								timerMSec = (long) 0;
-								for(int i=0; i<list.size();i++) {
-									list.get(i).color = Color.BLACK;
+								for(int i=0; i<gridList.size();i++) {
+									gridList.get(i).color = Color.BLACK;
 								}
 								adapter.notifyDataSetChanged();
 								GridView.setOnItemClickListener(new OnItemClickListener(){
 									@Override
 									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {	
-										if(pos1 == -1 && list.get(position).color != Color.WHITE) {
-											list.get(position).color = Color.GRAY;
+										if(pos1 == -1 && gridList.get(position).color != Color.WHITE) {
+											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos1 = position;
 										}		
 										else if(pos2 != pos1) {
 											stopTime(totalMSec);
-											list.get(position).color = Color.GRAY;
+											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos2 = position;
 											matcher(pos1, pos2);
@@ -196,12 +207,12 @@ public class GameActivity extends Activity {
 										}
 									}
 								});
-								startTimer(totalMSec);
+								startTimer(timerSetting);
 							}
 						})
 						.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog,	int id) { 
-								startTimer(totalMSec);
+								startTimer(timerSetting);
 								dialog.cancel();
 							}
 						});
@@ -211,15 +222,15 @@ public class GameActivity extends Activity {
 		});
 	}
 	
-	void startTimer(long value){	
-		if(value > 0) {
+	void startTimer(int timerID){	
+		if(timerID == R.id.timeLimitRadio) {
 			CountDownTimer temp = new CountDownTimer(totalMSec, 1000) {
-			     public void onTick(long MSec) {
-			    	 totalMSec = MSec;
+			     public void onTick(long mmSec) {
+			    	 totalMSec = mmSec;
 			         timeText.setText("Countdown: " + hr + ":" + min + ":" + sec);
-			        		 sec = (int) (MSec / 1000) % 60 ;
-			        		 min = (int) ((MSec / (1000*60)) % 60);
-			        		 hr = (int) ((MSec / (1000*60*60)) % 24);
+			        		 sec = (int) (mmSec / 1000) % 60 ;
+			        		 min = (int) ((mmSec / (1000*60)) % 60);
+			        		 hr = (int) ((mmSec / (1000*60*60)) % 24);
 			     }
 			     public void onFinish() {
 			    	timePrompt = layoutInflater.inflate(R.layout.message, null);
@@ -245,7 +256,7 @@ public class GameActivity extends Activity {
 			temp.start();
 			countdown = temp;
 		}
-		else if (value == -1) {
+		else if (timerID == R.id.timerRadio) {
 			timer = new Timer();
 			timer.scheduleAtFixedRate(new TimerTask(){
 				@Override
@@ -280,25 +291,25 @@ public class GameActivity extends Activity {
 		TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
 		TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
 		message.setView(promptView);
-		ms1.setText(list.get(pos1).word);
-		ms2.setText(list.get(pos2).word);
+		ms1.setText(gridList.get(pos1).word);
+		ms2.setText(gridList.get(pos2).word);
 		
 		String result;
-		if(list.get(pos1).id == list.get(pos2).id ) { 
+		if(gridList.get(pos1).id == gridList.get(pos2).id ) { 
 			result = "Matched!"; 
 			counter++;
-			list.get(pos1).color = Color.WHITE;
-			list.get(pos2).color = Color.WHITE;
+			gridList.get(pos1).color = Color.WHITE;
+			gridList.get(pos2).color = Color.WHITE;
 			adapter.notifyDataSetChanged();
 		}
 		else {
 			result = "No Match!";
-			list.get(pos1).color = Color.BLACK;
-			list.get(pos2).color = Color.BLACK;
+			gridList.get(pos1).color = Color.BLACK;
+			gridList.get(pos2).color = Color.BLACK;
 			adapter.notifyDataSetChanged();
 		}
 		
-		if(counter == listSize){
+		if(counter == cardList.size()){
 			stopTime(totalMSec);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
@@ -326,7 +337,7 @@ public class GameActivity extends Activity {
 			   .setNeutralButton(result,
 		        new DialogInterface.OnClickListener() {
 		    		public void onClick(DialogInterface dialog, int id) {
-		    			startTimer(totalMSec);
+		    			startTimer(timerSetting);
 		    			dialog.cancel();
 		    		}
 			    });
@@ -337,13 +348,13 @@ public class GameActivity extends Activity {
 	
 	@Override
 	protected void onResume() {
-		startTimer(totalMSec);
+		startTimer(timerSetting);
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		stopTime(totalMSec);
+		stopTime(timerSetting);
 		super.onPause();
 	}
 
@@ -351,7 +362,7 @@ public class GameActivity extends Activity {
 	public void onBackPressed() {
 		Bundle data = new Bundle();
 		data.putString("filename", filename);
-		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Tools.startIntent(GameActivity.this, FlashCardActivity.class, data, Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		super.onBackPressed();
 	}
 }

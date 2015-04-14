@@ -136,21 +136,28 @@ public class RemoveItemActivity extends Activity {
 								}
 								else{
 									File[] files = fileDir.listFiles();
+									String fileName;
 									for(File file : files){
+										fileName = file.getName();
+										fileName = fileName.substring(0, (int)fileName.length()-4);
+										cardsPrefs = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+										editor = cardsPrefs.edit();
+										editor.clear();
 										file.delete();
 									}
 								}
 							}
 							else {
 								if(!fileType){
-									
+
 								}
 								else{
 									for(int i=0; i<list.size(); i++) {
 										if(list.get(i).checked == true) {
 											File[] files = fileDir.listFiles();
+											String fileName;
 											for(File file : files){
-												String fileName = file.getName();
+												fileName = file.getName();
 												fileName = fileName.substring(0, (int)fileName.length()-4);
 												if(list.get(i).front.equals(fileName)){
 													file.delete();
@@ -163,7 +170,13 @@ public class RemoveItemActivity extends Activity {
 							}
 							adapter.notifyDataSetChanged();
 						}
-					});
+					})
+					.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) { 
+								dialog.cancel();
+							}
+						});
+					
 				if(count > 0) {
 					AlertDialog alert = message.create();
 					alert.show();

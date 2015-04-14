@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
 
 				message = new AlertDialog.Builder(context);
 				message.setView(messageView);
-				message.setTitle("Warning")
+				message.setTitle("Notice")
 				.setCancelable(true)
 				.setNeutralButton("OK",
 						new DialogInterface.OnClickListener() {
@@ -236,11 +236,18 @@ public class MainActivity extends Activity {
 		removeFile.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Log.v("click", "remove button is clicked");
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("fileType", fileType);
-				bundle.putString("filename", ((TextView)findViewById(R.id.files)).getText().toString());
-				Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
+				if(list.size() != 0) {
+					Log.v("click", "remove button is clicked");
+					Bundle bundle = new Bundle();
+					bundle.putBoolean("fileType", fileType);
+					bundle.putString("filename", ((TextView)findViewById(R.id.files)).getText().toString());
+					Tools.startIntent(MainActivity.this, RemoveItemActivity.class, bundle);
+				}
+				else {
+					message.setMessage("No Files to Remove!");
+					alert = message.create();
+					alert.show();
+				}
 			}
 		});
 	}

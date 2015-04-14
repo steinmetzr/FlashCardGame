@@ -75,16 +75,16 @@ public class FlashCardActivity extends Activity {
 		editPrompt = new AlertDialog.Builder(context);
 		addPrompt = new AlertDialog.Builder(context);
 
-
 		Bundle data = this.getIntent().getExtras();
 		filename = data.getString("filename");
 
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
 		if(cardsPrefs.getAll() != null){
+			ListCard temp;
 			while(cardsPrefs.contains(String.valueOf(list.size()))){
 				Set<String> cards = cardsPrefs.getStringSet(String.valueOf(list.size()), null);
 				Iterator<String> it = cards.iterator();
-				ListCard temp = new ListCard(list.size(), it.next(), it.next());
+				temp = new ListCard(list.size(), it.next(), it.next());
 				list.add(temp);
 			}
 		}
@@ -195,8 +195,8 @@ public class FlashCardActivity extends Activity {
 								adapter.notifyDataSetChanged();
 								
 								Set<String> card = new LinkedHashSet<String>();
-								card.add(temp.front);
 								card.add(temp.back);
+								card.add(temp.front);
 								editor.putStringSet(String.valueOf(temp.id), card);
 								
 								Log.v("myTest", temp.front + "\t" + temp.back + "\n");
@@ -219,12 +219,19 @@ public class FlashCardActivity extends Activity {
 		removeCards.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Log.v("click", "remove button is clicked");
-				Bundle bundle = new Bundle();
-				bundle.putString("filename", filename);
-				bundle.putBoolean("fileType", fileType);
-				editor.commit();
-				Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				if(list.size() != 0) {
+					Log.v("click", "remove button is clicked");
+					Bundle bundle = new Bundle();
+					bundle.putString("filename", filename);
+					bundle.putBoolean("fileType", fileType);
+					editor.commit();
+					Tools.startIntent(FlashCardActivity.this, RemoveItemActivity.class, bundle, Intent.FLAG_ACTIVITY_NO_HISTORY);
+				}
+				else {
+					message.setMessage("No Cards to Remove!");
+					alert = message.create();
+					alert.show();
+				}
 			}
 		});
 		
@@ -233,14 +240,14 @@ public class FlashCardActivity extends Activity {
 			public void onClick(View v){
 				Log.v("click", "play button is clicked");
 				
-				if(list.size() > 2) {
+				if(list.size() > 3) {
 					editor.commit();
 					Bundle bundle = new Bundle();
 					bundle.putString("filename", filename);
 					Tools.startIntent(FlashCardActivity.this, GameActivity.class, bundle);
 				}
 				else {
-					message.setMessage("In order to play you need at least 2 cards!");
+					message.setMessage("In order to play you need at least 4 cards!");
 					alert = message.create();
 					alert.show();
 				}

@@ -49,14 +49,14 @@
 	    android:id="@+id/gameGrid"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:padding="10dp"
-    	android:verticalSpacing="10dp"
-    	android:horizontalSpacing="10dp"
+	    android:padding="2dp"
+    	android:verticalSpacing="1dp"
+    	android:horizontalSpacing="1dp"
 	    android:layout_above="@+id/linear3"
 	    android:layout_below="@+id/timerText"
 	    android:gravity="center"
 	    android:numColumns="auto_fit"
-	    android:columnWidth="60dp"
+	    android:columnWidth="50dp"
   		android:stretchMode="columnWidth">
 	</GridView>
     
