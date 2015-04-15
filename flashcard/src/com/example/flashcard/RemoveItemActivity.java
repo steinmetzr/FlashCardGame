@@ -97,11 +97,6 @@ public class RemoveItemActivity extends Activity {
 					ListFile temp = new ListFile(list.size(), file.substring(0, file.length()-4));
 				    list.add(temp);
 				}
-		        /*String[] fileList = fileDir.list();
-		        for(int i=0; i<fileList.length; i++) {
-					ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
-					list.add(temp);
-				}*/
 			}
 		}
 		
@@ -184,8 +179,8 @@ public class RemoveItemActivity extends Activity {
 													file.delete();
 												}
 											}
+											list.remove(i);
 										}
-										list.remove(i);
 									}
 								}
 							}

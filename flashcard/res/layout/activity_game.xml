@@ -52,9 +52,10 @@
 	    android:layout_above="@+id/linear3"
 	    android:layout_below="@+id/timerText"
 	    android:gravity="center"
-	    android:overScrollMode="never"
-	    android:stretchMode="columnWidth" >
-
+	    android:numColumns="4"
+	    android:columnWidth="60dp"
+  		android:stretchMode="columnWidth"
+	    android:overScrollMode="never">
 	</GridView>
     
 </RelativeLayout>

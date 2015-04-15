@@ -61,7 +61,6 @@ public class GameActivity extends Activity {
 		counter = 0;
 		pos1 = -1;
 		pos2 = -1;
-		maxTotalMSec = totalMSec;
 		message = new AlertDialog.Builder(context);
 		message.setView(promptView);
 		adapter = new GridCardAdapter(this, 0, gridList);
@@ -73,9 +72,12 @@ public class GameActivity extends Activity {
 		
 		if(timerSetting == R.id.timeLimitRadio) {
 			totalMSec = options.getLong("millisecs", 60000);
+			maxTotalMSec = totalMSec;
+			
 		}
 		else {
 			totalMSec = (long) 0;
+			maxTotalMSec = totalMSec;
 		}
 		
 		cardsPrefs = getSharedPreferences(filename, Context.MODE_PRIVATE);
@@ -152,7 +154,7 @@ public class GameActivity extends Activity {
 		reset.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				stopTime(totalMSec);
+				stopTimer(timerSetting);
 				layoutInflater = LayoutInflater.from(context);
 				promptView = layoutInflater.inflate(R.layout.message, null);
 				message = new AlertDialog.Builder(context);
@@ -169,6 +171,7 @@ public class GameActivity extends Activity {
 								for(int i=0; i<gridList.size();i++) {
 									gridList.get(i).color = Color.BLACK;
 								}
+								Collections.shuffle(gridList);
 								adapter.notifyDataSetChanged();
 								GridView.setOnItemClickListener(new OnItemClickListener(){
 									@Override
@@ -179,7 +182,7 @@ public class GameActivity extends Activity {
 											pos1 = position;
 										}		
 										else if(pos2 != pos1) {
-											stopTime(totalMSec);
+											stopTimer(totalMSec);
 											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos2 = position;
@@ -256,7 +259,7 @@ public class GameActivity extends Activity {
 	    }
 	}
 	
-	void stopTime(long value){
+	void stopTimer(long value){
 		if(value == R.id.timeLimitRadio) {
 			countdown.cancel();
 		}
@@ -266,36 +269,36 @@ public class GameActivity extends Activity {
 	}
 	
 	void matcher(int pos1, int pos2){
-		stopTime(totalMSec);
-		layoutInflater = LayoutInflater.from(context);
-		promptView = layoutInflater.inflate(R.layout.match_message, null);
-		message = new AlertDialog.Builder(context);
-		TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
-		TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
-		message.setView(promptView);
-		ms1.setText(gridList.get(pos1).word);
-		ms2.setText(gridList.get(pos2).word);
+		stopTimer(totalMSec);
+		//layoutInflater = LayoutInflater.from(context);
+		//promptView = layoutInflater.inflate(R.layout.match_message, null);
+		//message = new AlertDialog.Builder(context);
+		//TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
+		//TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
+		//message.setView(promptView);
+		//ms1.setText(gridList.get(pos1).word);
+		//ms2.setText(gridList.get(pos2).word);
 		
-		String result;
+		//String result;
 		if(gridList.get(pos1).id == gridList.get(pos2).id ) { 
-			result = "Matched!"; 
+			//result = "Matched!"; 
 			counter++;
 			gridList.get(pos1).color = Color.WHITE;
 			gridList.get(pos2).color = Color.WHITE;
 			adapter.notifyDataSetChanged();
 		}
 		else {
-			result = "No Match!";
+			//result = "No Match!";
 			gridList.get(pos1).color = Color.BLACK;
 			gridList.get(pos2).color = Color.BLACK;
 			adapter.notifyDataSetChanged();
 		}
 		
 		if(counter == cardList.size()){
-			stopTime(totalMSec);
+			stopTimer(totalMSec);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
-			//message = new AlertDialog.Builder(context);
+			message = new AlertDialog.Builder(context);
 			message.setView(promptView);
 			ms = (TextView) promptView.findViewById(R.id.message);
 			ms.setText("Congradulation! Good Effort!");
@@ -314,6 +317,7 @@ public class GameActivity extends Activity {
 			alert.show();
 		}
 		else {
+			/*
 			message.setTitle("Card Match?")
 			   .setCancelable(false)
 			   .setNeutralButton(result,
@@ -325,6 +329,7 @@ public class GameActivity extends Activity {
 			    });
 			alert = message.create();
 			alert.show();
+			*/
 		}
 	}
 	
@@ -336,13 +341,13 @@ public class GameActivity extends Activity {
 
 	@Override
 	protected void onPause() {
-		stopTime(timerSetting);
+		stopTimer(timerSetting);
 		super.onPause();
 	}
 	
 	@Override
 	protected void onDestroy() {
-		stopTime(timerSetting);
+		stopTimer(timerSetting);
 		super.onDestroy();
 	}
 
@@ -363,7 +368,7 @@ public class GameActivity extends Activity {
 		 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						Bundle bundle = new Bundle();
-						stopTime(timerSetting);
+						stopTimer(timerSetting);
 						bundle.putString("filename", filename);
 						Tools.startIntent(GameActivity.this, FlashCardActivity.class, bundle, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					}
@@ -375,5 +380,6 @@ public class GameActivity extends Activity {
 				});
 		alert = message.create();
 		alert.show();
+		//super.onBackPressed();
 	}
 }
