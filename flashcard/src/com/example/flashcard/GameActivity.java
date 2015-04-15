@@ -272,25 +272,25 @@ public class GameActivity extends Activity {
 	
 	void matcher(int pos1, int pos2){
 		stopTimer(totalMSec);
-		layoutInflater = LayoutInflater.from(context);
-		promptView = layoutInflater.inflate(R.layout.match_message, null);
-		message = new AlertDialog.Builder(context);
-		TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
-		TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
-		message.setView(promptView);
-		ms1.setText(gridList.get(pos1).word);
-		ms2.setText(gridList.get(pos2).word);
+		//layoutInflater = LayoutInflater.from(context);
+		//promptView = layoutInflater.inflate(R.layout.match_message, null);
+		//message = new AlertDialog.Builder(context);
+		//TextView ms1 = (TextView) promptView.findViewById(R.id.matchCard1);
+		//TextView ms2 = (TextView) promptView.findViewById(R.id.matchCard2);
+		//message.setView(promptView);
+		//ms1.setText(gridList.get(pos1).word);
+		//ms2.setText(gridList.get(pos2).word);
 		
-		String result;
+		//String result;
 		if(gridList.get(pos1).id == gridList.get(pos2).id ) { 
-			result = "Matched!"; 
+			//result = "Matched!"; 
 			counter++;
 			gridList.get(pos1).color = Color.WHITE;
 			gridList.get(pos2).color = Color.WHITE;
 			adapter.notifyDataSetChanged();
 		}
 		else {
-			result = "No Match!";
+			//result = "No Match!";
 			gridList.get(pos1).color = Color.BLACK;
 			gridList.get(pos2).color = Color.BLACK;
 			adapter.notifyDataSetChanged();
@@ -300,7 +300,7 @@ public class GameActivity extends Activity {
 			stopTimer(totalMSec);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
-			//message = new AlertDialog.Builder(context);
+			message = new AlertDialog.Builder(context);
 			message.setView(promptView);
 			ms = (TextView) promptView.findViewById(R.id.message);
 			ms.setText("Congradulation! Good Effort!");
@@ -319,6 +319,7 @@ public class GameActivity extends Activity {
 			alert.show();
 		}
 		else {
+			/*
 			message.setTitle("Card Match?")
 			   .setCancelable(false)
 			   .setNeutralButton(result,
@@ -330,6 +331,7 @@ public class GameActivity extends Activity {
 			    });
 			alert = message.create();
 			alert.show();
+			*/
 		}
 	}
 	
