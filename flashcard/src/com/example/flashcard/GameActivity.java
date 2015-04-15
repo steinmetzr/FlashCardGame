@@ -142,7 +142,7 @@ public class GameActivity extends Activity {
 				 	   .setCancelable(false)
 				 	   .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int id) {
-								finish();
+								onBackPressed();
 							}
 						})
 						.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -153,7 +153,6 @@ public class GameActivity extends Activity {
 						});
 				alert = message.create();
 				alert.show();
-				//onBackPressed();
 			}
 		});
 		
@@ -178,6 +177,7 @@ public class GameActivity extends Activity {
 								for(int i=0; i<gridList.size();i++) {
 									gridList.get(i).color = Color.BLACK;
 								}
+								Collections.shuffle(gridList);
 								adapter.notifyDataSetChanged();
 								GridView.setOnItemClickListener(new OnItemClickListener(){
 									@Override
@@ -374,5 +374,6 @@ public class GameActivity extends Activity {
 				});
 		alert = message.create();
 		alert.show();
+		//super.onBackPressed();
 	}
 }

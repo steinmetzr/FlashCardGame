@@ -56,7 +56,7 @@
 	    android:layout_below="@+id/timerText"
 	    android:gravity="center"
 	    android:numColumns="auto_fit"
-	    android:columnWidth="50dp"
+	    android:columnWidth="60dp"
   		android:stretchMode="columnWidth">
 	</GridView>
     
