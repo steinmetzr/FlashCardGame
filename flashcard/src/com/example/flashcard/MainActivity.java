@@ -78,11 +78,6 @@ public class MainActivity extends Activity {
 				ListFile temp = new ListFile(list.size(), file.substring(0, file.length()-4));
 			    list.add(temp);
 			}
-	        /*for(int i=fileList.length-1; i>=0; i--) {
-	        
-				ListFile temp = new ListFile(list.size(), fileList[i].substring(0, fileList[i].length()-4));
-			    list.add(temp);
-			}*/
 		}
 		
 		Collections.sort(list, fSort);

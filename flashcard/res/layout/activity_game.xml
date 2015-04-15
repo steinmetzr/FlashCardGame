@@ -47,17 +47,15 @@
 
 	<GridView
 	    android:id="@+id/gameGrid"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="2dp"
-    	android:verticalSpacing="1dp"
-    	android:horizontalSpacing="1dp"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
 	    android:layout_above="@+id/linear3"
 	    android:layout_below="@+id/timerText"
 	    android:gravity="center"
 	    android:numColumns="auto_fit"
 	    android:columnWidth="60dp"
-  		android:stretchMode="columnWidth">
+  		android:stretchMode="columnWidth"
+	    android:overScrollMode="never">
 	</GridView>
     
 </RelativeLayout>

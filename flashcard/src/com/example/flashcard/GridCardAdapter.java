@@ -3,7 +3,6 @@ package com.example.flashcard;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +22,13 @@ public class GridCardAdapter extends ArrayAdapter<GridCard> {
 		GridCard item = (GridCard)getItem(pos);
 		
 		// Use layout file to generate View
-		View view = mInflater.inflate(R.layout.grid_index, null);
+		convertView = mInflater.inflate(R.layout.grid_index, null);
 		
 		// Set the index word (front or back)
-		TextView card = (TextView) view.findViewById(R.id.gridPos);
+		TextView card = (TextView) convertView.findViewById(R.id.gridPos);
 		card.setText(item.word);
 		card.setBackgroundColor(item.color);
-		return view;
+        
+		return convertView;
 	}
 }
