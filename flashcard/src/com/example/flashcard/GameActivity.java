@@ -182,7 +182,7 @@ public class GameActivity extends Activity {
 											pos1 = position;
 										}		
 										else if(pos2 != pos1) {
-											stopTimer(totalMSec);
+											stopTimer(timerSetting);
 											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos2 = position;
@@ -259,17 +259,17 @@ public class GameActivity extends Activity {
 	    }
 	}
 	
-	void stopTimer(long value){
-		if(value == R.id.timeLimitRadio) {
+	void stopTimer(int timerID){
+		if(timerID == R.id.timeLimitRadio) {
 			countdown.cancel();
 		}
-		else if (value == R.id.timerRadio){
+		else if (timerID == R.id.timerRadio){
 			timer.cancel();
 		}
 	}
 	
 	void matcher(int pos1, int pos2){
-		stopTimer(totalMSec);
+		//stopTimer(totalMSec);
 		//layoutInflater = LayoutInflater.from(context);
 		//promptView = layoutInflater.inflate(R.layout.match_message, null);
 		//message = new AlertDialog.Builder(context);
@@ -295,13 +295,13 @@ public class GameActivity extends Activity {
 		}
 		
 		if(counter == cardList.size()){
-			stopTimer(totalMSec);
+			stopTimer(timerSetting);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
 			message = new AlertDialog.Builder(context);
 			message.setView(promptView);
 			ms = (TextView) promptView.findViewById(R.id.message);
-			ms.setText("Congradulation! Good Effort!");
+			ms.setText("Congratulations! Good Effort!");
 			message.setCancelable(false)
 			 	   .setNeutralButton("confirm", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int id) {
@@ -316,7 +316,7 @@ public class GameActivity extends Activity {
 			alert = message.create();
 			alert.show();
 		}
-		else {
+		//else {
 			/*
 			message.setTitle("Card Match?")
 			   .setCancelable(false)
@@ -330,7 +330,7 @@ public class GameActivity extends Activity {
 			alert = message.create();
 			alert.show();
 			*/
-		}
+		//}
 	}
 	
 	@Override

@@ -27,7 +27,7 @@ public class GridCardAdapter extends ArrayAdapter<GridCard> {
 		// Set the index word (front or back)
 		TextView card = (TextView) convertView.findViewById(R.id.gridPos);
 		card.setText(item.word);
-		//card.setBackgroundColor(item.color);
+		card.setBackgroundColor(item.color);
         
 		return convertView;
 	}
