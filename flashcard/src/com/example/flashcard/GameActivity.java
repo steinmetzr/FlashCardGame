@@ -110,18 +110,16 @@ public class GameActivity extends Activity {
 		Display display = getWindowManager().getDefaultDisplay();
 		int height = display.getHeight();
 		
-		//if(maxSize/2 <= 4){
-			//GridView.setHorizontalSpacing(width/(maxSize/2));
+		if(maxSize <= gridList.size()){
 			GridView.setNumColumns((int) Math.ceil(maxSize/2.0));
 			int numRows = gridList.size()/(maxSize/2);
 			GridView.setVerticalSpacing(height/(numRows*2));
-		/*}
-		else{	
-			//GridView.setHorizontalSpacing(width/4);
-			GridView.setNumColumns(4);
-			int numRows = gridList.size()/4;
+		}
+		else{
+			GridView.setNumColumns((int) Math.ceil(gridList.size()/2.0));
+			int numRows = gridList.size()/(gridList.size()/2);
 			GridView.setVerticalSpacing(height/(numRows*2));
-		}*/
+		}
 		
 		GridView.setOnItemClickListener(new OnItemClickListener(){
 			@Override

@@ -40,9 +40,6 @@ public class OptionsActivity extends Activity {
 		timeRadioGroup = (RadioGroup) findViewById(R.id.timeRadioGroup);
 		done = (Button)findViewById(R.id.done);
 		
-		/*filename = getApplication().getFilesDir().getPath().toString() + "/options";
-		BufferedReader reader = null;*/
-		
 		options = getSharedPreferences(filename, Context.MODE_PRIVATE);
 		
 		/**
@@ -105,62 +102,10 @@ public class OptionsActivity extends Activity {
 				catch(NumberFormatException e){
 					Tools.toast(OptionsActivity.this, "Must enter value for time limit");
 				}
-				
-				/*
-				//Bundle bundle = new Bundle();
-				BufferedWriter writer = null;
-				
-				try{
-					writer = new BufferedWriter(new FileWriter(filename));
-					FileWriter file = new FileWriter(filename);
-					
-					//int size = Integer.valueOf(Tools.toString(boardSizeText));
-
-					//bundle.putInt("boardSize", size);
-					
-					writer.write(Tools.toString(boardSizeText) + "\n");
-					writer.write(timeRadioGroup.getCheckedRadioButtonId() + "\n");
-					
-					if(timeRadioGroup.getCheckedRadioButtonId() == R.id.timeLimitRadio){
-						//int hour = Integer.valueOf(Tools.toString(hourText));
-						int min = Integer.valueOf(Tools.toString(minText));
-						int sec = Integer.valueOf(Tools.toString(secText));
-
-						bundle.putInt("timerHour", hour);
-						bundle.putInt("timerMin", min);
-						bundle.putInt("timerSec", sec);//
-						int hour = Integer.valueOf(Tools.toString(hourText)) * 3600000;
-						int min = Integer.valueOf(Tools.toString(minText)) * 6000;
-						int sec = Integer.valueOf(Tools.toString(secText)) * 1000;
-						int millisecs = hour + min + sec;
-						
-						writer.write(Tools.toString(hourText) + "\n");
-						writer.write(Tools.toString(minText) + "\n");
-						writer.write(Tools.toString(secText));
-						writer.write(String.valueOf(millisecs));
-					}
-					
-					Tools.startIntent(OptionsActivity.this, MainActivity.class, Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				}
-				catch(NumberFormatException e){
-					Tools.toast(OptionsActivity.this, "Must enter value for time limit");
-				}
-				catch (FileNotFoundException e) {
-					Tools.toast(OptionsActivity.this, e.getMessage());
-				}
-				catch (IOException e) {
-					Tools.toast(OptionsActivity.this, e.getMessage());
-				}
-				finally{
-					try {
-						if(writer != null)
-							writer.close();
-					} catch (IOException e) {}
-				}*/
 			}
 		});
 		
-		int size = options.getInt("boardSize", 18);
+		int size = options.getInt("boardSize", 12);
 		boardSizeSeek.setProgress(size - offset);
 		boardSizeText.setText(String.valueOf(size));
 		
@@ -172,28 +117,5 @@ public class OptionsActivity extends Activity {
 			minText.setText(options.getString("timerMin", ""));
 			secText.setText(options.getString("timerSec", ""));
 		}
-		
-		/*try{
-			reader = new BufferedReader(new FileReader(filename));
-			String size = reader.readLine();
-			
-			boardSizeSeek.setProgress(Integer.parseInt(size) - offset);
-			boardSizeText.setText(size);
-			int checked = Integer.parseInt(reader.readLine());
-			timeRadioGroup.check(checked);
-			if(checked == R.id.timeLimitRadio){
-				hourText.setText(reader.readLine());
-				minText.setText(reader.readLine());
-				secText.setText(reader.readLine());
-			}
-		}
-		catch (IOException e) {}
-		catch (NumberFormatException e){}
-		finally{
-			try {
-				if(reader != null)
-					reader.close();
-			} catch (IOException e) {}
-		}*/
 	}
 }
