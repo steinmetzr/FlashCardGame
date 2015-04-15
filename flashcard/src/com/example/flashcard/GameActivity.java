@@ -184,7 +184,7 @@ public class GameActivity extends Activity {
 											pos1 = position;
 										}		
 										else if(pos2 != pos1) {
-											stopTimer(totalMSec);
+											stopTimer(timerSetting);
 											gridList.get(position).color = Color.GRAY;
 											adapter.notifyDataSetChanged();
 											pos2 = position;
@@ -261,11 +261,11 @@ public class GameActivity extends Activity {
 	    }
 	}
 	
-	void stopTimer(long value){
-		if(value > 0) {
+	void stopTimer(int timerID){
+		if(timerID == R.id.timeLimitRadio) {
 			countdown.cancel();
 		}
-		else if (value == R.id.timerRadio){
+		else if (timerID == R.id.timerRadio){
 			timer.cancel();
 		}
 	}
@@ -297,7 +297,7 @@ public class GameActivity extends Activity {
 		}
 		
 		if(counter == cardList.size()){
-			stopTimer(totalMSec);
+			stopTimer(timerSetting);
 			layoutInflater = LayoutInflater.from(context);
 			promptView = layoutInflater.inflate(R.layout.message, null);
 			message = new AlertDialog.Builder(context);
