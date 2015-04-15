@@ -271,7 +271,7 @@ public class GameActivity extends Activity {
 	}
 	
 	void matcher(int pos1, int pos2){
-		stopTimer(totalMSec);
+		//stopTimer(totalMSec);
 		//layoutInflater = LayoutInflater.from(context);
 		//promptView = layoutInflater.inflate(R.layout.match_message, null);
 		//message = new AlertDialog.Builder(context);
@@ -318,7 +318,7 @@ public class GameActivity extends Activity {
 			alert = message.create();
 			alert.show();
 		}
-		else {
+		//else {
 			/*
 			message.setTitle("Card Match?")
 			   .setCancelable(false)
@@ -332,7 +332,7 @@ public class GameActivity extends Activity {
 			alert = message.create();
 			alert.show();
 			*/
-		}
+		//}
 	}
 	
 	@Override
